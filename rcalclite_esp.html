@@ -1,0 +1,669 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <title>Calculadora de teoría de filas (colas).</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="keywords" content="calculadora de teoría de colas, calculadora de teoría de filas, cálculo teoría de colas, 
+        calculadora M/M/1, colas de espera, teoría de colas, teoría de filas, 
+        fórmula de erlang, erlang" />
+    <meta name="description" content="La calculadora de teoría de filas (colas) es una herramienta
+          simple y a la vez poderosa para procesar las complicadas fórmulas." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="robots" content="index, follow" />
+    <meta property="fb:app_id" content="270251279740251"/>
+    <link rel="shortcut icon" href="http://www.supositorio.com/favicon.ico" />
+    
+    <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic">
+    <link rel="stylesheet" href="assets/css/neon.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <!-- share stuff jscripts start -->
+    <script type="text/javascript" src="js/tracking.js"></script>
+    <script type="text/javascript">var switchTo5x=true;</script>
+    <script type="text/javascript" src="../../w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">stLight.options({publisher: "80aeeffa-4e4d-47a3-85fd-88e7a275f31a"});</script>
+    <!-- share stuff jscripts ends -->
+</head>
+
+<body class="page-body" lang="es-MX">
+    <!-- /////////// Facebook Code ////////-->
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "../../connect.facebook.net/en_US/all.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <!-- /////////// Facebook Code Ends HERE ////////-->
+    <!-- ClickTale Top part -->
+    <script type="text/javascript">
+    var WRInitTime=(new Date()).getTime();
+    </script>
+    <!-- ClickTale end of Top part -->
+
+    <div class="container">
+        <header>
+            <a href="http://www.supositorio.com/">
+                <img src="logo.png" class="logo-img left" />
+            </a>            
+            <div style="clear:both"></div>
+            <br/>
+            <button id="instructions-btn" class="btn btn-info left" type="button">Instrucciones</button>
+            <a href="rcalclite.html" class="btn btn-red btn-xs">ENGLISH</a>
+        </header>
+        <h1 class="center">Calculadora de Teoría de Filas (Colas) de Espera</h1>
+        
+        <div class="row">
+            <div data-collapsed="0" class="panel panel-default panel-shadow">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title">Modelo de Teoría de Filas</div>
+                    <div class="panel-options">
+                        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="h1">1. Elige el modelo de filas que buscas calcular.</div><br />
+                    <div id="MMC" class="col-sm-3 center">
+                        <div class="tile-stats pointer">
+                            <div class="num">M/M/C</div>
+                            <div class="h3 white">Unifila, C servidores.</div><br />
+                            <button class="btn btn-default" type="button">Seleccionar Modelo</button>
+                        </div>
+                    </div>
+                    <div id="MMInf" class="col-sm-3 center">
+                        <div class="tile-stats pointer">
+                            <div class="num">M/M/Inf</div>
+                            <div class="h3 white">Hay más servidores que clientes.</div><br />
+                            <button class="btn btn-default" type="button">Seleccionar Modelo</button>
+                        </div>
+                    </div>
+                    <div id="MMCK" class="col-sm-3 center">
+                        <div class="tile-stats pointer">
+                            <div class="num">M/M/C/K</div>
+                            <div class="h3 white">El sistema sólo puede alojar K clientes.</div><br />
+                            <button class="btn btn-default" type="button">Seleccionar Modelo</button>
+                        </div>
+                    </div>
+                    <div id="MMC_M" class="col-sm-3 center">
+                        <div class="tile-stats pointer">
+                            <div class="num">M/M/C/*/M</div>
+                            <div class="h3 white">Sólo M clientes pueden usar el servicio.</div><br />
+                            <button class="btn btn-default" type="button">Seleccionar Modelo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <div id="valuesPanel" data-collapsed="0" class="panel panel-default panel-shadow panel-collapse" style="display: none;">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title">Valores Requeridos</div>
+                    <div class="panel-options">
+                        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body" style="display: none;">
+                    <div class="h1">2. Ingresa todos los valores requeridos.</div><br />
+                    <div id="c_tile" class="col-sm-3">
+                        <div class="tile-stats tile-aqua">
+                            <div class="icon"><i class="entypo-users"></i></div>
+                            <div class="num">
+                                <div class="left">C</div><br />
+                                <input id="c" type="text" placeholder="C" id="field-1" class="form-control input-lg">
+                            </div>
+                            <h3>Número de servidores</h3>
+                            <p>Número de servidores en paralelo abiertos para atender clientes.</p>
+                        </div>
+                    </div>
+                    <div id="k_tile" class="col-sm-3">
+                        <div class="tile-stats tile-aqua">
+                            <div class="icon"><i class="entypo-users"></i></div>
+                            <div class="num">
+                                <div class="left">K</div><br />
+                                <input id="k" type="text" placeholder="K" id="field-1" class="form-control input-lg">
+                            </div>
+                            <h3>Capacidad de la fila.</h3>
+                            <p>Máximo número de clientes en la fila.</p>
+                        </div>
+                    </div>
+                    <div id="m_tile" class="col-sm-3">
+                        <div class="tile-stats tile-aqua">
+                            <div class="icon"><i class="entypo-users"></i></div>
+                            <div class="num">
+                                <div class="left">M</div><br />
+                                <input id="m" type="text" placeholder="M" id="field-1" class="form-control input-lg">
+                            </div>
+                            
+                            <h3>Población</h3>
+                            <p>Número total de clientes que pueden usar el servicio.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="tile-stats tile-gray" style="overflow: visible;">
+                            <div class="h4">Tasas de llegada y servicio</div>
+                            <div id="LambdaTitle" class="h1 left">λ <small class="h3">Sin Unidades</small></div><br />
+                            <div class="input-group" style="clear:both">
+                                <input id="Lambda" type="text" class="form-control" placeholder="Service rate">
+                                <div class="input-group-btn">
+                                    <button id='LambdaUnitsBtn' data-toggle="dropdown" class="btn btn-gold dropdown-toggle" type="button">
+                                        <span id="LambdaUnitsSpan">Sin Unidades <span class="caret"></span></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-gold">
+                                        <li><a data-units="-1" class="LambdaUnits" href="javascript:void(0);">Sin Unidades</a></li>
+                                        <li><a data-units="0" class="LambdaUnits" href="javascript:void(0);">Clientes/Día</a></li>
+                                        <li><a data-units="1" class="LambdaUnits" href="javascript:void(0);">Clientes/Hora</a></li>
+                                        <li><a data-units="2" class="LambdaUnits" href="javascript:void(0);">Clientes/Minuto</a></li>
+                                        <li><a data-units="3" class="LambdaUnits" href="javascript:void(0);">Clientes/Segundo</a></li>
+                                    </ul>
+                                </div>
+                                <div id="LambdaConvert" class="input-group-btn">
+                                    <button data-toggle="dropdown" class="btn btn-blue dropdown-toggle" type="button">
+                                        <span>Convertir <span class="caret"></span></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-blue">
+                                        <li><a data-units="-1" class="LambdaUnits" href="javascript:void(0);">Sin Unidades</a></li>
+                                        <li><a data-units="0" class="LambdaUnits" href="javascript:void(0);">Clientes/Día</a></li>
+                                        <li><a data-units="1" class="LambdaUnits" href="javascript:void(0);">Clientes/Hora</a></li>
+                                        <li><a data-units="2" class="LambdaUnits" href="javascript:void(0);">Clientes/Minuto</a></li>
+                                        <li><a data-units="3" class="LambdaUnits" href="javascript:void(0);">Clientes/Segundo</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="muTitle" class="h1 left">μ <small class="h3">Sin Unidades</small></div><br />
+                            <div class="input-group" style="clear:both">
+                                <input id="Mu" type="text" class="form-control" placeholder="Service rate">
+                                <div class="input-group-btn">
+                                    <button data-toggle="dropdown" class="btn btn-gold dropdown-toggle" type="button">
+                                        <span id="MuUnitsSpan">No Units <span class="caret"></span></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-gold">
+                                        <li><a data-units="-1" class="MuUnits" href="javascript:void(0);">Sin Unidades</a></li>
+                                        <li><a data-units="0" class="MuUnits" href="javascript:void(0);">Clientes/Día</a></li>
+                                        <li><a data-units="1" class="MuUnits" href="javascript:void(0);">Clientes/Hora</a></li>
+                                        <li><a data-units="2" class="MuUnits" href="javascript:void(0);">Clientes/Minuto</a></li>
+                                        <li><a data-units="3" class="MuUnits" href="javascript:void(0);">Clientes/Segundo</a></li>
+                                    </ul>
+                                </div>
+                                <div id="MuConvert" class="input-group-btn">
+                                    <button data-toggle="dropdown" class="btn btn-blue dropdown-toggle" type="button">
+                                        <span>Convertir <span class="caret"></span></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-blue">
+                                        <li><a data-units="-1" class="MuUnits" href="javascript:void(0);">Sin Unidades</a></li>
+                                        <li><a data-units="0" class="MuUnits" href="javascript:void(0);">Clientes/Día</a></li>
+                                        <li><a data-units="1" class="MuUnits" href="javascript:void(0);">Clientes/Hora</a></li>
+                                        <li><a data-units="2" class="MuUnits" href="javascript:void(0);">Clientes/Minuto</a></li>
+                                        <li><a data-units="3" class="MuUnits" href="javascript:void(0);">Clientes/Segundo</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <br />
+                    <div class="center">
+                        <button id="calculate" class="btn btn-red btn-xl" type="button">Calcular</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div id="resultsPanel" data-collapsed="0" class="panel panel-default panel-shadow panel-collapse">
+                <!-- panel head -->
+                <div class="panel-heading" style="display:none;">
+                    <div class="panel-title">Resultados</div>
+                    <div class="panel-options">
+                        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body" style='display: none;'>
+                    <div class="h1">3. Ver tus resultados.<br />
+                        <span class="h3">Ver resultados en: </span>
+                        <div class="input-group inline">
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-blue dropdown-toggle inline" type="button">
+                                    <span id="ResultsUnitsSpan">Sin Unidades <span class="caret"></span></span>
+                                </button>
+                                <ul role="menu" class="dropdown-menu dropdown-blue">
+                                    <li><a data-units="-1" class="ResultsUnits" href="javascript:void(0);">Sin Unidades</a></li>
+                                    <li><a data-units="0" class="ResultsUnits" href="javascript:void(0);">Clientes/Día</a></li>
+                                    <li><a data-units="1" class="ResultsUnits" href="javascript:void(0);">Clientes/Hora</a></li>
+                                    <li><a data-units="2" class="ResultsUnits" href="javascript:void(0);">Clientes/Minuto</a></li>
+                                    <li><a data-units="3" class="ResultsUnits" href="javascript:void(0);">Clientes/Segundo</a></li>
+                                </ul>
+                            </div>
+                            <span class="h3"> y mostrar los resultados con </span>
+                            
+                        </div>
+                        <select id="decimals" class="form-control inline" style="width:115px;">
+                            <option value="0">0 decimales</option>
+                            <option value="1">1 decimales</option>
+                            <option value="2">2 decimales</option>
+                            <option value="3">3 decimales</option>
+                            <option value="4" selected="selected">4 decimales</option>
+                            <option value="5">5 decimales</option>
+                            <option value="6">6 decimales</option>
+                            <option value="7">7 decimales</option>
+                            <option value="8">8 decimales</option>
+                            <option value="9">9 decimales</option>
+                        </select>
+                    </div> 
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="tile-stats tile-white-red">
+                                <div class="icon"><i class="entypo-users"></i></div>
+                                <div id="LValue" class="num" data-delay="0" data-duration="800" data-postfix="<small class='h2'> Customers</small>" data-end="0" data-start="0">00<span class="units"> hrs</span></div>
+                                <div class="h1">L <small>Promedio de Clientes en el Sistema</small></div>
+                                <p>Valor esperado de clientes en el sistema.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="tile-stats tile-white-aqua">
+                                <div class="icon"><i class="entypo-users"></i></div>
+                                <div id="LqValue" class="num" data-delay="600" data-duration="500" data-postfix="<small class='h2'> Customers</small>" data-end="2.3" data-start="0">00</div>
+                                <div class="h1">Lq <small>Promedio de Clientes en fila</small></div>
+                                <p>Promedio de clientes (entidades) en la fila. En otras palabras, la cantidad esperada de clientes esperando a ser atendidas.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="tile-stats tile-white-blue">
+                                <div class="icon"><i class="entypo-gauge"></i></div>
+                                <div id="WValue" class="num" data-delay="1100" data-duration="500" data-postfix="" data-start="0">00</div>
+                                <div class="h1">W <small>Tiempo Promedio Dentro del Sistema</small></div>
+                                <p>Tiempor promedio que está un cliente desde que llega y hasta que lo terminan de atender.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="tile-stats tile-white-cyan">
+                                <div class="icon"><i class="entypo-mail"></i></div>
+                                <div id="WqValue" class="num" data-delay="1450" data-duration="500" data-postfix="" data-start="0">00</div>
+                                <div class="h1">Wq <small>Tiempo Promedio en Fila</small></div>
+                                <p>Tiempo promedio que tarda un cliente desde que llega hasta que lo comienzan a atender.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="tile-stats tile-white-purple">
+                                <div class="icon"><i class="entypo-gauge"></i></div>
+                                <div id="RoValue" class="num" data-delay="1450" data-duration="500" data-postfix="" data-start="0">00</div>
+                                <div class="h1">ρ <small>Utilización de los servidores</small></div>
+                                <p>Porcentaje del tiempo que los servidores están siendo utilizados por algún cliente.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="tile-stats tile-white-pink">
+                                <div class="icon"><i class="entypo-gauge"></i></div>
+                                <div id="LambdapValue" class="num" data-delay="1450" data-duration="500" data-postfix="" data-start="0">00</div>
+                                <div class="h1">λ' <small>Lambda prima</small></div>
+                                <p>Este valor se usa en algunos cálculos.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="tile-stats tile-white-orange">
+                                <div class="icon"><i class="entypo-gauge"></i></div>
+                                <div class="num">Probabilidades</div>
+                                <h3>Discretas</h3>
+                                <p>P ('n' clientes en sistema=<input id="n" type="text" style="width:30px;" value="0"><span id="nUnits">Clientes</span>>)=<strong><span id="Pn">0</span></strong></p>
+                                <h3>Time Based</h3>
+                                <p>P (tiempo en sistema <= <input id="t" type="text" style="width:30px;" value="0"><span id="tUnits">&nbsp;</span>)=<strong><span id="T">0</span></strong></p>
+                                <p>P (tiempo en fila <= <input id="tq" type="text" style="width:30px;" value="0"><span id="tqUnits">&nbsp;</span>)=<strong><span id="Tq">0</span></strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="h1">4. Éstas son las probabilidades.</div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div id="discreteProbChart" style="height:400px; width:350px"></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div id="timeBasedProbChart" style="height:400px; width:350px"></div>
+                        </div>
+                        <div class="col-sm-4 h2">
+                            Si te gusta esta calculadora, seguro también le gustará a tus compañeros, estudiantes y amigos. Por favor compárteselas:<br>
+                            <span displaytext="Facebook" class="st_facebook_vcount"></span>
+                            <span displaytext="Tweet" class="st_twitter_vcount"></span>
+                            <span displaytext="LinkedIn" class="st_linkedin_vcount"></span>
+                            <span displaytext="Pinterest" class="st_pinterest_vcount"></span>
+                            <span displaytext="Google +" class="st_googleplus_vcount"></span>
+                            <span displaytext="Email" class="st_email_vcount"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- panel 3 -->
+        <br />
+        <div class="row">
+            <div data-collapsed="0" class="panel panel-gradient">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title">Comentarios / Instrucciones</div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="h2">Tienes algún comentario, sugerencia, queja, errores en la aplicación, etc?</div>
+                    <div class="h3">Por favor coméntalas a continuación.</div>
+                    <style>
+                        .fb-comments, .fb-comments iframe[style], .fb-like-box, .fb-like-box iframe[style] {width: 100% !important;}
+                        .fb-comments span, .fb-comments iframe span[style], .fb-like-box span, .fb-like-box iframe span[style] {width: 100% !important;}
+                    </style>
+                    <div class="fb-comments" data-href="http://www.supositorio.com/rcalc/rcalclite.htm" data-num-posts="3"></div>
+                    <div class="bs-callout bs-callout-info">
+                        <h3 id="instructions"><strong>Instrucciones – Cómo usar la calculadora de teoría de filas (colas)</strong></h3>
+                        <p class="h3">Estas instrucciones son para la calculadora de teoría de filas en supositorio.com</p>
+                        <p class="h3"><strong>Inicio rápido</strong></p>
+                        <p class="h4">Si estás familiarizado con la teoría de filas, y quieres hacer cálculos rápidos, ésta calculadora te va a ayudar mucho.</p>
+                        <ol class="h5">
+                            <li>Elige el modelo de filas que quieres calcular. M/M/C (o M/M1 si pones C=1), M/M/Inf, M/M/C/K, o 
+                                M/M/C/*/M</li>
+                            <li>Luego ingresa el número de servidores en tu sistema (C), el máximo número de entidades (también conocidas como clientes) que tu fila 
+                                puede soportar (K), y el máximo número de entidades que pueden usar tu sistema (M).</li>
+                            <li>Elige la tasa de llegada (Lambda) y de servicio (Mu). Nota que existe una opción para incluir las unidades, 
+                                en la práctica las unidades de la tasa de llegada y de servicio pueden ser diferentes. Esta calculadora te puede ayudar a 
+                                manejar esto y desplegar los resultados en las unidades que requieras.</li>
+                            <li>Preciona el botón de calcular.</li>
+                            <li>Obtén los resultados de utilización del sistema (Ro), promedio de entidades en todo el sistema (L), promedio de 
+                                entidades en fila (Lq), Promedio de tiempo que gasta un cliente en el sistema (W), promedio de tiempo que le toma a 
+                                un cliente en ser atendido (Wq), Lamda prima (Lambdap), probabilidad de que hayan 'n' entidades en el sistema en un
+                                momento dado (Pn) (modifica el valor de 'n' para conocer su probabilidad), la probabilidad de que una entidad estará
+                                'n' unidades de tiempo o menos en fila (Tq) y la probabilidad de que una entidad esté 'n' unidades de tiempo o menos 
+                                en el sistema (T) (incluyendo el tiempo en fila y siendo atendido).</li>
+                        </ol>
+                         <p class="h4">
+                            ¡Ojalá y te sirva!<br />
+                            Ayuda a promover está herramienta añadiendo un link a esta página desde la tuya!<br />
+                            Visita nuestra página hermana: <a href="http://www.dandoydando.mx/">dandoydando.mx - "compras por internet"</a><br />
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="main">
+        &copy; 1999-2014 <strong>Supositorio.com</strong> Queuing Theory Calculator by Xavier de Garay
+    </footer>
+    <script src="../../code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
+    
+    <!-- Bottom Scripts -->
+    <script src="assets/js/gsap/main-gsap.js"></script>
+    <script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/joinable.js"></script>
+    <script src="assets/js/resizeable.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="assets/js/neon-demo.js"></script>
+    <script type="text/javascript" src="../../code.highcharts.com/highcharts.js"></script>
+    <script src="js/rcalcObj.js" type="text/javascript" ></script>
+    <script type="text/javascript" src="js/jstorage.js"></script>
+    
+    <script type="text/javascript">
+        /* 
+         * track mixpanel page view
+         */
+        mixpanel.track('page viewed', {'page name' : document.title, 'url' : window.location.pathname});
+        /*
+         * when the page is ready and jquery too
+         */
+        $(document).ready(function(){
+            $('#instructions-btn').click(function(){
+                $('#instructions').popover({
+                    title: 'Instructions', 
+                    html: true,
+                    content: 'You can read more here <i class="glyphicon glyphicon-arrow-right"></i>', 
+                    placement:'left',
+                    template: '<div class="popover popover-secondary"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+                    delay: {show: 1000}
+                });
+                $('html, body').animate({
+                        scrollTop: $('#instructions').offset().top
+                    }, 1000, function(){
+                        $('#instructions').popover('show');
+                        $('#instructions').on('show.bs.popover',function(){
+                            setTimeout(function(){
+                                $('#instructions').popover('destroy');
+                            },3000);
+                        });
+                });
+            });
+            $('#calculate').click(function(){
+                doCalculate();
+                doCalculateProbabilities();
+            });
+            function doCalculate(){
+                setter.All();
+                // avoid Lambda and Mu having units and not the results by expresing the units of the results in Mu's
+                if(Queuing.ResultsUnits === -1 && !(Queuing.LambdaUnits === -1 && Queuing.MuUnits === -1)){
+                    setResultsValues(Queuing.MuUnits);
+                }else if(Queuing.LambdaUnits === -1 && Queuing.MuUnits === -1){
+                    setResultsValues(-1);
+                }
+                Queuing.calculate();
+                QError.lookForCalculationErrors();
+                
+                if($.isEmptyObject(QError.messages)){
+                    $('#resultsPanel>.panel-heading').show();
+                    
+                    $('#LValue').text(0);
+                    $('#LValue').data('end', Stats.round(Queuing.L,Queuing.decimals));
+
+                    $('#LqValue').text(0);
+                    $('#LqValue').data('end', Stats.round(Queuing.Lq,Queuing.decimals));
+
+                    $('#WValue').text(0);
+                    $('#WValue').data('end', Stats.round(Queuing.W,Queuing.decimals));
+
+                    $('#WqValue').text(0);
+                    $('#WqValue').data('end', Stats.round(Queuing.Wq,Queuing.decimals));
+
+                    $('#RoValue').text(0);
+                    $('#RoValue').data('end', Stats.round(Queuing.Ro,Queuing.decimals));
+
+                    $('#LambdapValue').text('');
+                    $('#LambdapValue').data('end', 0);
+                    
+                    results_panel = $('#resultsPanel');
+                    Custom.expandPanel(results_panel);
+                    $('html, body').animate({
+                        scrollTop: results_panel.offset().top
+                    }, 1000, function(){
+                        Custom.runTileNumberAnimation();
+                    });
+                }else{
+                    var messageKeys = Object.keys(QError.messages);
+                    if (messageKeys.length >= 1){
+                       alert(QError.messages[messageKeys[0]]);
+                    }
+                }
+                chart.discrete();
+                chart.timeBased();
+                trackCalculations();
+            }
+            $('input[type=text]').change(function(){
+                $(this).val(eval($(this).val()));
+            });
+            
+            $('#LambdaConvert .LambdaUnits').click(function(){
+                var convertToUnits = $(this);
+                $('#Lambda').val(
+                    ConvertUnits.fromTo(
+                        parseFloat($('#Lambda').val()), 
+                        Queuing.LambdaUnits, 
+                        convertToUnits.data('units')
+                    )
+                );
+            });
+            $('#MuConvert .MuUnits').click(function(){
+                var convertToUnits = $(this);
+                $('#Mu').val(
+                    ConvertUnits.fromTo(
+                        parseFloat($('#Mu').val()), 
+                        Queuing.MuUnits, 
+                        convertToUnits.data('units')
+                    )
+                );
+            });
+            
+            $('.LambdaUnits').click(function(){
+                setLambdaValues($(this).data('units'));
+            });
+            setLambdaValues(($.jStorage.get('LambdaUnits')===null)?-1:$.jStorage.get('LambdaUnits'));
+            function setLambdaValues(value){
+                setter.LambdaUnits(value);
+                var unitsTxt = units.getRateUnitsAbrev(Queuing.LambdaUnits);
+                $('#LambdaUnitsSpan').html(unitsTxt + '&nbsp;&nbsp;<span class="caret"></span>');
+                var unitsSmall = (Queuing.LambdaUnits === -1)? 'No Units': 'Arrivals / ' + units.getUnits(Queuing.LambdaUnits);
+                $.jStorage.set('LambdaUnits', Queuing.LambdaUnits);
+                $('#LambdaTitle>small').text(unitsSmall);
+            }
+            
+            $('.MuUnits').click(function(){
+                setMuValues($(this).data('units'));
+            });
+            setMuValues(($.jStorage.get('MuUnits')===null)?-1:$.jStorage.get('MuUnits'));
+            function setMuValues(value){
+                setter.MuUnits(value);
+                var unitsTxt = units.getRateUnitsAbrev(Queuing.MuUnits);
+                $('#MuUnitsSpan').html(unitsTxt + '&nbsp;&nbsp;<span class="caret"></span>');
+                var unitsSmall = (Queuing.MuUnits === -1)? 'No Units': 'Services / ' + units.getUnits(Queuing.MuUnits);
+                $.jStorage.set('MuUnits', Queuing.MuUnits);
+                $('#muTitle>small').text(unitsSmall);
+            }
+            
+            $('.ResultsUnits').click(function(){
+                setResultsValues($(this).data('units'));
+                doCalculate();
+            });
+            setResultsValues(($.jStorage.get('ResultsUnits')===null)?-1:$.jStorage.get('ResultsUnits'));
+            function setResultsValues(value){
+                setter.ResultsUnits(value);
+                var unitsTxt = units.getRateUnitsAbrev(Queuing.ResultsUnits);
+                $('#ResultsUnitsSpan').html(unitsTxt + '&nbsp;&nbsp;<span class="caret"></span>');
+                var unitsSmall = (Queuing.ResultsUnits === -1)? '<small>No Units</small>': '<small class="h3">'+units.getRateUnitsAbrev(Queuing.ResultsUnits)+'</small>';
+                $('#WValue').data('postfix', ' ' + '<small class="h3">'+units.getUnits(Queuing.ResultsUnits, true)+'</small>');
+                $('#WqValue').data('postfix', ' ' + '<small class="h3">'+units.getUnits(Queuing.ResultsUnits, true)+'</small>');
+                $.jStorage.set('ResultsUnits', Queuing.ResultsUnits);
+                $('#tUnits').text(units.getUnits(Queuing.ResultsUnits, true));
+                $('#tqUnits').text(units.getUnits(Queuing.ResultsUnits, true));
+            }
+            
+            $('#t, #tq, #n').on('change', function(){
+                doCalculateProbabilities();
+            });
+            $('#decimals').on('change', function(){
+                setter.decimals($(this).val());
+                doCalculate();
+                doCalculateProbabilities();
+            });
+            function doCalculateProbabilities(){
+                setter.Probabilities();
+                Queuing.calculateProb();
+                Queuing.calculateProbTime();
+                $('#Pn').text(Stats.round(Queuing.Pn, Queuing.decimals));
+                $('#T').text(Stats.round(Queuing.T, Queuing.decimals));
+                $('#Tq').text(Stats.round(Queuing.Tq, Queuing.decimals));
+            }
+            $('.num').click(function(){
+                $(this).children('input').focus(function() { $(this).select();});
+                $(this).children('input').focus();
+            });
+            $('.tile-stats.pointer').click(function(){
+                values_panel = $('#valuesPanel');
+                values_panel.show();
+                $('.tile-stats.pointer').removeClass('tile-orange');
+                $(this).addClass('tile-orange');
+                
+                Custom.expandPanel(values_panel);
+                $('html, body').animate({
+                    scrollTop: values_panel.offset().top
+                }, 2000);
+            });
+            $('#MMC').click(function(){
+                Queuing.model = 1;
+                $('#c_tile').fadeIn('slow');
+                $('#m_tile, #k_tile').fadeOut('slow', trackModelSelected('MMC'));
+            });
+            $('#MMInf').click(function(){
+                Queuing.model = 2;
+                $('#c_tile, #m_tile, #k_tile').fadeOut('slow', trackModelSelected('MMInf'));
+            });
+            $('#MMCK').click(function(){
+                Queuing.model = 3;
+                $('#c_tile, #k_tile').fadeIn('slow');
+                $('#m_tile').fadeOut('slow', trackModelSelected('MMCK'));
+            });
+            $('#MMC_M').click(function(){
+                Queuing.model = 4;
+                $('#c_tile, #m_tile').fadeIn('slow');
+                $('#k_tile').fadeOut('slow', trackModelSelected('MMC_M'));
+            });
+            Custom.doPanels();
+            
+            /* track events */
+            function trackModelSelected(model){
+                mixpanel.track("Model Selected", {
+                    "model": model
+                });
+            }
+            function trackCalculations(){
+                mixpanel.track("Calculation", {
+                    "model": Queuing.model,
+                    "c": Queuing.c,
+                    "k": Queuing.k,
+                    "m": Queuing.m,
+                    "Lambda": Queuing.Lambda,
+                    "LambdaUnits": Queuing.LambdaUnits,
+                    "Mu": Queuing.Mu,
+                    "MuUnits": Queuing.MuUnits,
+                    "ResultsUnits": Queuing.ResultsUnits,
+                    "L": Queuing.L,
+                    "Lq": Queuing.Lq,
+                    "W": Queuing.W,
+                    "Wq": Queuing.Wq,
+                    "Ro": Queuing.Ro,
+                    "n": Queuing.n,
+                    "Pn": Queuing.Pn,
+                    "T": Queuing.T,
+                    "Tq": Queuing.Tq,
+                    "t": Queuing.t,
+                    "tq": Queuing.tq,
+                    "decimals": Queuing.decimals
+                });
+            }
+
+            stLight.subscribe("click",function(event,service){
+                mixpanel.track("Social Share", {
+                    "Social_network": service
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
