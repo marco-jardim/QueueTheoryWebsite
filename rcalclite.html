@@ -582,29 +582,26 @@
                 
                 Custom.expandPanel(values_panel);
 
-                ads_panel = $('#adsPanel');
-                $('html, body').animate({
-                    scrollTop: ads_panel.offset().top - 10
-                }, 2000);
+            
             });
             $('#MMC').click(function(){
                 Queuing.model = 1;
                 $('#c_tile').fadeIn('slow');
-                $('#m_tile, #k_tile').fadeOut('slow', trackModelSelected('MMC'));
+                $('#m_tile, #k_tile').fadeOut('slow');
             });
             $('#MMInf').click(function(){
                 Queuing.model = 2;
-                $('#c_tile, #m_tile, #k_tile').fadeOut('slow', trackModelSelected('MMInf'));
+                $('#c_tile, #m_tile, #k_tile').fadeOut('slow');
             });
             $('#MMCK').click(function(){
                 Queuing.model = 3;
                 $('#c_tile, #k_tile').fadeIn('slow');
-                $('#m_tile').fadeOut('slow', trackModelSelected('MMCK'));
+                $('#m_tile').fadeOut('slow');
             });
             $('#MMC_M').click(function(){
                 Queuing.model = 4;
                 $('#c_tile, #m_tile').fadeIn('slow');
-                $('#k_tile').fadeOut('slow', trackModelSelected('MMC_M'));
+                $('#k_tile').fadeOut('slow');
             });
             Custom.doPanels();
             
