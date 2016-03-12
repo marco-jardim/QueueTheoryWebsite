@@ -12,6 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="googlebot" content="index, follow" />
     <meta name="robots" content="index, follow" />
+
+    <script type="text/javascript" src="assets/js/jquery-2.2.1.min.js"></script>
     
     <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
     <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css">
@@ -409,7 +411,6 @@
         /* 
          * track mixpanel page view
          */
-        mixpanel.track('page viewed', {'page name' : document.title, 'url' : window.location.pathname});
         /*
          * when the page is ready and jquery too
          */
