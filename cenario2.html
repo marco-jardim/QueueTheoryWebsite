@@ -130,6 +130,7 @@
 
                 var avgCustomersQueue = [];
                 var avgWaitQueue = 0;
+                var lambdaTotal = 0;
 
                 for (var i in lambdas) {
                     var queueResult = results[i];
@@ -137,11 +138,12 @@
                     var avgWaitQueueI = queueResult.avgWaitQueue;
 
                     avgWaitQueue += (lambdas[i] * avgWaitQueueI * X[i]);
+                    lambdaTotal += lambdas[i];
                 }
 
-                console.log(avgWaitQueue);
+                avgCustomersQueue = lambdaTotal * avgWaitQueue;
 
-                lambdaData.push(lambda1);
+                lambdaData.push(Stats.round(lambda1, 4));
                 avgCustomersData.push(avgCustomersQueue);
                 avgWaitData.push(avgWaitQueue);
             }
