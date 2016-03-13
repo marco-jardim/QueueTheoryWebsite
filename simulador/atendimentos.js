@@ -19,14 +19,14 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, num_exercicio, cenario)
         }
 
         for (lambda1 of lista_lambda) {
-            console.log(lambda1)
-            console.log("==========")
+            //console.log(lambda1)
+            //console.log("==========")
             tot = 0
             for (j = 0; j < MAX_AMOSTRAS; j++) {
                 fila = []
                 lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, "exponencial", mi1)
                 for (evento of lista_eventos) {
-                    console.log(prox_evento, sendo_atendido1, num_fila)
+                    //console.log(prox_evento, sendo_atendido1, num_fila)
                     if (evento == "chegada") { //#Se próximo evento é uma chegada
                         if (fila.length == 0) { // #Verifica fila. Se não há ninguém, verifica servidor
                             if (sendo_atendido == "nenhum") { //} #Se servidor está vazio, entra nele
@@ -73,7 +73,7 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, num_exercicio, cenario)
                 //if lambda1 >= 0.6 and j == 0:
                     //print lista_eventos.count("chegada1")
                 for (evento of lista_eventos) {
-                    console.log(prox_evento, sendo_atendido, num_fila);
+                    //console.log(prox_evento, sendo_atendido, num_fila);
                     if (evento == "chegada1") { //#Se próximo evento é uma chegada1
                         if (fila.length == 0) { //#Verifica fila. Se não há ninguém, verifica servidor
                             if (sendo_atendido == "nenhum") { //#Se servidor está vazio, entra nele
@@ -147,7 +147,7 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, num_exercicio, cenario)
                 //#if lambda1 >= 0.6 and j == 0:
                     //#print lista_eventos.count("chegada1")
                 for (evento of lista_eventos) {
-                    console.log(prox_evento, sendo_atendido, num_fila)
+                    //console.log(prox_evento, sendo_atendido, num_fila)
                     if (evento == "chegada1") {//#Se próximo evento é uma chegada1
                         if (fila.length == 0) { //#Verifica fila. Se não há ninguém, verifica servidor
                             if (sendo_atendido == "nenhum") { //#Se servidor está vazio, entra nele
@@ -211,12 +211,12 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, num_exercicio, cenario)
                 num_fila = 0
                 lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, "uniforme", mi1, lambda2 , "uniforme" , mi2)
                 if (j == 0) {
-                    console.log(lista_eventos.count("chegada"), lista_eventos.count("saida"))
+                    //console.log(lista_eventos.count("chegada"), lista_eventos.count("saida"))
                 }
                 //#if lambda1 >= 0.6:
                 //#    print lista_eventos.count("chegada"), lista_eventos.count("saida")
                 for (evento of lista_eventos)
-                    console.log(prox_evento, sendo_atendido, num_fila)
+                    //console.log(prox_evento, sendo_atendido, num_fila)
                     if (evento == "chegada"){ //#Se o evento é uma chegada
                         if (num_fila == 0) {//#Verifica a fila. Se Não há ninguém, verifca os servidores
                             if (sendo_atendido1 == 0) { //#Se o servidor 1 está vazio, entra nele
@@ -255,5 +255,5 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, num_exercicio, cenario)
         }
     }
 
-    return (lista_lambda, lista_fila)
+    return {lista_lambda: lista_lambda, lista_fila: lista_fila}
 }

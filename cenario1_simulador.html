@@ -24,6 +24,8 @@
     <script src="js/rcalcObj.js" type="text/javascript" ></script>
     <script type="text/javascript" src="js/jstorage.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="simulador/atendimentos.js"></script>
+    <script type="text/javascript" src="simulador/events.js"></script>
 
     <link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
     <link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
@@ -102,11 +104,8 @@
                 Queuing.Lambda = lambda;
                 Queuing.calculate();
 
-                // var L = Stats.round(Queuing.L,Queuing.decimals);
                 var Lq = Stats.round(Queuing.Lq,Queuing.decimals); // avg customers in queue
-                // var W = Stats.round(Queuing.W,Queuing.decimals);
                 var Wq = Stats.round(Queuing.Wq,Queuing.decimals); // avg wait time in queue
-                // var Ro = Stats.round(Queuing.Ro,Queuing.decimals);
 
                 var lambdaRound = Stats.round(Queuing.Lambda,Queuing.decimals);
                 lambdaData.push(lambdaRound);
@@ -115,8 +114,9 @@
 
                 console.log('Lambda: ' + lambdaRound + ' Lq: ' + Lq + ' Wq: ' + Wq);
             }
-
-            chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
+            var result = processingSimulation(100, 1000, 3, 1)
+            chartLambdaVsAvgClientsQueue(result.lista_lambda, result.lista_fila);
+            //chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
             chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData);
         });
         </script>
