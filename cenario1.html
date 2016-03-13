@@ -30,159 +30,107 @@
 </head>
 
 <body class="page-body" lang="en-US">
-    <div class="container">
-  
-        <h1 class="center">Cenário 1</h1>
         <script>
+        function chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData) {
+            $('#averageCustomersQueueChart').highcharts({
+                chart: {
+                    shadow: true
+                },
+                title: {
+                    text: 'Lambda vs. Average customers in queue'
+                },
+                xAxis: {
+                    categories: lambdaData,
+                    title:{
+                        text:'λ'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Avg. number of customers in queue'
+                    }
+                },
+                series: [ {
+                    name: 'Avg. number of customers in queue',
+                    type: 'line',
+                    data: avgCustomersData
+                }]
+            });
+        }
+
+        function chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData) {
+            $('#averageWaitQueueChart').highcharts({
+                chart: {
+                    shadow: true
+                },
+                title: {
+                    text: 'Lambda vs. Average wait time in queue'
+                },
+                xAxis: {
+                    categories: lambdaData,
+                    title:{
+                        text:'λ'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Avg. wait time in queue'
+                    }
+                },
+                series: [ {
+                    name: 'Avg. wait time in queue',
+                    type: 'line',
+                    data: avgWaitData
+                }]
+            });
+        }
+
         $(document).ready(function(){
-            Queuing.model = 1;
-            Queuing.Lambda = 0.9;
-            Queuing.c = 1; // servers
-            Queuing.Mu = 1;
+            Queuing.model = 1; // M/M/C
+            Queuing.c = 1;
+            Queuing.Mu = 1.0;
             Queuing.LambdaUnits = -1;
             Queuing.MuUnits = -1;
             Queuing.ResultsUnits = -1;
             Queuing.decimals = 4;
-            Queuing.calculate();
 
-            var animationEnabled = false;
-            
-            $('#resultsPanel>.panel-heading').show();
-            results_panel = $('#resultsPanel');
-            Custom.expandPanel(results_panel);
-            
-            var L = Stats.round(Queuing.L,Queuing.decimals);
-            var Lq = Stats.round(Queuing.Lq,Queuing.decimals);
-            var W = Stats.round(Queuing.W,Queuing.decimals);
-            var Wq = Stats.round(Queuing.Wq,Queuing.decimals);
-            var Ro = Stats.round(Queuing.Ro,Queuing.decimals);
+            var avgCustomersData = [];
+            var avgWaitData = [];
+            var lambdaData = [];
 
-            if (animationEnabled) {
-                $('#LValue').text(0);
-                $('#LValue').data('end', L);
+            for (var lambda = 0.05; lambda <= 0.91; lambda += 0.05) {
+                Queuing.Lambda = lambda;
+                Queuing.calculate();
+                
+                // var L = Stats.round(Queuing.L,Queuing.decimals);
+                var Lq = Stats.round(Queuing.Lq,Queuing.decimals); // avg customers in queue
+                // var W = Stats.round(Queuing.W,Queuing.decimals);
+                var Wq = Stats.round(Queuing.Wq,Queuing.decimals); // avg wait time in queue
+                // var Ro = Stats.round(Queuing.Ro,Queuing.decimals);
 
-                $('#LqValue').text(0);
-                $('#LqValue').data('end', Lq);
+                var lambdaRound = Stats.round(Queuing.Lambda,Queuing.decimals);
+                lambdaData.push(lambdaRound);
+                avgCustomersData.push(Lq);
+                avgWaitData.push(Wq);
 
-                $('#WValue').text(0);
-                $('#WValue').data('end', W);
-
-                $('#WqValue').text(0);
-                $('#WqValue').data('end', Wq);
-
-                $('#RoValue').text(0);
-                $('#RoValue').data('end', Ro);
-
-                $('#LambdapValue').text('');
-                $('#LambdapValue').data('end', 0);
-
-                Custom.runTileNumberAnimation();
-            } else {
-                $('#LValue').text(L);
-                $('#LqValue').text(Lq);
-                $('#WValue').text(W);
-                $('#WqValue').text(Wq);
-                $('#RoValue').text(Ro);
-                $('#LambdapValue').text('');
+                console.log('Lambda: ' + lambdaRound + ' Lq: ' + Lq + ' Wq: ' + Wq);
             }
-            
-            setter.Probabilities();
-            Queuing.calculateProb();
-            Queuing.calculateProbTime();
-            $('#Pn').text(Stats.round(Queuing.Pn, Queuing.decimals));
-            $('#T').text(Stats.round(Queuing.T, Queuing.decimals));
-            $('#Tq').text(Stats.round(Queuing.Tq, Queuing.decimals));
+
+            chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
+            chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData);
         });
         </script>
         
+    <div class="container">
+        <h1 class="center">Cenário 1</h1>
+
         <div class="row">
-            <div id="resultsPanel" data-collapsed="0" class="panel panel-default panel-shadow panel-collapse">
-                <!-- panel head -->
-                <div class="panel-heading" style="display:none;">
-                    <div class="panel-title">Results</div>
-                    <div class="panel-options">
-                        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
-                    </div>
-                </div>
-                <!-- panel body -->
-                <div class="panel-body" style='display: none;'>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="tile-stats tile-white-red">
-                                <div class="icon"><i class="entypo-users"></i></div>
-                                <div id="LValue" class="num" data-delay="0" data-duration="800" data-postfix="<small class='h2'> Customers</small>" data-end="0" data-start="0">00<span class="units"> hrs</span></div>
-                                <div class="h1">L <small>Average Customers in System</small></div>
-                                <p>Average number of customers in the system.</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="tile-stats tile-white-aqua">
-                                <div class="icon"><i class="entypo-users"></i></div>
-                                <div id="LqValue" class="num" data-delay="600" data-duration="500" data-postfix="<small class='h2'> Customers</small>" data-end="2.3" data-start="0">00</div>
-                                <div class="h1">Lq <small>Average Customers in Queue</small></div>
-                                <p>Average number of customers (entities) in the queue. In other words the expected amount of customers waiting to be served.</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="tile-stats tile-white-blue">
-                                <div class="icon"><i class="entypo-gauge"></i></div>
-                                <div id="WValue" class="num" data-delay="1100" data-duration="500" data-postfix="" data-start="0">00</div>
-                                <div class="h1">W <small>Average Time Spent in System</small></div>
-                                <p>Average time spent by a customer from arrival until fully served.</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="tile-stats tile-white-cyan">
-                                <div class="icon"><i class="entypo-mail"></i></div>
-                                <div id="WqValue" class="num" data-delay="1450" data-duration="500" data-postfix="" data-start="0">00</div>
-                                <div class="h1">Wq <small>Average Time Waiting in Line</small></div>
-                                <p>Average time it takes a customer to start being served.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="tile-stats tile-white-purple">
-                                <div class="icon"><i class="entypo-gauge"></i></div>
-                                <div id="RoValue" class="num" data-delay="1450" data-duration="500" data-postfix="" data-start="0">00</div>
-                                <div class="h1">ρ <small>Server Utilization</small></div>
-                                <p>Percentage of time a server is being utilized by a customer.</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="tile-stats tile-white-pink">
-                                <div class="icon"><i class="entypo-gauge"></i></div>
-                                <div id="LambdapValue" class="num" data-delay="1450" data-duration="500" data-postfix="" data-start="0">00</div>
-                                <div class="h1">λ' <small>Lambda prime</small></div>
-                                <p>A value used in some calculations.</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="tile-stats tile-white-orange">
-                                <div class="icon"><i class="entypo-gauge"></i></div>
-                                <div class="num">Probabilities</div>
-                                <h3>Descrete</h3>
-                                <p>P ('n' cust. in system=<input id="n" type="text" style="width:30px;" value="0"><span id="nUnits">Cust.</span>>)=<strong><span id="Pn">0</span></strong></p>
-                                <h3>Time Based</h3>
-                                <p>P (time in system <= <input id="t" type="text" style="width:30px;" value="0"><span id="tUnits">&nbsp;</span>)=<strong><span id="T">0</span></strong></p>
-                                <p>P (time in queue <= <input id="tq" type="text" style="width:30px;" value="0"><span id="tqUnits">&nbsp;</span>)=<strong><span id="Tq">0</span></strong></p>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="h1">4. These are the probabilities.</div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div id="discreteProbChart" style="height:400px; width:350px"></div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div id="timeBasedProbChart" style="height:400px; width:350px"></div>
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-        </div><!-- panel 3 -->
+                <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
+        </div>
+
+        <div class="row">
+                <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+        </div>
 
     </div>
 
