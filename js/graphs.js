@@ -1,5 +1,5 @@
 var graphs = {
-    LambdaVsAvgClientsQueue: function(lambdaData, avgCustomersData) {
+    LambdaVsAvgClientsQueue: function(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation) {
         $('#averageCustomersQueueChart').highcharts({
             chart: {
                 shadow: true
@@ -18,15 +18,22 @@ var graphs = {
                     text: 'Avg. number of customers in queue'
                 }
             },
-            series: [ {
-                name: 'Avg. number of customers in queue',
-                type: 'line',
-                data: avgCustomersData
-            }]
+            series: [ 
+                {
+                    name: 'Avg. number of customers in queue (analytic)',
+                    type: 'line',
+                    data: avgCustomersDataAnalytic
+                },
+                {
+                    name: 'Avg. number of customers in queue (simulation)',
+                    type: 'line',
+                    data: avgCustomersDataSimulation
+                }
+            ]
         });
     },
 
-    LambdaVsAvgWaitQueue: function(lambdaData, avgWaitData) {
+    LambdaVsAvgWaitQueue: function(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation) {
         $('#averageWaitQueueChart').highcharts({
             chart: {
                 shadow: true
@@ -45,11 +52,18 @@ var graphs = {
                     text: 'Avg. wait time in queue'
                 }
             },
-            series: [ {
-                name: 'Avg. wait time in queue',
-                type: 'line',
-                data: avgWaitData
-            }]
+            series: [
+                {
+                    name: 'Avg. wait time in queue (analytic)',
+                    type: 'line',
+                    data: avgWaitDataAnalytic
+                },
+                {
+                    name: 'Avg. wait time in queue (simulation)',
+                    type: 'line',
+                    data: avgWaitDataSimulation
+                }
+            ]
         });
     }
 };

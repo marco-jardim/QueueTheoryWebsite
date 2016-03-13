@@ -21,10 +21,14 @@
     <script src="js/custom.js"></script>
     <script src="assets/js/neon-demo.js"></script>
     <script src="assets/js/highcharts.js"></script>
-    <script src="js/rcalcObj.js" type="text/javascript" ></script>
-    <script type="text/javascript" src="js/jstorage.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/graphs.js"></script>
+    <script src="js/rcalcObj.js"></script>
+    <script src="js/jstorage.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/graphs.js"></script>
+    <script src="simulador/atendimentos.js"></script>
+    <script src="simulador/events.js"></script>
+    <script src="simulador/math.min.js"></script>
+    <<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.0.0/math.map"></script>
 
     <link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
     <link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
@@ -41,8 +45,8 @@
             Queuing.ResultsUnits = -1;
             Queuing.decimals = 4;
 
-            var avgCustomersData = [];
-            var avgWaitData = [];
+            var avgCustomersDataAnalytic = [];
+            var avgWaitDataAnalytic = [];
             var lambdaData = [];
 
             for (var lambda = 0.05; lambda <= 0.91; lambda += 0.05) {
@@ -57,14 +61,21 @@
 
                 var lambdaRound = Stats.round(Queuing.Lambda,Queuing.decimals);
                 lambdaData.push(lambdaRound);
-                avgCustomersData.push(Lq);
-                avgWaitData.push(Wq);
-
-                console.log('Lambda: ' + lambdaRound + ' Lq: ' + Lq + ' Wq: ' + Wq);
+                avgCustomersDataAnalytic.push(Lq);
+                avgWaitDataAnalytic.push(Wq);
             }
 
-            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
-            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitData);
+            // Simulation
+            var simulation = switchQuestao(1000, 1000, "3.1", 1);
+            var avgCustomersDataSimulation = simulation.lista_fila;
+            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation);
+
+            var avgWaitDataSimulation = [];
+            for (var i in lambdaData) {
+                avgWaitDataSimulation[i] = avgCustomersDataSimulation[i] / lambdaData[i];
+            }
+            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation);
+
         });
     </script>
 

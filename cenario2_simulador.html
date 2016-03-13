@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Cenário 1 - Simulação</title>
+    <title>Cenário 2 - Simulação</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -36,21 +36,19 @@
 <body class="page-body" lang="en-US">
     <script>
         $(document).ready(function(){
-            var result = switchQuestao(1000, 1000, "3.1", 1);
+            var result = switchQuestao(1000, 1000, "3.2", 1);
             graphs.LambdaVsAvgClientsQueue(result.lista_lambda, result.lista_fila);
 
             var avgWaitData = [];
             for (var i in result.lista_lambda) {
                 avgWaitData[i] = result.lista_fila[i] / result.lista_lambda[i];
             }
-            console.log(result.lista_lambda);
-            console.log(avgWaitData);
             graphs.LambdaVsAvgWaitQueue(result.lista_lambda, avgWaitData);
         });
     </script>
 
     <div class="container">
-        <h1 class="center">Cenário 1 - Simulação</h1>
+        <h1 class="center">Cenário 2 - Simulação</h1>
 
         <div class="row">
             <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
