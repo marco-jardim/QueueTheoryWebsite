@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Cenário 1</title>
+    <title>Cenário 2</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -85,32 +85,65 @@
             });
         }
 
+        function calculateQueue(lambda, Mu) {
+            Queuing.Lambda = lambda;
+            Queuing.Mu = Mu;
+            Queuing.calculate();
+
+            return {
+                avgCustomersQueue: Queuing.Lq,
+                avgWaitQueue: Queuing.Wq
+            }
+        }
+
+        function calculateQueues(lambdas, Mus) {
+            var results = [];
+            for (var i in lambdas) {
+                var result = calculateQueue(lambdas[i], Mus[i]);
+                results.push(result);
+            }
+            return results;
+        }
+
         $(document).ready(function(){
             Queuing.model = 1; // M/M/C
             Queuing.c = 1;
-            Queuing.Mu = 1.0;
             Queuing.LambdaUnits = -1;
             Queuing.MuUnits = -1;
             Queuing.ResultsUnits = -1;
-            Queuing.decimals = 4;
-
+            
             var avgCustomersData = [];
             var avgWaitData = [];
             var lambdaData = [];
 
-            for (var lambda = 0.05; lambda <= 0.91; lambda += 0.05) {
-                Queuing.Lambda = lambda;
-                Queuing.calculate();
-                
-                var Lq = Stats.round(Queuing.Lq,Queuing.decimals); // avg customers in queue
-                var Wq = Stats.round(Queuing.Wq,Queuing.decimals); // avg wait time in queue
+            var lambda2 = 0.2;
+            var Mus = [ 1.0, 0.5 ];
+            var X = [];
+            for (var i in Mus) {
+                X[i] = 1/Mus[i];
+            }
 
-                var lambdaRound = Stats.round(Queuing.Lambda,Queuing.decimals);
-                lambdaData.push(lambdaRound);
-                avgCustomersData.push(Lq);
-                avgWaitData.push(Wq);
+            for (var lambda1 = 0.05; lambda1 <= 0.61; lambda1 += 0.05) {
+                var lambdas = [ lambda1, lambda2 ];
+                var results = calculateQueues(lambdas, Mus);
+                console.log(results);
 
-                console.log('Lambda: ' + lambdaRound + ' Lq: ' + Lq + ' Wq: ' + Wq);
+                var avgCustomersQueue = [];
+                var avgWaitQueue = 0;
+
+                for (var i in lambdas) {
+                    var queueResult = results[i];
+                    var avgCustomersQueueI = queueResult.avgCustomersQueue;
+                    var avgWaitQueueI = queueResult.avgWaitQueue;
+
+                    avgWaitQueue += (lambdas[i] * avgWaitQueueI * X[i]);
+                }
+
+                console.log(avgWaitQueue);
+
+                lambdaData.push(lambda1);
+                avgCustomersData.push(avgCustomersQueue);
+                avgWaitData.push(avgWaitQueue);
             }
 
             chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
@@ -119,7 +152,7 @@
         </script>
         
     <div class="container">
-        <h1 class="center">Cenário 1</h1>
+        <h1 class="center">Cenário 2</h1>
 
         <div class="row">
                 <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
