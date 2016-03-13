@@ -24,67 +24,14 @@
     <script src="js/rcalcObj.js" type="text/javascript" ></script>
     <script type="text/javascript" src="js/jstorage.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/graphs.js"></script>
 
     <link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
     <link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
 </head>
 
 <body class="page-body" lang="en-US">
-        <script>
-        function chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData) {
-            $('#averageCustomersQueueChart').highcharts({
-                chart: {
-                    shadow: true
-                },
-                title: {
-                    text: 'Lambda vs. Average customers in queue'
-                },
-                xAxis: {
-                    categories: lambdaData,
-                    title:{
-                        text:'λ'
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: 'Avg. number of customers in queue'
-                    }
-                },
-                series: [ {
-                    name: 'Avg. number of customers in queue',
-                    type: 'line',
-                    data: avgCustomersData
-                }]
-            });
-        }
-
-        function chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData) {
-            $('#averageWaitQueueChart').highcharts({
-                chart: {
-                    shadow: true
-                },
-                title: {
-                    text: 'Lambda vs. Average wait time in queue'
-                },
-                xAxis: {
-                    categories: lambdaData,
-                    title:{
-                        text:'λ'
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: 'Avg. wait time in queue'
-                    }
-                },
-                series: [ {
-                    name: 'Avg. wait time in queue',
-                    type: 'line',
-                    data: avgWaitData
-                }]
-            });
-        }
-
+    <script>
         $(document).ready(function(){
             Queuing.model = 1; // M/M/C
             Queuing.c = 1;
@@ -116,20 +63,20 @@
                 console.log('Lambda: ' + lambdaRound + ' Lq: ' + Lq + ' Wq: ' + Wq);
             }
 
-            chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
-            chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData);
+            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
+            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitData);
         });
-        </script>
+    </script>
 
     <div class="container">
         <h1 class="center">Cenário 1</h1>
 
         <div class="row">
-                <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
+            <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
         </div>
 
         <div class="row">
-                <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+            <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
         </div>
 
     </div>
