@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Queueing theory models calculator</title>
+    <title>Cenário 1</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -30,7 +30,6 @@
 </head>
 
 <body class="page-body" lang="en-US">
-
     <div class="container">
   
         <h1 class="center">Cenário 1</h1>
@@ -45,17 +44,20 @@
             Queuing.ResultsUnits = -1;
             Queuing.decimals = 4;
             Queuing.calculate();
-            QError.lookForCalculationErrors();
-            
-            if($.isEmptyObject(QError.messages)){
-                $('#resultsPanel>.panel-heading').show();
-                
-                var L = Stats.round(Queuing.L,Queuing.decimals);
-                var Lq = Stats.round(Queuing.Lq,Queuing.decimals);
-                var W = Stats.round(Queuing.W,Queuing.decimals);
-                var Wq = Stats.round(Queuing.Wq,Queuing.decimals);
-                var Ro = Stats.round(Queuing.Ro,Queuing.decimals);
 
+            var animationEnabled = false;
+            
+            $('#resultsPanel>.panel-heading').show();
+            results_panel = $('#resultsPanel');
+            Custom.expandPanel(results_panel);
+            
+            var L = Stats.round(Queuing.L,Queuing.decimals);
+            var Lq = Stats.round(Queuing.Lq,Queuing.decimals);
+            var W = Stats.round(Queuing.W,Queuing.decimals);
+            var Wq = Stats.round(Queuing.Wq,Queuing.decimals);
+            var Ro = Stats.round(Queuing.Ro,Queuing.decimals);
+
+            if (animationEnabled) {
                 $('#LValue').text(0);
                 $('#LValue').data('end', L);
 
@@ -74,17 +76,15 @@
                 $('#LambdapValue').text('');
                 $('#LambdapValue').data('end', 0);
 
-                results_panel = $('#resultsPanel');
-                Custom.expandPanel(results_panel);
                 Custom.runTileNumberAnimation();
-            }else{
-                var messageKeys = Object.keys(QError.messages);
-                if (messageKeys.length >= 1){
-                   alert(QError.messages[messageKeys[0]]);
-                }
+            } else {
+                $('#LValue').text(L);
+                $('#LqValue').text(Lq);
+                $('#WValue').text(W);
+                $('#WqValue').text(Wq);
+                $('#RoValue').text(Ro);
+                $('#LambdapValue').text('');
             }
-            chart.discrete();
-            chart.timeBased();
             
             setter.Probabilities();
             Queuing.calculateProb();
