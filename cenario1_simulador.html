@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Cenário 1</title>
+    <title>Cenário 1 - Simulação</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -27,6 +27,7 @@
     <script type="text/javascript" src="simulador/atendimentos.js"></script>
     <script type="text/javascript" src="simulador/events.js"></script>
     <script type="text/javascript" src="js/graphs.js"></script>
+    <script type="text/javascript" src="simulador/math.min.js"></script>
 
     <link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
     <link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
@@ -35,14 +36,21 @@
 <body class="page-body" lang="en-US">
     <script>
         $(document).ready(function(){
-            var result = processingSimulation(1000, 1000, 3, 1)
+            var result = switchQuestao(1000, 1000, "3.1", 1);
             graphs.LambdaVsAvgClientsQueue(result.lista_lambda, result.lista_fila);
-            // chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData);
+
+            var avgWaitData = [];
+            for (var i in result.lista_lambda) {
+                avgWaitData[i] = result.lista_fila[i] / result.lista_lambda[i];
+            }
+            console.log(result.lista_lambda);
+            console.log(avgWaitData);
+            graphs.LambdaVsAvgWaitQueue(result.lista_lambda, avgWaitData);
         });
     </script>
 
     <div class="container">
-        <h1 class="center">Cenário 1</h1>
+        <h1 class="center">Cenário 1 - Simulação</h1>
 
         <div class="row">
             <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
