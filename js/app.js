@@ -188,6 +188,5 @@ $(document).ready(function(){
         $('#c_tile, #m_tile').fadeIn('slow');
         $('#k_tile').fadeOut('slow');
     });
-    Custom.doPanels();
 
 });
