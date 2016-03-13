@@ -121,12 +121,21 @@
                 var avgWaitQueue = 0;
                 var lambdaTotal = 0;
 
+                var rhos = [];
+                var rhoTotal = 0;
+                for (var i in lambdas) {
+                    rhos[i] = lambdas[i]/Mus[i];
+                    rhoTotal += rhos[i];
+                }
+
                 for (var i in lambdas) {
                     var queueResult = calculateQueue(lambdas[i], Mus[i]);
                     var avgCustomersQueueI = queueResult.avgCustomersQueue;
                     var avgWaitQueueI = queueResult.avgWaitQueue;
 
-                    avgWaitQueue += (lambdas[i] * avgWaitQueueI * X[i]);
+                    var xRes = rhos[i]/rhoTotal * X[i];
+
+                    avgWaitQueue += lambdas[i] * avgWaitQueueI * X[i] + xRes;
                     lambdaTotal += lambdas[i];
                 }
 
@@ -141,7 +150,7 @@
             chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData);
         });
     </script>
-    
+
     <div class="container">
         <h1 class="center">Cenário 2</h1>
 
