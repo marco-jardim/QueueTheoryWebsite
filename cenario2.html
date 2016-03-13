@@ -30,7 +30,7 @@
 </head>
 
 <body class="page-body" lang="en-US">
-        <script>
+    <script>
         function chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData) {
             $('#averageCustomersQueueChart').highcharts({
                 chart: {
@@ -96,15 +96,6 @@
             }
         }
 
-        function calculateQueues(lambdas, Mus) {
-            var results = [];
-            for (var i in lambdas) {
-                var result = calculateQueue(lambdas[i], Mus[i]);
-                results.push(result);
-            }
-            return results;
-        }
-
         $(document).ready(function(){
             Queuing.model = 1; // M/M/C
             Queuing.c = 1;
@@ -125,15 +116,13 @@
 
             for (var lambda1 = 0.05; lambda1 <= 0.61; lambda1 += 0.05) {
                 var lambdas = [ lambda1, lambda2 ];
-                var results = calculateQueues(lambdas, Mus);
-                console.log(results);
 
                 var avgCustomersQueue = [];
                 var avgWaitQueue = 0;
                 var lambdaTotal = 0;
 
                 for (var i in lambdas) {
-                    var queueResult = results[i];
+                    var queueResult = calculateQueue(lambdas[i], Mus[i]);
                     var avgCustomersQueueI = queueResult.avgCustomersQueue;
                     var avgWaitQueueI = queueResult.avgWaitQueue;
 
@@ -151,17 +140,17 @@
             chartLambdaVsAvgClientsQueue(lambdaData, avgCustomersData);
             chartLambdaVsAvgWaitQueue(lambdaData, avgWaitData);
         });
-        </script>
-        
+    </script>
+    
     <div class="container">
         <h1 class="center">Cenário 2</h1>
 
         <div class="row">
-                <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
+            <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
         </div>
 
         <div class="row">
-                <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+            <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
         </div>
 
     </div>
