@@ -29,6 +29,25 @@
             }
         }
 
+        function calculateQueueTwoClasses(lambda1, lambda2, Mu1, Mu2, X1, X2) {
+            var rho1 = lambda1/Mu1;
+            var rho2 = lambda2/Mu2;
+            var totalRho = rho1 + rho2;
+            var totalLambda = lambda1 + lambda2;
+
+            var queue1 = calculateQueue(lambda1, Mu1);
+            var queue2 = calculateQueue(lambda2, Mu2);
+
+            var totalAvgWaitQueue = (queue1.avgWaitQueue * lambda1 * X1) + (queue2.avgWaitQueue * lambda2 * X2);
+            var totalAvgCustomersQueue = (queue1.avgCustomersQueue * lambda1) + (queue2.avgCustomersQueue * lambda2);
+
+            return {
+                avgCustomersQueue: totalAvgCustomersQueue,
+                avgWaitQueue: totalAvgWaitQueue
+            }
+
+        }
+
         $(document).ready(function(){
             Queuing.model = 1; // M/M/C
             Queuing.c = 1;
@@ -41,46 +60,21 @@
             var lambdaData = [];
 
             var lambda2 = 0.2;
-            var Mus = [ 1.0, 0.5 ];
-            var X = [];
-            for (var i in Mus) {
-                X[i] = 1/Mus[i];
-            }
+            var Mu1 = 1.0;
+            var Mu2 = 0.5;
+            var X1 = 1/Mu1;
+            var X2 = 1/Mu2;
 
             for (var lambda1 = 0.05; lambda1 <= 0.61; lambda1 += 0.05) {
-                var lambdas = [ lambda1, lambda2 ];
-
-                var avgCustomersQueue = [];
-                var avgWaitQueue = 0;
-                var lambdaTotal = 0;
-
-                var rhos = [];
-                var rhoTotal = 0;
-                for (var i in lambdas) {
-                    rhos[i] = lambdas[i]/Mus[i];
-                    rhoTotal += rhos[i];
-                }
-
-                for (var i in lambdas) {
-                    var queueResult = calculateQueue(lambdas[i], Mus[i]);
-                    var avgCustomersQueueI = queueResult.avgCustomersQueue;
-                    var avgWaitQueueI = queueResult.avgWaitQueue;
-
-                    var xRes = rhos[i]/rhoTotal * X[i];
-
-                    avgWaitQueue += lambdas[i] * avgWaitQueueI * X[i] + xRes;
-                    lambdaTotal += lambdas[i];
-                }
-
-                avgCustomersQueue = avgWaitQueue * lambda1;
+                var finalQueue = calculateQueueTwoClasses(lambda1, lambda2, Mu1, Mu2, X1, X2);
 
                 lambdaData.push(Stats.round(lambda1, 4));
-                avgCustomersDataAnalytic.push(avgCustomersQueue);
-                avgWaitDataAnalytic.push(avgWaitQueue);
+                avgCustomersDataAnalytic.push(finalQueue.avgCustomersQueue);
+                avgWaitDataAnalytic.push(finalQueue.avgWaitQueue);
             }
 
             // Simulation
-            var simulation = switchQuestao(1000, 1000, "3.1", 2);
+            var simulation = switchQuestao(100, 1000, "3.1", 2);
             var avgCustomersDataSimulation = simulation.lista_fila;
             graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation);
 
