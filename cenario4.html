@@ -47,9 +47,7 @@
                 // filas com prioridades
                 W1 = (rho1*Xres1 + rho2*Xres2)/(1 - rho1);
                 W2 = (W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
-                // W2 = (rho1*Xres1 + rho2*Xres2)/((1 - rho1)*(1 - totalRho));
                 totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
-                // totalAvgWaitQueue = queue1.lambda*W1*X1 + queue2.lambda*W2*X2 + rho1*Xres1 + rho2*Xres2; // ficou igual ao do sem prioridade
             }
             
             var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue;
