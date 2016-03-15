@@ -23,6 +23,13 @@
             Queuing.Mu = queue.Mu;
             Queuing.calculate();
 
+            Queuing.rho = Queuing.Lambda/Queuing.Mu;
+
+            //Queuing.Wq = Queuing.rho / (Queuing.Mu * (1 - Queuing.rho));
+            //Queuing.Lq = (Queuing.rho^2 )/(1 - Queuing.rho);
+
+            //Queuing.Wq
+
             return {
                 avgCustomersQueue: Queuing.Lq,
                 avgWaitQueue: Queuing.Wq
@@ -34,12 +41,23 @@
             var rho2 = queue2.lambda/queue2.Mu;
             var totalRho = rho1 + rho2;
             var totalLambda = queue1.lambda + queue2.lambda;
+            var totalMu = (queue1.Mu + queue2.Mu)/2;
+            
+            var X1 = 1/queue1.Mu;
+            var X2 = 1/queue2.Mu;
+            
+            var Xres1 = rho1/totalRho * X1;
+            var Xres2 = rho2/totalRho * X2;
+            
+            var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
+            
+            var W1 = (rho1 * Xres1 + rho2 * Xres2) / (1 - rho1);
+            var W2 = (rho1 * Xres1 + rho2 * Xres2) / (1 - totalRho);
+            
+            var totalAvgWaitQueue = W1 + W2 + rho1 * Xres1 + rho2 * Xres2;
+            var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue + totalLambda * totalX;
 
-            var resultsQueue1 = calculateQueue(queue1);
-            var resultsQueue2 = calculateQueue(queue2);
-
-            var totalAvgWaitQueue = (resultsQueue1.avgWaitQueue * queue1.lambda * queue1.X) + (resultsQueue2.avgWaitQueue * queue2.lambda * queue2.lambda);
-            var totalAvgCustomersQueue = (resultsQueue1.avgCustomersQueue * queue1.lambda) + (resultsQueue2.avgCustomersQueue * queue2.lambda);
+            console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
 
             return {
                 avgCustomersQueue: totalAvgCustomersQueue,
@@ -62,7 +80,7 @@
             var queue1 = { lambda: undefined, Mu: 1.0, X: 1/1.0 };
             var queue2 = { lambda: 0.2, Mu: 0.5, X: 1/0.5 };
 
-            for (var lambda1 = 0.05; lambda1 <= 0.61; lambda1 += 0.05) {
+            for (var lambda1 = 0.05; lambda1 < 0.6; lambda1 += 0.05) {
                 queue1.lambda = lambda1;
                 var finalQueue = calculateQueueTwoClasses(queue1, queue2);
 
@@ -72,7 +90,7 @@
             }
 
             // Simulation
-            var simulation = switchQuestao(100, 1000, "3.1", 2);
+            var simulation = switchQuestao(1000, 1000, "3.1", 2);
             var avgCustomersDataSimulation = simulation.lista_fila;
             graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation);
 
