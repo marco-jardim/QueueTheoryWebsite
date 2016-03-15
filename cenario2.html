@@ -37,7 +37,7 @@
             var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
             
             var totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
-            var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue + totalLambda*totalX;
+            var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue;
 
             console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
 
