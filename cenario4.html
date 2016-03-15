@@ -1,0 +1,92 @@
+<html>
+<head>
+    <title>Filas sem prioridades (Fila Única) - Cenário 4</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/neon.css">
+    <script src="assets/js/jquery-2.2.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/highcharts.js"></script>
+    <script src="js/rcalcObj.js"></script>
+    <script src="js/jstorage.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/graphs.js"></script>
+    <script src="simulador/atendimentos.js"></script>
+    <script src="simulador/events.js"></script>
+    <script src="simulador/math.min.js"></script>
+</head>
+
+<body>
+    <script>
+        function calculateQueueTwoClasses(queue1, queue2) {
+            var rho1 = queue1.lambda/queue1.Mu; // qual o Mu??
+            var rho2 = queue2.lambda/queue2.Mu; // qual o Mu??
+            var totalRho = rho1 + rho2;
+            var totalLambda = queue1.lambda + queue2.lambda;
+            var totalMu = (queue1.Mu + queue2.Mu)/2;
+             
+            var X1 = getUniformRandomInt(queue1.serviceMin, queue1.serviceMax); // nem ideia
+            var X2 = getUniformRandomInt(queue2.serviceMin, queue2.serviceMax); // tb nao
+            
+            var Xres1 = X1; // sei la
+            var Xres2 = X2; // n sei
+            
+            var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
+            
+            var W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+            var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+            
+            var totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
+            var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue;
+
+            console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
+
+            return {
+                avgCustomersQueue: totalAvgCustomersQueue,
+                avgWaitQueue: totalAvgWaitQueue
+            }
+
+        }
+
+        $(document).ready(function(){
+            var avgCustomersDataAnalytic = [];
+            var avgWaitDataAnalytic = [];
+            var lambdaData = [];
+
+            var queue1 = { lambda: 0.08, serviceMin: 5, serviceMax: 15 };
+            var queue2 = { lambda: 0.05, serviceMin: 1, serviceMax: 3 };
+
+            var finalQueue = calculateQueueTwoClasses(queue1, queue2);
+
+            lambdaData.push(Stats.round(queue1.lambda, 4));
+            avgCustomersDataAnalytic.push(finalQueue.avgCustomersQueue);
+            avgWaitDataAnalytic.push(finalQueue.avgWaitQueue);
+
+            // Simulation
+            var cenario = 4;
+            var simulation = switchQuestao(1000, 1000, "3.1", cenario);
+            var avgCustomersDataSimulation = simulation.lista_fila;
+            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation);
+
+            simulation = switchQuestao(1000, 1000, "3.2", cenario);
+            var avgWaitDataSimulation = simulation.lista_fila;
+            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation);
+        });
+    </script>
+
+    <div class="container">
+        <h1 class="center">Filas sem prioridades (Fila Única) - Cenário 4</h1>
+
+        <div class="row">
+            <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
+        </div>
+
+        <div class="row">
+            <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
