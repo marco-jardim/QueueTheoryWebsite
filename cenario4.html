@@ -18,8 +18,7 @@
 
 <body>
     <script>
-        function calculateQueueTwoClasses(queue1, queue2) {
-            
+        function calculateQueueTwoClasses(queue1, queue2, prioritiesEnabled) {
             var a1 = queue1.serviceMin;
             var b1 = queue1.serviceMax;
             var a2 = queue2.serviceMin;
@@ -36,10 +35,19 @@
             var Xres1 = Math.pow(X1,2)/(2*X1);
             var Xres2 = Math.pow(X2,2)/(2*X2);
             
-            var W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
-            var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+            var W1;
+            var W2;
+            var totalAvgWaitQueue;
+            if (!prioritiesEnabled) {
+                W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+                W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+                totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
+            } else {
+                W1 = (rho1*Xres1 + rho2*Xres2);
+                W2 = (W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
+                totalAvgWaitQueue = (W1 + W2);
+            }
             
-            var totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
             var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue;
 
             console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
@@ -58,31 +66,51 @@
             $('#avgCustomersQueueDataAnalytic').html(finalQueue.avgCustomersQueue);
             $('#avgWaitQueueDataAnalytic').html(finalQueue.avgWaitQueue);
 
+            var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
+            $('#avgCustomersQueueDataAnalytic2').html(finalQueue2.avgCustomersQueue);
+            $('#avgWaitQueueDataAnalytic2').html(finalQueue2.avgWaitQueue);
+
             // Simulation
             var cenario = 4;
-            var simulation = switchQuestao(1000, 1000, "3.1", cenario);
-            var avgCustomersDataSimulation = simulation.lista_fila;
-            $('#avgCustomersQueueDataSimulation').html(avgCustomersDataSimulation);
+            // var simulation = switchQuestao(1000, 1000, "3.1", cenario);
+            // $('#avgCustomersQueueDataSimulation').html(simulation.lista_fila);
+            // var simulation = switchQuestao(1000, 1000, "4.1", cenario);
+            // $('#avgCustomersQueueDataSimulation2').html(simulation.lista_fila);
 
-            simulation = switchQuestao(1000, 1000, "3.2", cenario);
-            var avgWaitDataSimulation = simulation.lista_fila;
-            $('#avgWaitQueueDataSimulation').html(avgWaitDataSimulation);
+            // simulation = switchQuestao(1000, 1000, "3.2", cenario);
+            // $('#avgWaitQueueDataSimulation').html(simulation.lista_fila);
+            // simulation = switchQuestao(1000, 1000, "4.2", cenario);
+            // $('#avgWaitQueueDataSimulation2').html(simulation.lista_fila);
         });
     </script>
 
     <div class="container">
         <h1>Filas sem prioridades (Fila Única) - Cenário 4</h1>
 
-        <div class="row">
+        <div>
             <h2>Avg. number of customers in the queue</h2>
             <h3>Analytic: <span id="avgCustomersQueueDataAnalytic"></span></h3>
             <h3>Simulation: <span id="avgCustomersQueueDataSimulation"></span></h3>
         </div>
 
-        <div class="row">
+        <div>
             <h2>Avg. wait in the queue</h2>
             <h3>Analytic: <span id="avgWaitQueueDataAnalytic"></span></h3>
             <h3>Simulation: <span id="avgWaitQueueDataSimulation"></span></h3>
+        </div>
+
+        <h1>Filas com prioridades (Sem preempção) - Cenário 4</h1>
+
+        <div>
+            <h2>Avg. number of customers in the queue</h2>
+            <h3>Analytic: <span id="avgCustomersQueueDataAnalytic2"></span></h3>
+            <h3>Simulation: <span id="avgCustomersQueueDataSimulation2"></span></h3>
+        </div>
+
+        <div>
+            <h2>Avg. wait in the queue</h2>
+            <h3>Analytic: <span id="avgWaitQueueDataAnalytic2"></span></h3>
+            <h3>Simulation: <span id="avgWaitQueueDataSimulation2"></span></h3>
         </div>
 
     </div>

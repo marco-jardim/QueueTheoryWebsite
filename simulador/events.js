@@ -16,7 +16,7 @@ var myrand = {
   }
 }
 
-function getUniformRandomInt(min, max) {
+function getUniformRandom(min, max) {
   return (Math.random() * (max - min)) + min;
 }
 
@@ -102,8 +102,8 @@ function geraListaEventos(MAX_EVENTOS, taxaChegada1, tipoSaida1, taxaSaida1, tax
     //###2 Saídas Uniformes (Cenário 4)###
     if (tipoSaida1 == "uniforme" && tipoSaida2 == "uniforme") {
     //#Aqui deve-se considerar o tempo residual de atendimento de um cliente no servidor
-        tempo_saida1 = getUniformRandomInt(taxaSaida1[0], taxaSaida1[1])
-        tempo_saida2 = getUniformRandomInt(taxaSaida2[0], taxaSaida2[1])
+        tempo_saida1 = getUniformRandom(taxaSaida1[0], taxaSaida1[1])
+        tempo_saida2 = getUniformRandom(taxaSaida2[0], taxaSaida2[1])
         for (k = 0; k < MAX_EVENTOS; k++) {
             tempo_chegada1 = myrand.random.exponential(taxaChegada1)
             tempo_chegada2 = myrand.random.exponential(taxaChegada2)
@@ -122,11 +122,11 @@ function geraListaEventos(MAX_EVENTOS, taxaChegada1, tipoSaida1, taxaSaida1, tax
             } else if (menor_tempo == tempo_saida1) {
                 prox_evento = "saida1"
                 tempo_saida2 = (tempo_saida2-tempo_saida1)
-                tempo_saida1 = getUniformRandomInt(taxaSaida1[0], taxaSaida1[1])
+                tempo_saida1 = getUniformRandom(taxaSaida1[0], taxaSaida1[1])
             } else {
                 prox_evento = "saida2"
                 tempo_saida1 = (tempo_saida1-tempo_saida1)
-                tempo_saida2 = getUniformRandomInt(taxaSaida2[0], taxaSaida2[1])
+                tempo_saida2 = getUniformRandom(taxaSaida2[0], taxaSaida2[1])
             }
                     
             lista_eventos.push(prox_evento)
