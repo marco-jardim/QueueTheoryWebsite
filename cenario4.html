@@ -19,25 +19,32 @@
 <body>
     <script>
         function calculateQueueTwoClasses(queue1, queue2) {
-            var rho1 = queue1.lambda/queue1.Mu; // qual o Mu??
-            var rho2 = queue2.lambda/queue2.Mu; // qual o Mu??
+            
+            var a1 = queue1.serviceMin;
+            var b1 = queue1.serviceMax;
+            var a2 = queue2.serviceMin;
+            var b2 = queue2.serviceMax;
+            var X1 = (a1 + b1)/2;
+            var X2 = (a2 + b2)/2;
+
+            queue1.Mu = 1/X1;
+            queue2.Mu = 1/X2;
+
+            var rho1 = queue1.lambda/queue1.Mu;
+            var rho2 = queue2.lambda/queue2.Mu;
             var totalRho = rho1 + rho2;
             var totalLambda = queue1.lambda + queue2.lambda;
             var totalMu = (queue1.Mu + queue2.Mu)/2;
-             
-            var X1 = getUniformRandomInt(queue1.serviceMin, queue1.serviceMax); // nem ideia
-            var X2 = getUniformRandomInt(queue2.serviceMin, queue2.serviceMax); // tb nao
             
-            var Xres1 = X1; // sei la
-            var Xres2 = X2; // n sei
-            
+            var Xsquared = (queue1.lambda/totalLambda) * ((a1^2 + a1*b1 + b1^2)/3) + (queue2.lambda/totalLambda) * ((a2^2 + a2*b2 + b2^2)/3);
             var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
+
+            var Xres = Xsquared/(2*totalX);
             
-            var W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
-            var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+            var W = (totalRho*Xres) / (1 - totalRho);
             
-            var totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
-            var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue;
+            var totalAvgWaitQueue = W;
+            var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue;
 
             console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
 
@@ -53,8 +60,8 @@
             var queue2 = { lambda: 0.05, serviceMin: 1, serviceMax: 3 };
 
             var finalQueue = calculateQueueTwoClasses(queue1, queue2);
-            $('#avgCustomersQueueDataAnalytic').html    (finalQueue.avgCustomersQueue);
-            $('#avgWaitQueueDataAnalytic').html(finalQueue.avgCustomersQueue);
+            $('#avgCustomersQueueDataAnalytic').html(finalQueue.avgCustomersQueue);
+            $('#avgWaitQueueDataAnalytic').html(finalQueue.avgWaitQueue);
 
             // Simulation
             var cenario = 4;
