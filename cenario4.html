@@ -49,40 +49,38 @@
         }
 
         $(document).ready(function(){
-            var avgCustomersDataAnalytic = [];
-            var avgWaitDataAnalytic = [];
-            var lambdaData = [];
-
             var queue1 = { lambda: 0.08, serviceMin: 5, serviceMax: 15 };
             var queue2 = { lambda: 0.05, serviceMin: 1, serviceMax: 3 };
 
             var finalQueue = calculateQueueTwoClasses(queue1, queue2);
-
-            lambdaData.push(Stats.round(queue1.lambda, 4));
-            avgCustomersDataAnalytic.push(finalQueue.avgCustomersQueue);
-            avgWaitDataAnalytic.push(finalQueue.avgWaitQueue);
+            $('#avgCustomersQueueDataAnalytic').html    (finalQueue.avgCustomersQueue);
+            $('#avgWaitQueueDataAnalytic').html(finalQueue.avgCustomersQueue);
 
             // Simulation
             var cenario = 4;
             var simulation = switchQuestao(1000, 1000, "3.1", cenario);
             var avgCustomersDataSimulation = simulation.lista_fila;
-            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation);
+            $('#avgCustomersQueueDataSimulation').html(avgCustomersDataSimulation);
 
             simulation = switchQuestao(1000, 1000, "3.2", cenario);
             var avgWaitDataSimulation = simulation.lista_fila;
-            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation);
+            $('#avgWaitQueueDataSimulation').html(avgWaitDataSimulation);
         });
     </script>
 
     <div class="container">
-        <h1 class="center">Filas sem prioridades (Fila Única) - Cenário 4</h1>
+        <h1>Filas sem prioridades (Fila Única) - Cenário 4</h1>
 
         <div class="row">
-            <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
+            <h2>Avg. number of customers in the queue</h2>
+            <h3>Analytic: <span id="avgCustomersQueueDataAnalytic"></span></h3>
+            <h3>Simulation: <span id="avgCustomersQueueDataSimulation"></span></h3>
         </div>
 
         <div class="row">
-            <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+            <h2>Avg. wait in the queue</h2>
+            <h3>Analytic: <span id="avgWaitQueueDataAnalytic"></span></h3>
+            <h3>Simulation: <span id="avgWaitQueueDataSimulation"></span></h3>
         </div>
 
     </div>
