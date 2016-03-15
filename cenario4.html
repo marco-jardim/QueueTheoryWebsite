@@ -33,11 +33,8 @@
             var totalLambda = queue1.lambda + queue2.lambda;
             var totalMu = (queue1.Mu + queue2.Mu)/2;
             
-            var Xsquared1 = ((a1*a1 + a1*b1 + b1*b1)/3);
-            var Xsquared2 = ((a2*a2 + a2*b2 + b2*b2)/3);
-
-            var Xres1 = Xsquared1/(2*X1);
-            var Xres2 = Xsquared2/(2*X2);
+            var Xres1 = Math.pow(X1,2)/(2*X1);
+            var Xres2 = Math.pow(X2,2)/(2*X2);
             
             var W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
             var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
@@ -51,7 +48,6 @@
                 avgCustomersQueue: totalAvgCustomersQueue,
                 avgWaitQueue: totalAvgWaitQueue
             }
-
         }
 
         $(document).ready(function(){
