@@ -30,12 +30,12 @@
             var totalLambda = queue1.lambda + queue2.lambda;
             var totalMu = (queue1.Mu + queue2.Mu)/2;
             
-            var Xres1 = Math.pow(X1,2)/(2*X1);
-            var Xres2 = Math.pow(X2,2)/(2*X2);
+            var Xsquared1 = ((Math.pow(a1,2)+ a1*b1 + Math.pow(b1,2))/3);
+            var Xres1 = Xsquared1/(2*X1);
+            var Xsquared2 = ((Math.pow(a2,2)+ a2*b2 + Math.pow(b2,2))/3);
+            var Xres2 = Xsquared2/(2*X2);
             
-            var W1;
-            var W2;
-            var totalAvgWaitQueue;
+            var W1, W2, totalAvgWaitQueue;
             if (!prioritiesEnabled) {
                 // filas sem prioridades
                 W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
