@@ -27,23 +27,22 @@
             var X1 = (a1 + b1)/2;
             var X2 = (a2 + b2)/2;
 
-            queue1.Mu = 1/X1;
-            queue2.Mu = 1/X2;
-
-            var rho1 = queue1.lambda/queue1.Mu;
-            var rho2 = queue2.lambda/queue2.Mu;
+            var rho1 = queue1.lambda * X1;
+            var rho2 = queue2.lambda * X2;
             var totalRho = rho1 + rho2;
             var totalLambda = queue1.lambda + queue2.lambda;
             var totalMu = (queue1.Mu + queue2.Mu)/2;
             
-            var Xsquared = (queue1.lambda/totalLambda) * ((a1^2 + a1*b1 + b1^2)/3) + (queue2.lambda/totalLambda) * ((a2^2 + a2*b2 + b2^2)/3);
-            var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
+            var Xsquared1 = ((a1*a1 + a1*b1 + b1*b1)/3);
+            var Xsquared2 = ((a2*a2 + a2*b2 + b2*b2)/3);
 
-            var Xres = Xsquared/(2*totalX);
+            var Xres1 = Xsquared1/(2*X1);
+            var Xres2 = Xsquared2/(2*X2);
             
-            var W = (totalRho*Xres) / (1 - totalRho);
+            var W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+            var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
             
-            var totalAvgWaitQueue = W;
+            var totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
             var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue;
 
             console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
