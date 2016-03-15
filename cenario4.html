@@ -80,16 +80,22 @@
             $('#avgWaitQueueDataAnalytic3').html(finalQueue3.avgWaitQueue);
 
             // Simulation
-            var cenario = 4;
-            // var simulation = switchQuestao(1000, 1000, "3.1", cenario);
-            // $('#avgCustomersQueueDataSimulation').html(simulation.lista_fila);
-            // var simulation = switchQuestao(1000, 1000, "4.1", cenario);
-            // $('#avgCustomersQueueDataSimulation2').html(simulation.lista_fila);
+            var tipoSaida = "uniforme";
+            var MAX_AMOSTRAS = 1000;
+            var MAX_EVENTOS = 1000;
+            var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", [queue1.lambda], tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
+            var simulationWait = [];
+            var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", [queue1.lambda], tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
+            var simulationWait2 = [];
+            var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", [queue1.lambda], tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
+            var simulationWait3 = [];
 
-            // simulation = switchQuestao(1000, 1000, "3.2", cenario);
-            // $('#avgWaitQueueDataSimulation').html(simulation.lista_fila);
-            // simulation = switchQuestao(1000, 1000, "4.2", cenario);
-            // $('#avgWaitQueueDataSimulation2').html(simulation.lista_fila);
+            $('#avgCustomersQueueDataSimulation').html(simulationCustomers.lista_fila);
+            $('#avgWaitQueueDataSimulation').html(simulationWait.lista_fila);
+            $('#avgCustomersQueueDataSimulation2').html(simulationCustomers2.lista_fila);
+            $('#avgWaitQueueDataSimulation2').html(simulationWait2.lista_fila);
+            $('#avgCustomersQueueDataSimulation3').html(simulationCustomers3.lista_fila);
+            $('#avgWaitQueueDataSimulation3').html(simulationWait3.lista_fila);
         });
     </script>
 

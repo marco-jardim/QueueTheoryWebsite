@@ -89,13 +89,15 @@
             }
 
             // Simulation
-            var cenario = 3;
-            var simulationCustomers = switchQuestao(1000, 1000, "3.1", cenario);
-            var simulationWait = switchQuestao(1000, 1000, "3.2", cenario);
-            var simulationCustomers2 = switchQuestao(1000, 1000, "4.1", cenario);
-            var simulationWait2 = switchQuestao(1000, 1000, "4.2", cenario);
-            var simulationCustomers3 = switchQuestao(1000, 1000, "5.1", cenario);
-            var simulationWait3 = switchQuestao(1000, 1000, "5.2", cenario);
+            var tipoSaida = "deterministica";
+            var MAX_AMOSTRAS = 1000;
+            var MAX_EVENTOS = 1000;
+            var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", lambdaData, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
+            var simulationWait = [];
+            var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", lambdaData, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
+            var simulationWait2 = [];
+            var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", lambdaData, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
+            var simulationWait3 = [];
 
             // Graphs
             graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, simulationCustomers.lista_fila);
