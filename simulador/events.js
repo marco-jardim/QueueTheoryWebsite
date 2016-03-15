@@ -17,7 +17,7 @@ var myrand = {
 }
 
 function getUniformRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+  return (Math.random() * (max - min)) + min;
 }
 
 function geraListaEventos(MAX_EVENTOS, taxaChegada1, tipoSaida1, taxaSaida1, taxaChegada2, tipoSaida2, taxaSaida2) {
@@ -122,11 +122,11 @@ function geraListaEventos(MAX_EVENTOS, taxaChegada1, tipoSaida1, taxaSaida1, tax
             } else if (menor_tempo == tempo_saida1) {
                 prox_evento = "saida1"
                 tempo_saida2 = (tempo_saida2-tempo_saida1)
-                tempo_saida1 = numpy.random.uniform(taxaSaida1[0], taxaSaida1[1])
+                tempo_saida1 = getUniformRandomInt(taxaSaida1[0], taxaSaida1[1])
             } else {
                 prox_evento = "saida2"
                 tempo_saida1 = (tempo_saida1-tempo_saida1)
-                tempo_saida2 = numpy.random.uniform(taxaSaida2[0], taxaSaida2[1])
+                tempo_saida2 = getUniformRandomInt(taxaSaida2[0], taxaSaida2[1])
             }
                     
             lista_eventos.push(prox_evento)
