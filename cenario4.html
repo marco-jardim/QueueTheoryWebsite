@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Filas sem prioridades (Fila Única) - Cenário 4</title>
+    <title>Cenário 4</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/neon.css">
@@ -39,13 +39,17 @@
             var W2;
             var totalAvgWaitQueue;
             if (!prioritiesEnabled) {
+                // filas sem prioridades
                 W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
                 W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
                 totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
             } else {
-                W1 = (rho1*Xres1 + rho2*Xres2);
+                // filas com prioridades
+                W1 = (rho1*Xres1 + rho2*Xres2)/(1 - rho1);
                 W2 = (W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
-                totalAvgWaitQueue = (W1 + W2);
+                // W2 = (rho1*Xres1 + rho2*Xres2)/((1 - rho1)*(1 - totalRho));
+                totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
+                // totalAvgWaitQueue = queue1.lambda*W1*X1 + queue2.lambda*W2*X2 + rho1*Xres1 + rho2*Xres2; // ficou igual ao do sem prioridade
             }
             
             var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue;

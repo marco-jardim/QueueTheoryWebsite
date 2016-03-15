@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Filas sem prioridades (Fila Única) - Cenário 2</title>
+    <title>Cenário 2</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/neon.css">
@@ -18,7 +18,7 @@
 
 <body>
     <script>
-        function calculateQueueTwoClasses(queue1, queue2) {
+        function calculateQueueTwoClasses(queue1, queue2, prioritiesEnabled) {
             var rho1 = queue1.lambda/queue1.Mu;
             var rho2 = queue2.lambda/queue2.Mu;
             var totalRho = rho1 + rho2;
@@ -33,10 +33,19 @@
             
             var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
             
-            var W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
-            var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
-            
-            var totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
+            var W1, W2, totalAvgWaitQueue;
+            if (!prioritiesEnabled) {
+                // filas sem prioridades
+                W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+                W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
+                totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
+            } else {
+                // filas com prioridades
+                W1 = (rho1*Xres1 + rho2*Xres2)/(1 - rho1);
+                W2 = (W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
+                totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
+            }
+
             var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue;
 
             console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
@@ -51,6 +60,8 @@
         $(document).ready(function(){
             var avgCustomersDataAnalytic = [];
             var avgWaitDataAnalytic = [];
+            var avgCustomersDataAnalytic2 = [];
+            var avgWaitDataAnalytic2 = [];
             var lambdaData = [];
 
             var queue1 = { lambda: undefined, Mu: 1.0, X: 1/1.0 };
@@ -58,37 +69,53 @@
 
             for (var lambda1 = 0.05; lambda1 < 0.6; lambda1 += 0.05) {
                 queue1.lambda = lambda1;
-                var finalQueue = calculateQueueTwoClasses(queue1, queue2);
-
                 lambdaData.push(Stats.round(lambda1, 4));
+                var finalQueue = calculateQueueTwoClasses(queue1, queue2);
                 avgCustomersDataAnalytic.push(finalQueue.avgCustomersQueue);
                 avgWaitDataAnalytic.push(finalQueue.avgWaitQueue);
+
+                var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
+                avgCustomersDataAnalytic2.push(finalQueue2.avgCustomersQueue);
+                avgWaitDataAnalytic2.push(finalQueue2.avgWaitQueue);
             }
 
             // Simulation
             var cenario = 2;
-            var simulation = switchQuestao(1000, 1000, "3.1", cenario);
-            var avgCustomersDataSimulation = simulation.lista_fila;
-            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation);
+            var simulationCustomers = switchQuestao(1000, 1000, "3.1", cenario);
+            var simulationWait = switchQuestao(1000, 1000, "3.2", cenario);
+            var simulationCustomers2 = switchQuestao(1000, 1000, "4.1", cenario);
+            var simulationWait2 = switchQuestao(1000, 1000, "4.2", cenario);
 
-            simulation = switchQuestao(1000, 1000, "3.2", cenario);
-            var avgWaitDataSimulation = simulation.lista_fila;
-            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation);
+            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, simulationCustomers.lista_fila);
+            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic, simulationWait.lista_fila);
+            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic2, simulationCustomers2.lista_fila, '#averageCustomersQueueChart2');
+            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic2, simulationWait2.lista_fila, '#averageWaitQueueChart2');
         });
     </script>
 
     <div class="container">
-        <h1 class="center">Filas sem prioridades (Fila Única) - Cenário 2</h1>
+        <h1>Filas sem prioridades (Fila Única) - Cenário 2</h1>
 
-        <div class="row">
+        <div>
             <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
         </div>
 
-        <div class="row">
+        <div>
             <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
         </div>
 
+        <h1>Filas com prioridades (Sem preempção) - Cenário 2</h1>
+
+        <div>
+            <div id="averageCustomersQueueChart2" style="height:400px; width:100%"></div>
+        </div>
+
+        <div>
+            <div id="averageWaitQueueChart2" style="height:400px; width:100%"></div>
+        </div>
+
     </div>
+
 
 </body>
 

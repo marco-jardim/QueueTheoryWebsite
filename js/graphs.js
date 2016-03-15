@@ -1,6 +1,7 @@
 var graphs = {
-    LambdaVsAvgClientsQueue: function(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation) {
-        $('#averageCustomersQueueChart').highcharts({
+    LambdaVsAvgClientsQueue: function(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation, element) {
+        element = element || '#averageCustomersQueueChart';
+        $(element).highcharts({
             chart: {
                 shadow: true
             },
@@ -33,8 +34,9 @@ var graphs = {
         });
     },
 
-    LambdaVsAvgWaitQueue: function(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation) {
-        $('#averageWaitQueueChart').highcharts({
+    LambdaVsAvgWaitQueue: function(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation, element) {
+        element = element || '#averageWaitQueueChart';
+        $(element).highcharts({
             chart: {
                 shadow: true
             },
