@@ -16,26 +16,8 @@
     <script src="simulador/math.min.js"></script>
 </head>
 
-<body class="page-body" lang="en-US">
+<body>
     <script>
-        function calculateQueue(queue) {
-            Queuing.Lambda = queue.lambda;
-            Queuing.Mu = queue.Mu;
-            Queuing.calculate();
-
-            Queuing.rho = Queuing.Lambda/Queuing.Mu;
-
-            //Queuing.Wq = Queuing.rho / (Queuing.Mu * (1 - Queuing.rho));
-            //Queuing.Lq = (Queuing.rho^2 )/(1 - Queuing.rho);
-
-            //Queuing.Wq
-
-            return {
-                avgCustomersQueue: Queuing.Lq,
-                avgWaitQueue: Queuing.Wq
-            }
-        }
-
         function calculateQueueTwoClasses(queue1, queue2) {
             var rho1 = queue1.lambda/queue1.Mu;
             var rho2 = queue2.lambda/queue2.Mu;
@@ -51,11 +33,11 @@
             
             var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
             
-            var W1 = (rho1 * Xres1 + rho2 * Xres2) / (1 - rho1);
-            var W2 = (rho1 * Xres1 + rho2 * Xres2) / (1 - totalRho);
+            var W1 = (rho1*Xres1 + rho2*Xres2) / (1 - rho1);
+            var W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
             
-            var totalAvgWaitQueue = W1 + W2 + rho1 * Xres1 + rho2 * Xres2;
-            var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue + totalLambda * totalX;
+            var totalAvgWaitQueue = W1 + W2 + rho1*Xres1 + rho2*Xres2;
+            var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue + totalLambda*totalX;
 
             console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
 
@@ -67,12 +49,6 @@
         }
 
         $(document).ready(function(){
-            Queuing.model = 1; // M/M/C
-            Queuing.c = 1;
-            Queuing.LambdaUnits = -1;
-            Queuing.MuUnits = -1;
-            Queuing.ResultsUnits = -1;
-            
             var avgCustomersDataAnalytic = [];
             var avgWaitDataAnalytic = [];
             var lambdaData = [];
