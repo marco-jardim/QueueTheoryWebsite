@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Filas sem prioridades (Fila Única) - Cenário 2</title>
+    <title>Filas sem prioridades (Fila Única) - Cenário 3</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/neon.css">
@@ -28,8 +28,8 @@
             var X1 = 1/queue1.Mu;
             var X2 = 1/queue2.Mu;
             
-            var Xres1 = X1;
-            var Xres2 = X2;
+            var Xres1 = X1/2;
+            var Xres2 = X2/2;
             
             var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
             
@@ -66,7 +66,7 @@
             }
 
             // Simulation
-            var cenario = 2;
+            var cenario = 3;
             var simulation = switchQuestao(1000, 1000, "3.1", cenario);
             var avgCustomersDataSimulation = simulation.lista_fila;
             graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation);
@@ -78,7 +78,7 @@
     </script>
 
     <div class="container">
-        <h1 class="center">Filas sem prioridades (Fila Única) - Cenário 2</h1>
+        <h1 class="center">Filas sem prioridades (Fila Única) - Cenário 3</h1>
 
         <div class="row">
             <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
