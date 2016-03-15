@@ -16,7 +16,7 @@
 
 <body>
     <script>
-        function calculateQueueTwoClasses(queue1, queue2, prioritiesEnabled) {
+        function calculateQueueTwoClasses(queue1, queue2, prioritiesEnabled, preemptive) {
             var a1 = queue1.serviceMin;
             var b1 = queue1.serviceMax;
             var a2 = queue2.serviceMin;
@@ -30,7 +30,7 @@
             var totalLambda = queue1.lambda + queue2.lambda;
             var totalMu = (queue1.Mu + queue2.Mu)/2;
             
-            var Xsquared1 = ((Math.pow(a1,2)+ a1*b1 + Math.pow(b1,2))/3);
+            var Xsquared1 = ((Math.pow(a1,2)+ a1*b1 + Math.pow(b1,2))/3);  // expected value of X^2
             var Xres1 = Xsquared1/(2*X1);
             var Xsquared2 = ((Math.pow(a2,2)+ a2*b2 + Math.pow(b2,2))/3);
             var Xres2 = Xsquared2/(2*X2);
@@ -41,10 +41,15 @@
                 W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
                 W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
                 totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
-            } else {
+            } else if (!preemptive) {
                 // filas com prioridades
                 W1 = (rho1*Xres1 + rho2*Xres2)/(1 - rho1);
                 W2 = (W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
+                totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
+            } else {
+                // fila com prioridade e com preempção
+                W1 = (rho1*Xres1)/(1 - rho1);
+                W2 = (rho1*X2 + W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
                 totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
             }
             
@@ -69,6 +74,10 @@
             var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
             $('#avgCustomersQueueDataAnalytic2').html(finalQueue2.avgCustomersQueue);
             $('#avgWaitQueueDataAnalytic2').html(finalQueue2.avgWaitQueue);
+
+            var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
+            $('#avgCustomersQueueDataAnalytic3').html(finalQueue3.avgCustomersQueue);
+            $('#avgWaitQueueDataAnalytic3').html(finalQueue3.avgWaitQueue);
 
             // Simulation
             var cenario = 4;
@@ -111,6 +120,20 @@
             <h2>Avg. wait in the queue</h2>
             <h3>Analytic: <span id="avgWaitQueueDataAnalytic2"></span></h3>
             <h3>Simulation: <span id="avgWaitQueueDataSimulation2"></span></h3>
+        </div>
+
+        <h1>Filas com prioridades (Com preempção) - Cenário 4</h1>
+
+        <div>
+            <h2>Avg. number of customers in the queue</h2>
+            <h3>Analytic: <span id="avgCustomersQueueDataAnalytic3"></span></h3>
+            <h3>Simulation: <span id="avgCustomersQueueDataSimulation3"></span></h3>
+        </div>
+
+        <div>
+            <h2>Avg. wait in the queue</h2>
+            <h3>Analytic: <span id="avgWaitQueueDataAnalytic3"></span></h3>
+            <h3>Simulation: <span id="avgWaitQueueDataSimulation3"></span></h3>
         </div>
 
     </div>

@@ -7,9 +7,7 @@
     <script src="assets/js/jquery-2.2.1.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/highcharts.js"></script>
-    <script src="js/rcalcObj.js"></script>
-    <script src="js/jstorage.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/stats.js"></script>
     <script src="js/graphs.js"></script>
     <script src="simulador/atendimentos.js"></script>
     <script src="simulador/events.js"></script>
@@ -18,7 +16,7 @@
 
 <body>
     <script>
-        function calculateQueueTwoClasses(queue1, queue2, prioritiesEnabled) {
+        function calculateQueueTwoClasses(queue1, queue2, prioritiesEnabled, preemptive) {
             var rho1 = queue1.lambda/queue1.Mu;
             var rho2 = queue2.lambda/queue2.Mu;
             var totalRho = rho1 + rho2;
@@ -39,10 +37,15 @@
                 W1 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
                 W2 = (rho1*Xres1 + rho2*Xres2) / (1 - totalRho);
                 totalAvgWaitQueue = rho1*W1 + rho2*W2 + rho1*Xres1 + rho2*Xres2;
-            } else {
+            } else if (!preemptive) {
                 // filas com prioridades
                 W1 = (rho1*Xres1 + rho2*Xres2)/(1 - rho1);
                 W2 = (W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
+                totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
+            } else {
+                // fila com prioridade e com preempção
+                W1 = (rho1*Xres1)/(1 - rho1);
+                W2 = (rho1*X2 + W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
                 totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
             }
 
@@ -62,6 +65,8 @@
             var avgWaitDataAnalytic = [];
             var avgCustomersDataAnalytic2 = [];
             var avgWaitDataAnalytic2 = [];
+            var avgCustomersDataAnalytic3 = [];
+            var avgWaitDataAnalytic3 = [];
             var lambdaData = [];
 
             var queue1 = { lambda: undefined, Mu: 1.0, X: 1/1.0 };
@@ -77,6 +82,10 @@
                 var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
                 avgCustomersDataAnalytic2.push(finalQueue2.avgCustomersQueue);
                 avgWaitDataAnalytic2.push(finalQueue2.avgWaitQueue);
+
+                var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
+                avgCustomersDataAnalytic3.push(finalQueue3.avgCustomersQueue);
+                avgWaitDataAnalytic3.push(finalQueue3.avgWaitQueue);
             }
 
             // Simulation
@@ -85,11 +94,18 @@
             var simulationWait = switchQuestao(1000, 1000, "3.2", cenario);
             var simulationCustomers2 = switchQuestao(1000, 1000, "4.1", cenario);
             var simulationWait2 = switchQuestao(1000, 1000, "4.2", cenario);
+            var simulationCustomers3 = switchQuestao(1000, 1000, "5.1", cenario);
+            var simulationWait3 = switchQuestao(1000, 1000, "5.2", cenario);
 
+            // Graphs
             graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, simulationCustomers.lista_fila);
             graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic, simulationWait.lista_fila);
+
             graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic2, simulationCustomers2.lista_fila, '#averageCustomersQueueChart2');
             graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic2, simulationWait2.lista_fila, '#averageWaitQueueChart2');
+
+            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic3, simulationCustomers3.lista_fila, '#averageCustomersQueueChart3');
+            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic3, simulationWait3.lista_fila, '#averageWaitQueueChart3');
         });
     </script>
 
@@ -105,13 +121,21 @@
         </div>
 
         <h1>Filas com prioridades (Sem preempção) - Cenário 3</h1>
-
         <div>
             <div id="averageCustomersQueueChart2" style="height:400px; width:100%"></div>
         </div>
 
         <div>
             <div id="averageWaitQueueChart2" style="height:400px; width:100%"></div>
+        </div>
+
+        <h1>Filas com prioridades (Com preempção) - Cenário 3</h1>
+        <div>
+            <div id="averageCustomersQueueChart3" style="height:400px; width:100%"></div>
+        </div>
+
+        <div>
+            <div id="averageWaitQueueChart3" style="height:400px; width:100%"></div>
         </div>
 
     </div>
