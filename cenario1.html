@@ -64,8 +64,8 @@
                 lambda1Data.push(Stats.round(lambda1, 4));
             }
 
-            var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambda1Data);
-            var chartWait = graphs.LambdaVsAvgWaitQueue(lambda1Data);
+            var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambdaData);
+            var chartWait = graphs.LambdaVsAvgWaitQueue(lambdaData);
 
             var queue1 = { lambda: undefined, Mu: 1.0, X: 1 };
             var queue2 = { lambda: 0.0, Mu: 0.0, X: 1 };

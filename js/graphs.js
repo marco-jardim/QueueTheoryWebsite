@@ -7,12 +7,12 @@ var graphs = {
                 shadow: true
             },
             title: {
-                text: 'Lambda1 vs. Número médio de clientes na fila'
+                text: 'Lambda vs. Número médio de clientes na fila'
             },
             xAxis: {
                 categories: lambdaData,
                 title:{
-                    text:'λ (Lambda1)'
+                    text:'λ (λ1 + λ2)'
                 }
             },
             yAxis: {
@@ -65,12 +65,12 @@ var graphs = {
                 shadow: true
             },
             title: {
-                text: 'Lambda1 vs. Tempo médio de espera na fila'
+                text: 'Lambda vs. Tempo médio de espera na fila'
             },
             xAxis: {
                 categories: lambdaData,
                 title:{
-                    text:'λ (Lambda1)'
+                    text:'λ (λ1 + λ2)'
                 }
             },
             yAxis: {

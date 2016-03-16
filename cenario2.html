@@ -52,8 +52,6 @@
 
             var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue;
 
-            console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
-
             return {
                 avgCustomersQueue: totalAvgCustomersQueue,
                 avgWaitQueue: totalAvgWaitQueue
@@ -62,17 +60,18 @@
         }
 
         $(document).ready(function(){
-            var lambda1Data = [];
-            for (var lambda1 = 0.05; lambda1 < 0.6; lambda1 += 0.05) {
-                lambda1Data.push(Stats.round(lambda1, 4));
-            }
-
-            var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambda1Data);
-            var chartWait = graphs.LambdaVsAvgWaitQueue(lambda1Data);
-
             var queue1 = { lambda: undefined, Mu: 1.0, X: 1/1.0 };
             var queue2 = { lambda: 0.2, Mu: 0.5, X: 1/0.5 };
 
+            var lambda1Data = [];
+            var lambdaData = [];
+            for (var lambda1 = 0.05; lambda1 < 0.6; lambda1 += 0.05) {
+                lambda1Data.push(Stats.round(lambda1, 4));
+                lambdaData.push(Stats.round(lambda1 + queue2.lambda,4));
+            }
+
+            var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambdaData);
+            var chartWait = graphs.LambdaVsAvgWaitQueue(lambdaData);
             var tipoSaida = "exponencial";
             var MAX_AMOSTRAS = 1000;
             var MAX_EVENTOS = 1000;
