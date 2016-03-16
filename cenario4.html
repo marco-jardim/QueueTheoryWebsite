@@ -55,8 +55,6 @@
             
             var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue;
 
-            console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
-
             return {
                 avgCustomersQueue: totalAvgCustomersQueue,
                 avgWaitQueue: totalAvgWaitQueue
@@ -81,21 +79,21 @@
 
             // Simulation
             var tipoSaida = "uniforme";
-            var MAX_AMOSTRAS = 1000;
+            var MAX_AMOSTRAS = 100;
             var MAX_EVENTOS = 1000;
-            var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", [queue1.lambda], tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
+            var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", queue1.lambda, tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
             var simulationWait = [];
-            var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", [queue1.lambda], tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
+            var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", queue1.lambda, tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
             var simulationWait2 = [];
-            var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", [queue1.lambda], tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
+            var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", queue1.lambda, tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
             var simulationWait3 = [];
 
-            $('#avgCustomersQueueDataSimulation').html(simulationCustomers.lista_fila);
-            $('#avgWaitQueueDataSimulation').html(simulationWait.lista_fila);
-            $('#avgCustomersQueueDataSimulation2').html(simulationCustomers2.lista_fila);
-            $('#avgWaitQueueDataSimulation2').html(simulationWait2.lista_fila);
-            $('#avgCustomersQueueDataSimulation3').html(simulationCustomers3.lista_fila);
-            $('#avgWaitQueueDataSimulation3').html(simulationWait3.lista_fila);
+            $('#avgCustomersQueueDataSimulation').html(simulationCustomers);
+            $('#avgWaitQueueDataSimulation').html(simulationWait);
+            $('#avgCustomersQueueDataSimulation2').html(simulationCustomers2);
+            $('#avgWaitQueueDataSimulation2').html(simulationWait2);
+            $('#avgCustomersQueueDataSimulation3').html(simulationCustomers3);
+            $('#avgWaitQueueDataSimulation3').html(simulationWait3);
         });
     </script>
 

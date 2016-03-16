@@ -51,8 +51,6 @@
 
             var totalAvgCustomersQueue = totalLambda*totalAvgWaitQueue;
 
-            console.log(totalAvgWaitQueue, totalAvgCustomersQueue)
-
             return {
                 avgCustomersQueue: totalAvgCustomersQueue,
                 avgWaitQueue: totalAvgWaitQueue
@@ -61,85 +59,68 @@
         }
 
         $(document).ready(function(){
-            var avgCustomersDataAnalytic = [];
-            var avgWaitDataAnalytic = [];
-            var avgCustomersDataAnalytic2 = [];
-            var avgWaitDataAnalytic2 = [];
-            var avgCustomersDataAnalytic3 = [];
-            var avgWaitDataAnalytic3 = [];
-            var lambdaData = [];
+            var lambda1Data = [];
+            for (var lambda1 = 0.05; lambda1 < 0.6; lambda1 += 0.05) {
+                lambda1Data.push(Stats.round(lambda1, 4));
+            }
+
+            var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambda1Data);
+            var chartWait = graphs.LambdaVsAvgWaitQueue(lambda1Data);
 
             var queue1 = { lambda: undefined, Mu: 1.0, X: 1/1.0 };
             var queue2 = { lambda: 0.2, Mu: 0.5, X: 1/0.5 };
 
-            for (var lambda1 = 0.05; lambda1 < 0.6; lambda1 += 0.05) {
-                queue1.lambda = lambda1;
-                lambdaData.push(Stats.round(lambda1, 4));
-                var finalQueue = calculateQueueTwoClasses(queue1, queue2);
-                avgCustomersDataAnalytic.push(finalQueue.avgCustomersQueue);
-                avgWaitDataAnalytic.push(finalQueue.avgWaitQueue);
-
-                var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
-                avgCustomersDataAnalytic2.push(finalQueue2.avgCustomersQueue);
-                avgWaitDataAnalytic2.push(finalQueue2.avgWaitQueue);
-
-                var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
-                avgCustomersDataAnalytic3.push(finalQueue3.avgCustomersQueue);
-                avgWaitDataAnalytic3.push(finalQueue3.avgWaitQueue);
-            }
-
-            // Simulation
             var tipoSaida = "deterministica";
             var MAX_AMOSTRAS = 1000;
             var MAX_EVENTOS = 1000;
-            var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", lambdaData, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
-            var simulationWait = [];
-            var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", lambdaData, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
-            var simulationWait2 = [];
-            var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", lambdaData, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
-            var simulationWait3 = [];
 
-            // Graphs
-            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic, simulationCustomers.lista_fila);
-            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic, simulationWait.lista_fila);
+            for (var lambda1 of lambda1Data) {
+                queue1.lambda = lambda1;
 
-            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic2, simulationCustomers2.lista_fila, '#averageCustomersQueueChart2');
-            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic2, simulationWait2.lista_fila, '#averageWaitQueueChart2');
+                // Fila única, sem prioridades
+                var finalQueue = calculateQueueTwoClasses(queue1, queue2);
+                chartCustomers.series[0].addPoint(finalQueue.avgCustomersQueue, false);
+                chartWait.series[0].addPoint(finalQueue.avgWaitQueue, false);
 
-            graphs.LambdaVsAvgClientsQueue(lambdaData, avgCustomersDataAnalytic3, simulationCustomers3.lista_fila, '#averageCustomersQueueChart3');
-            graphs.LambdaVsAvgWaitQueue(lambdaData, avgWaitDataAnalytic3, simulationWait3.lista_fila, '#averageWaitQueueChart3');
+                var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", lambda1, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
+                chartCustomers.series[3].addPoint(simulationCustomers, false);
+                var simulationWait = [];
+
+
+                // Com prioridades, sem preempção
+                var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
+                chartCustomers.series[1].addPoint(finalQueue2.avgCustomersQueue, false);
+                chartWait.series[1].addPoint(finalQueue2.avgWaitQueue, false);
+
+                var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", lambda1, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
+                chartCustomers.series[4].addPoint(simulationCustomers2, false);
+                var simulationWait2 = [];
+
+                // Com prioridades, com preempção
+                var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
+                chartCustomers.series[2].addPoint(finalQueue3.avgCustomersQueue, false);
+                chartWait.series[2].addPoint(finalQueue3.avgWaitQueue, false);
+
+                var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", lambda1, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
+                chartCustomers.series[5].addPoint(simulationCustomers3, false);
+                var simulationWait3 = [];
+                
+                chartCustomers.redraw();
+                chartWait.redraw();
+            }
         });
     </script>
 
     <div class="container">
-        <h1>Filas sem prioridades (Fila Única) - Cenário 3</h1>
+        <h1>Cenário 3</h1>
 
         <div>
-            <div id="averageCustomersQueueChart" style="height:400px; width:100%"></div>
+            <div id="averageCustomersQueueChart" style="height:500px; width:100%"></div>
         </div>
 
         <div>
-            <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+            <div id="averageWaitQueueChart" style="height:500px; width:100%"></div>
         </div>
-
-        <h1>Filas com prioridades (Sem preempção) - Cenário 3</h1>
-        <div>
-            <div id="averageCustomersQueueChart2" style="height:400px; width:100%"></div>
-        </div>
-
-        <div>
-            <div id="averageWaitQueueChart2" style="height:400px; width:100%"></div>
-        </div>
-
-        <h1>Filas com prioridades (Com preempção) - Cenário 3</h1>
-        <div>
-            <div id="averageCustomersQueueChart3" style="height:400px; width:100%"></div>
-        </div>
-
-        <div>
-            <div id="averageWaitQueueChart3" style="height:400px; width:100%"></div>
-        </div>
-
     </div>
 
 </body>

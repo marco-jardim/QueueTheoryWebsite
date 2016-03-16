@@ -1,15 +1,14 @@
-function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista_lambda, tipoSaida1, taxaSaida1, lambda2, tipoSaida2, taxaSaida2) {
+function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lambda1, tipoSaida1, taxaSaida1, lambda2, tipoSaida2, taxaSaida2) {
     sendo_atendido = "nenhum"
     lista_sigma = []
     lista_fila = []
     //###Atendimento do Exercício 3###
     if (tipo_atendimento == "fila_unica") {
-        for (lambda1 of lista_lambda) {
-            tot = 0
-            for (j = 0; j < MAX_AMOSTRAS; j++) {
-                fila = []
-                lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, tipoSaida1, taxaSaida1, lambda2 , tipoSaida2 , taxaSaida2)
-                for (e = 0; e < lista_eventos.length; e++) {
+        tot = 0
+        for (j = 0; j < MAX_AMOSTRAS; j++) {
+            fila = []
+            lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, tipoSaida1, taxaSaida1, lambda2 , tipoSaida2 , taxaSaida2)
+            for (e = 0; e < lista_eventos.length; e++) {
                     //console.log(prox_evento, sendo_atendido, num_fila)
                     if (lista_eventos[e] == "chegada1") { //#Se evento é uma chegada1
                         if (fila.length == 0) {//Verifica fila. Se não há ninguém, verifica servidor
@@ -18,7 +17,7 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                             else //#Caso contrário, entra na fila
                                 fila.push("tipo1")
                         } else //Se já há alguém na fila, também entra nela
-                            fila.push("tipo1")
+                        fila.push("tipo1")
                     } else if (lista_eventos[e] == "chegada2") { //Se próximo evento é uma chegada2
                         if (fila.length == 0) { //Verifica fila. Se não há ninguém, verifica servidor
                             if (sendo_atendido == "nenhum") //Se servidor está vazio, entra nele
@@ -26,14 +25,14 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                             else //Caso contrário, entra na fila
                                 fila.push("tipo2")
                         } else //Se já há alguém na fila, também entra nela
-                            fila.push("tipo2")
+                        fila.push("tipo2")
                     } else if (lista_eventos[e] == "saida1") { //Se próximo evento é uma saída1
                         if (sendo_atendido == "tipo1") {//#Se o servidor está atendendo tipo1, haverá a saída
                             if (fila.length > 0) {//Se há alguém na fila, substitui no servidor e sai da fila
                                 sendo_atendido = fila[0]
                                 fila.shift()
                             } else //se não há alguém na fila, só sai do servidor
-                                sendo_atendido = "nenhum"
+                            sendo_atendido = "nenhum"
                         }
                     } else if (lista_eventos[e] == "saida2") { //Se próximo evento é uma saída2
                         if (sendo_atendido == "tipo2") { //Se o servidor está atendendo tipo2, haverá a saída
@@ -41,7 +40,7 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                                 sendo_atendido = fila[0]
                                 fila.shift()
                             } else //se não há alguém na fila, só sai do servidor
-                                sendo_atendido = "nenhum"
+                            sendo_atendido = "nenhum"
                         }
                     }
                     //console.log(lista_eventos[e], ">", sendo_atendido, fila) 
@@ -61,21 +60,15 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
             if (num_fila_medio > ic_superior || num_fila_medio < ic_inferior)
                 console.log("Intervalo de confianca de 95% nao satisfeito!")
             
-            lista_fila.push(num_fila_medio)
         }
-                
-        for (x = 0; x < lista_lambda.length; x++) //Para plotar lambda = lambda1+lambda2
-            lista_lambda[x] += lambda2
-    }
-    
+
     //###Atendimento do Exercício 4###
     if (tipo_atendimento == "prioridade_sem_preempcao") {
-        for (lambda1 of lista_lambda) {
-            tot = 0
-            for (j = 0; j < MAX_AMOSTRAS; j++) {
-                fila = []
-                lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, tipoSaida1, taxaSaida1, lambda2 , tipoSaida2 , taxaSaida2)
-                for (e = 0; e < lista_eventos.length; e++) {
+        tot = 0
+        for (j = 0; j < MAX_AMOSTRAS; j++) {
+            fila = []
+            lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, tipoSaida1, taxaSaida1, lambda2 , tipoSaida2 , taxaSaida2)
+            for (e = 0; e < lista_eventos.length; e++) {
                     //console.log(prox_evento, sendo_atendido, num_fila
                     if (lista_eventos[e] == "chegada1") {//Se evento é uma chegada1
                         if (fila.length == 0) {//Verifica fila. Se não há ninguém, verifica servidor
@@ -84,7 +77,7 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                             else //Caso contrário, entra na fila - por simplificação de programação, entra na primeira posição da fila, passando a frente do tipo2
                                 fila.unshift("tipo1")
                         } else //Se já há alguém na fila, entra na fila por simplificação de programação, entra na primeira posição da fila, passando a frente do tipo2
-                            fila.unshift("tipo1")
+                        fila.unshift("tipo1")
                     } else if (lista_eventos[e] == "chegada2") {//Se próximo evento é uma chegada2
                         if (fila.length == 0) {//Verifica fila. Se não há ninguém, verifica servidor
                             if (sendo_atendido == "nenhum") //Se servidor está vazio, entra nele
@@ -92,14 +85,14 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                             else //Caso contrário, entra no fim da fila
                                 fila.push("tipo2")
                         } else //Se já há alguém na fila, também entra nela
-                            fila.push("tipo2")
+                        fila.push("tipo2")
                     } else if (lista_eventos[e] == "saida1") {//Se próximo evento é uma saída1
                         if (sendo_atendido == "tipo1") {//Se o servidor está atendendo tipo1, haverá a saída
                             if (fila.length >0) { //Se há alguém na fila, substitui no servidor e sai da fila
                                 sendo_atendido = fila[0]
                                 fila.shift()
                             } else //se não há alguém na fila, só sai do servidor
-                                sendo_atendido = "nenhum"
+                            sendo_atendido = "nenhum"
                         }
                     } else if (lista_eventos[e] == "saida2") //Se próximo evento é uma saída2
                         if (sendo_atendido == "tipo2") //Se o servidor está atendendo tipo2, haverá a saída
@@ -107,7 +100,7 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                                 sendo_atendido = fila[0]
                                 fila.shift()
                             } else //se não há alguém na fila, só sai do servidor
-                                sendo_atendido = "nenhum"
+                            sendo_atendido = "nenhum"
                     //console.log(lista_eventos[e], ">", sendo_atendido, fila)
                     //#time.sleep(1)
                 }
@@ -123,23 +116,18 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
             if (num_fila_medio > ic_superior || num_fila_medio < ic_inferior)
                 console.log("Intervalo de confianca de 95% nao satisfeito!")
             
-            lista_fila.push(num_fila_medio)
+
         }
-                
-        for (x = 0; x < lista_lambda.length; x++) //Para plotar lambda = lambda1+lambda2
-            lista_lambda[x] += lambda2
-    }
         
     //###Atendimento do Exercício 5###
     if (tipo_atendimento == "prioridade_com_preempcao") {
         sendo_atendido = "nenhum"
         lista_fila = []
-        for (lambda1 of lista_lambda) {
-            tot = 0
-            for (j = 0; j < MAX_AMOSTRAS; j++) {
-                fila = []
-                lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, tipoSaida1, taxaSaida1, lambda2 , tipoSaida2 , taxaSaida2)
-                for (e = 0; e <lista_eventos.length; e++) {
+        tot = 0
+        for (j = 0; j < MAX_AMOSTRAS; j++) {
+            fila = []
+            lista_eventos = geraListaEventos(MAX_EVENTOS, lambda1, tipoSaida1, taxaSaida1, lambda2 , tipoSaida2 , taxaSaida2)
+            for (e = 0; e <lista_eventos.length; e++) {
                     //console.log(prox_evento, sendo_atendido, num_fila
                     if (lista_eventos[e] == "chegada1") {//Se evento é uma chegada1
                         if (fila.length == 0) {//Verifica fila. Se não há ninguém, verifica servidor
@@ -149,9 +137,9 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                                 sendo_atendido = "tipo1"
                                 fila.push("tipo2")
                             } else //Se servidor está atendendo tipo1, entra na fila - por simplificação de programação, entra na primeira posição da fila, passando a frente do tipo2
-                                fila.unshift("tipo1")
-                        } else //Se já há alguém na fila, entra na fila por simplificação de programação, entra na primeira posição da fila, passando a frente do tipo2
                             fila.unshift("tipo1")
+                        } else //Se já há alguém na fila, entra na fila por simplificação de programação, entra na primeira posição da fila, passando a frente do tipo2
+                        fila.unshift("tipo1")
                     } else if (lista_eventos[e] == "chegada2") {//Se próximo evento é uma chegada2
                         if (fila.length == 0) {//Verifica fila. Se não há ninguém, verifica servidor
                             if (sendo_atendido == "nenhum") //Se servidor está vazio, entra nele
@@ -159,14 +147,14 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                             else //Caso contrário, entra no fim da fila
                                 fila.push("tipo2")
                         } else //Se já há alguém na fila, também entra nela
-                            fila.push("tipo2")
+                        fila.push("tipo2")
                     } else if (lista_eventos[e] == "saida1") {//Se próximo evento é uma saída1
                         if (sendo_atendido == "tipo1") {//Se o servidor está atendendo tipo1, haverá a saída
                             if (fila.length >0) {//Se há alguém na fila, substitui no servidor e sai da fila
                                 sendo_atendido = fila[0]
                                 fila.shift()
                             } else //se não há alguém na fila, só sai do servidor
-                                sendo_atendido = "nenhum"
+                            sendo_atendido = "nenhum"
                         }
                     } else if (lista_eventos[e] == "saida2") {//Se próximo evento é uma saída2
                         if (sendo_atendido == "tipo2") {//Se o servidor está atendendo tipo2, haverá a saída
@@ -174,7 +162,7 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
                                 sendo_atendido = fila[0]
                                 fila.shift()
                             } else //se não há alguém na fila, só sai do servidor
-                                sendo_atendido = "nenhum"
+                            sendo_atendido = "nenhum"
                         }
                     }
                     //console.log(lista_eventos[e], ">", sendo_atendido, fila 
@@ -191,14 +179,8 @@ function processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, tipo_atendimento, lista
             //console.log(ic_inferior, ic_superior, num_fila_medio)
             if (num_fila_medio > ic_superior || num_fila_medio < ic_inferior)
                 console.log("Intervalo de confianca de 95% nao satisfeito!")
-                
-            lista_fila.push(num_fila_medio)
+            
         }
-                
-        for (x = 0; x < lista_lambda.length; x++) //Para plotar lambda = lambda1+lambda2
-            lista_lambda[x] += lambda2
-            
+
+        return num_fila_medio
     }
-            
-    return {lista_lambda: lista_lambda, lista_fila: lista_fila}
-}

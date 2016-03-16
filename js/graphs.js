@@ -1,71 +1,117 @@
 var graphs = {
-    LambdaVsAvgClientsQueue: function(lambdaData, avgCustomersDataAnalytic, avgCustomersDataSimulation, element) {
-        element = element || '#averageCustomersQueueChart';
-        $(element).highcharts({
+    LambdaVsAvgClientsQueue: function(lambdaData, element) {
+        element = element || 'averageCustomersQueueChart';
+        chart = new Highcharts.Chart({
             chart: {
+                renderTo: element,
                 shadow: true
             },
             title: {
-                text: 'Lambda vs. Average customers in queue'
+                text: 'Lambda1 vs. Número médio de clientes na fila'
             },
             xAxis: {
                 categories: lambdaData,
                 title:{
-                    text:'λ'
+                    text:'λ (Lambda1)'
                 }
             },
             yAxis: {
                 title: {
-                    text: 'Avg. number of customers in queue'
+                    text: 'Número médio de clientes na fila'
                 }
             },
             series: [ 
                 {
-                    name: 'Avg. number of customers in queue (analytic)',
+                    name: 'Analítico, sem prioridade',
                     type: 'line',
-                    data: avgCustomersDataAnalytic
+                    data: []
                 },
                 {
-                    name: 'Avg. number of customers in queue (simulation)',
+                    name: 'Analítico, com prioridade, sem preemp.',
                     type: 'line',
-                    data: avgCustomersDataSimulation
+                    data: []
+                },
+                {
+                    name: 'Analítico, com prioridade, com preemp.',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: 'Simulação, sem prioridade',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: 'Simulação, com prioridade, sem preemp.',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: 'Simulação, com prioridade, com preemp.',
+                    type: 'line',
+                    data: []
                 }
             ]
         });
+        $('#'+element).highcharts();
+        return chart;
     },
 
-    LambdaVsAvgWaitQueue: function(lambdaData, avgWaitDataAnalytic, avgWaitDataSimulation, element) {
-        element = element || '#averageWaitQueueChart';
-        $(element).highcharts({
+    LambdaVsAvgWaitQueue: function(lambdaData, element) {
+        element = element || 'averageWaitQueueChart';
+        chart = new Highcharts.Chart({
             chart: {
+                renderTo: element,
                 shadow: true
             },
             title: {
-                text: 'Lambda vs. Average wait time in queue'
+                text: 'Lambda1 vs. Tempo médio de espera na fila'
             },
             xAxis: {
                 categories: lambdaData,
                 title:{
-                    text:'λ'
+                    text:'λ (Lambda1)'
                 }
             },
             yAxis: {
                 title: {
-                    text: 'Avg. wait time in queue'
+                    text: 'Tempo médio de espera na fila'
                 }
             },
-            series: [
+            series: [ 
                 {
-                    name: 'Avg. wait time in queue (analytic)',
+                    name: 'Analítico, sem prioridade',
                     type: 'line',
-                    data: avgWaitDataAnalytic
+                    data: []
                 },
                 {
-                    name: 'Avg. wait time in queue (simulation)',
+                    name: 'Analítico, com prioridade, sem preemp.',
                     type: 'line',
-                    data: avgWaitDataSimulation
+                    data: []
+                },
+                {
+                    name: 'Analítico, com prioridade, com preemp.',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: 'Simulação, sem prioridade',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: 'Simulação, com prioridade, sem preemp.',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: 'Simulação, com prioridade, com preemp.',
+                    type: 'line',
+                    data: []
                 }
             ]
         });
+        $('#'+element).highcharts();
+        return chart;
     }
 };
