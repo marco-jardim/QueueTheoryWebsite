@@ -21,7 +21,7 @@ Fila.prototype.adicionar = function( cliente,  preemptivo){
     }
 
 Fila.prototype.remover = function(){
-        for(lista : this.getFilas()){
+        for(lista of this.getFilas()){
           if(lista.length > 0){
             var cliente = lista[0];
             lista.shift();
