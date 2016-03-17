@@ -105,6 +105,7 @@
                 chartWait.series[2].addPoint(finalQueue3.avgWaitQueue, false);
 
                 var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", lambda1, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
+                //console.log(simulationCustomers3);
                 chartCustomers.series[5].addPoint(simulationCustomers3, false);
                 var simulationWait3 = [];
                 

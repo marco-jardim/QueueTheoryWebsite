@@ -106,7 +106,7 @@ function geraListaEventos(MAX_EVENTOS, taxaChegada1, tipoSaida1, taxaSaida1, tax
                 tempo_saida1 = randomNumbersGenerator.uniform(taxaSaida1[0], taxaSaida1[1])
             } else {
                 prox_evento = "saida2"
-                tempo_saida1 = (tempo_saida1-tempo_saida1)
+                tempo_saida1 = (tempo_saida1-tempo_saida2)
                 tempo_saida2 = randomNumbersGenerator.uniform(taxaSaida2[0], taxaSaida2[1])
             }
                     
