@@ -12,3 +12,5 @@ Random.prototype.Deterministico = function( lambda) {
 Random.prototype.Uniforme = function( a,  b) {
 	return Math.random() * (b - a) + a;
 }
+
+var Random = new Random();

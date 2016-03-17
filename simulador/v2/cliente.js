@@ -5,7 +5,7 @@ function Cliente (classe, tempoEntrada) {
     this.trabalhoPendente;
     this.classe = classe;
     this.tempoEntrada = tempoEntrada;
-    this.tempoSaida = tempoSaida;
+    this.tempoSaida = null;
     this.tempoDeServico = this.classe.getRandom();
 }
 

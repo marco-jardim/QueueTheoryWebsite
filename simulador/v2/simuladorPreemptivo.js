@@ -50,7 +50,7 @@ SimuladorPreemptivo.prototype.LiberaServidorEBuscaNovoCliente = function(horario
     //se tiver gnt na fila
     if(fila.tamanho() > 0) {
         //tira da fila
-        ClientePreemptivo novoCliente = (ClientePreemptivo) fila.remover();
+        var novoCliente = fila.remover();
         //Marca a saida do cliente
         novoCliente.marcaSaida(horarioDeEntradaNoServidor);
         //Processa o cliente
@@ -60,7 +60,7 @@ SimuladorPreemptivo.prototype.LiberaServidorEBuscaNovoCliente = function(horario
 
 SimuladorPreemptivo.prototype.ProcessarCliente = function(cliente, horarioAtual){
     //guarda o cliente no servidor
-    clienteNoServidor = (ClientePreemptivo) cliente;
+    clienteNoServidor = cliente;
     //marca o tempo de saida da fila
     clienteNoServidor.marcaSaida(horarioAtual);
     //cria o evento para terminar o processamento do cliente, baseado do tempo pendente para terminado
@@ -73,7 +73,7 @@ SimuladorPreemptivo.prototype.ProcessarCliente = function(cliente, horarioAtual)
 
 SimuladorPreemptivo.prototype.InsereClienteNaFila = function(horarioDeEntrada, classe){
     //marca o horario de entrada
-    ClientePreemptivo novoCliente = new ClientePreemptivo(classe, horarioDeEntrada);
+    var novoCliente = new ClientePreemptivo(classe, horarioDeEntrada);
     //Se tem cliente no Servidor
     if(clienteNoServidor != null) {
         //Se a prioridade for menor do cliente que esta no servidor
@@ -120,7 +120,7 @@ SimuladorPreemptivo.prototype.iniciarSimulacao = function(){
     return this.getMetricaDeInteresse();
 }
 
-SimuladorPreemptivo.prototype.continuarSimulação = function( tempoFinal){
+SimuladorPreemptivo.prototype.continuarSimulacao = function( tempoFinal){
     this.getMetricaDeInteresse().setMediaCalculada(null);
     this.temporizador.setTempoFinal(tempoFinal);
     return this.iniciarSimulacao();

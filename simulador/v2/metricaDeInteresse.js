@@ -26,9 +26,9 @@ MetricaDeInteresse.prototype.getMediaTempoDeEspera  = function() {
             for (cliente of this.getClientesProcessados())
                 listaDeltaTempo.push(cliente.getDeltaTempo());
 
-            setMediaCalculada(Metricas.Media(listaDeltaTempo));
+            this.setMediaCalculada(Metricas.Media(listaDeltaTempo));
         }
-        return mediaCalculada;
+        return this.mediaCalculada;
     }
 
 MetricaDeInteresse.prototype.adicionaClienteProcessado  = function(cliente){
@@ -61,9 +61,9 @@ MetricaDeInteresse.prototype.getTempoEntreSaidas  = function() {
         for (cliente of this.clientesProcessados)
             tempoDeSaidas.push(cliente.getTempoSaida());
         
-        tempoDeSaidas.sort();
-        for (int i = 0; i < tempoDeSaidas.length - 1; i++) {
-            tempoEntreSaidas.push(tempoDeSaidas.[(i + 1)] - tempoDeSaidas.[i]);
+        tempoDeSaidas.sort(function(a, b){return a-b});
+        for (var i = 0; i < tempoDeSaidas.length - 1; i++) {
+            tempoEntreSaidas.push(tempoDeSaidas[(i + 1)] - tempoDeSaidas[i]);
         }
         return tempoEntreSaidas;
     }
@@ -93,7 +93,8 @@ MetricaDeInteresse.prototype.getPessoasFila  = function() {
         }
 
         pessoasNaFila[0] = Metricas.Little(classe1.getLambda(), Metricas.Media(listaDeltaTempo1));
-        pessoasNaFila[1] = Metricas.Little(classe2.getLambda(), Metricas.Media(listaDeltaTempo2));
+        if (classe2)
+            pessoasNaFila[1] = Metricas.Little(classe2.getLambda(), Metricas.Media(listaDeltaTempo2));
 
         return pessoasNaFila;
     }

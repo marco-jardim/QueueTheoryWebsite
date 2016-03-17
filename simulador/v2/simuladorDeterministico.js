@@ -106,7 +106,7 @@ SimuladorDeterministico.prototype.iniciarSimulacao = function(){
     return this.getMetricaDeInteresse();
 }
 
-SimuladorDeterministico.prototype.continuarSimulação = function( tempoFinal){
+SimuladorDeterministico.prototype.continuarSimulacao = function( tempoFinal){
     this.getMetricaDeInteresse().setMediaCalculada(null);
     this.temporizador.setTempoFinal(tempoFinal);
     return this.iniciarSimulacao();

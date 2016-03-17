@@ -7,7 +7,7 @@ function Tarefa ( horario,  funcao) {
 }
 
 Tarefa.prototype.getHorario  = function() {
-    return horario;
+    return this.horario;
 }
 
 Tarefa.prototype.setHorario  = function( horario) {

@@ -3,7 +3,7 @@
 function Temporizador  ( tempoFinal) {
     this.tempoAtual = 0.0;
     this.tempoFinal = tempoFinal;
-    this.agenda = new AgendaTaferas();
+    this.agenda = new AgendaTarefas();
 }
 
 Temporizador.prototype.cancelarTarefa  = function( tarefa){
@@ -27,18 +27,17 @@ Temporizador.prototype.setTempoFinal  = function( tempoFinal){
 }
 
 Temporizador.prototype.registrarTarefaPorAtraso  = function( atraso,  funcao){
-    var tarefa = new Tarefa(atraso + tempoAtual, funcao);
+    var tarefa = new Tarefa(atraso + this.tempoAtual, funcao);
     this.agenda.adicionarTarefa(tarefa);
     return tarefa;
 }
 
 Temporizador.prototype.play  = function(){
     while(this.tempoAtual < this.tempoFinal){
-        try {
-            tempoAtual = proximaTarefa.getHorario();
-            proximaTarefa.executar(tempoAtual);
-        } catch (e) {
-            console.log("AgendaTaferas null");
-        }
+        var proximaTarefa = this.agenda.proximaTarefa();
+        if (!proximaTarefa) break;
+
+        this.tempoAtual = proximaTarefa.getHorario();
+        proximaTarefa.executar(this.tempoAtual);
     }
 }

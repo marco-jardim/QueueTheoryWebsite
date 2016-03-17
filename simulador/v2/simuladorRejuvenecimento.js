@@ -36,7 +36,7 @@ SimuladorRejuvenecimento.prototype.Rejuveneceu = function(horario){
     this.criaTarefas();
 }
 
-SimuladorRejuvenecimento.prototype.executar(){
+SimuladorRejuvenecimento.prototype.executar = function(){
     this.preparaSimulador();
     temporizador.play();
     return metricas;

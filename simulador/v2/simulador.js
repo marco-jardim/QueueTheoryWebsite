@@ -48,15 +48,16 @@ Simulador.prototype.getMetricaDeInteresse= function() {
 }
 
 Simulador.prototype.prepararSimulacao= function( classes){
+    var self = this;
     for( c of classes){
-        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), function(tempo) { this.InsereClienteNaFila(tempo,c); }); ////////////////////// 
+        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), function(tempo) { self.InsereClienteNaFila(tempo,c); }); ////////////////////// 
     }
 }
 
 Simulador.prototype.LiberaServidorEBuscaNovoCliente= function( horarioDeEntradaNoServidor,  cliente){
     this.setServidorOcupado(false);
-    this.setTempoVazio(temporizador.getTempoAtual());
-    metricaDeInteresse.adicionaClienteProcessado(cliente);
+    this.setTempoVazio(this.temporizador.getTempoAtual());
+    this.metricaDeInteresse.adicionaClienteProcessado(cliente);
     if(this.fila.tamanho() > 0){
         var novoCliente = this.fila.remover();
         novoCliente.setTempoSaida(horarioDeEntradaNoServidor);
@@ -65,14 +66,16 @@ Simulador.prototype.LiberaServidorEBuscaNovoCliente= function( horarioDeEntradaN
 }
 
 Simulador.prototype.ProcessarCliente= function( cliente){
+    var self = this;
     // com preempçao: tira o cliente, salva o tempo que ainda resta e coloca o novo no servidor
     this.setServidorOcupado(true);
     this.clienteAtual = cliente;
     this.setTempoVazioTotal(this.tempoVazioTotal + this.temporizador.getTempoAtual() - this.tempoVazio);
-    this.temporizador.registrarTarefaPorAtraso(cliente.getTempoDeServico(), function(tempo) { this.LiberaServidorEBuscaNovoCliente(tempo, cliente); }); ////////////////
+    this.temporizador.registrarTarefaPorAtraso(cliente.getTempoDeServico(), function(tempo) { self.LiberaServidorEBuscaNovoCliente(tempo, cliente); }); ////////////////
 }
 
 Simulador.prototype.InsereClienteNaFila= function( horarioDeEntrada,  classe){
+    var self = this;
     var cliente = new Cliente(classe, horarioDeEntrada);
     // Com preempção: coloca direto no servidor
     if(!this.servidorOcupado){
@@ -86,7 +89,7 @@ Simulador.prototype.InsereClienteNaFila= function( horarioDeEntrada,  classe){
         this.fila.adicionar(cliente,false);
     }
     // Usa-se Random.Exponecial Sempre pois a entrada eh sempre Memoryless
-    this.temporizador.registrarTarefaPorAtraso(getClasseRandomLambda(classe), function(tempo) { this.InsereClienteNaFila(tempo, classe); }); ///////////////
+    this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(classe), function(tempo) { self.InsereClienteNaFila(tempo, classe); }); ///////////////
 }
 
 Simulador.prototype.getTrabalhoPendenteAtual= function( xResidual) {
@@ -106,7 +109,7 @@ Simulador.prototype.iniciarSimulacao= function(){
     return this.getMetricaDeInteresse();
 }
 
-Simulador.prototype.continuarSimulação= function( tempoFinal){
+Simulador.prototype.continuarSimulacao= function( tempoFinal){
     this.getMetricaDeInteresse().setMediaCalculada(null);
     this.temporizador.setTempoFinal(tempoFinal);
     return this.iniciarSimulacao();

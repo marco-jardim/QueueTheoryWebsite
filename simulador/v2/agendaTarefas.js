@@ -20,7 +20,7 @@ AgendaTarefas.prototype.adicionarTarefa  = function(tarefa){
 
 AgendaTarefas.prototype.proximaTarefa  = function(){
     if(this.tarefas.length > 0){
-        this.tarefas.sort(new TarefaComparator());
+        this.tarefas.sort(TarefaComparator);
         var tarefa = this.tarefas[0];
         this.tarefas.shift();
         return tarefa;

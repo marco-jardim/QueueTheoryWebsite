@@ -2,43 +2,43 @@
 
 
 function Fila( classes) {
-        this.filas = []; //List<List<Cliente>>
-        for (classe of classes) {
-            this.filas.push(new Array(10));
-        }
+    this.filas = []; //List<List<Cliente>>
+    for (classe of classes) {
+        this.filas.push([]);
     }
+}
 
 Fila.prototype.getFilas = function() {
-        return this.filas;
-    }
+    return this.filas;
+}
 
 Fila.prototype.adicionar = function( cliente,  preemptivo){
-        if(preemptivo){
-            this.getFilas()[this.cliente.getClasse().getPrioridade()].unshift(cliente);
-        }else{
-            this.getFilas()[this.cliente.getClasse().getPrioridade()].unshift(cliente);
-        }
+    if(preemptivo){
+        this.getFilas()[this.cliente.getClasse().getPrioridade()].unshift(cliente);
+    }else{
+        this.getFilas()[this.cliente.getClasse().getPrioridade()].unshift(cliente);
     }
+}
 
 Fila.prototype.remover = function(){
-        for(lista of this.getFilas()){
-          if(lista.length > 0){
+    for(lista of this.getFilas()){
+        if(lista.length > 0){
             var cliente = lista[0];
             lista.shift();
             return cliente;
-          }
         }
-        return null;
     }
+    return null;
+}
 
 Fila.prototype.tamanho = function(){
 
-        var contagem = 0;
-        for (var i = 0; i < filas.length; i++) {
-            for (var j = 0; j < filas[i].length; j++) {
-                contagem++;
-            }
+    var contagem = 0;
+    for (var i = 0; i < this.filas.length; i++) {
+        for (var j = 0; j < this.filas[i].length; j++) {
+            contagem++;
         }
-
-        return contagem;
     }
+
+    return contagem;
+}

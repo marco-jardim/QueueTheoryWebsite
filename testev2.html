@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script src="simulador/v2/agendaTarefas.js"></script>
+	<script src="simulador/v2/classe.js"></script>
+	<script src="simulador/v2/agendaTarefas.js"></script>
+	<script src="simulador/v2/cliente.js"></script>
+	<script src="simulador/v2/clientePreemptivo.js"></script>
+	<script src="simulador/v2/fila.js"></script>
+	<script src="simulador/v2/intervalo.js"></script>
+	<script src="simulador/v2/metricaDeInteresse.js"></script>
+	<script src="simulador/v2/metricaDeRejuvenecimento.js"></script>
+	<script src="simulador/v2/metricas.js"></script>
+	<script src="simulador/v2/random.js"></script>
+	<script src="simulador/v2/simulacao.js"></script>
+	<script src="simulador/v2/simulacaoDeterministica.js"></script>
+	<script src="simulador/v2/simulacaoPreemptiva.js"></script>
+	<script src="simulador/v2/simulacaoResultado.js"></script>
+	<script src="simulador/v2/simulador.js"></script>
+	<script src="simulador/v2/simuladorDeterministico.js"></script>
+	<script src="simulador/v2/simuladorPreemptivo.js"></script>
+	<script src="simulador/v2/simuladorRejuvenecimento.js"></script>
+	<script src="simulador/v2/tarefa.js"></script>
+	<script src="simulador/v2/tarefaComparator.js"></script>
+	<script src="simulador/v2/temporizador.js"></script>
+	<script src="simulador/v2/utils.js"></script>
+</head>
+
+<body>
+	<script>
+		var simulacao = new Simulacao(
+            new Classe(0, 1,0, function() { return Random.Exponencial(1); }), null
+        );
+
+        simulacao.executar(.05, .91, .05);
+	</script>
+</body>
+</html>
