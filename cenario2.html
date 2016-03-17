@@ -10,9 +10,30 @@
     <script src="assets/js/highcharts.js"></script>
     <script src="js/stats.js"></script>
     <script src="js/graphs.js"></script>
-    <script src="simulador/atendimentos.js"></script>
-    <script src="simulador/events.js"></script>
-    <script src="simulador/math.min.js"></script>
+
+    <script src="simulador/v2/agendaTarefas.js"></script>
+    <script src="simulador/v2/classe.js"></script>
+    <script src="simulador/v2/agendaTarefas.js"></script>
+    <script src="simulador/v2/cliente.js"></script>
+    <script src="simulador/v2/clientePreemptivo.js"></script>
+    <script src="simulador/v2/fila.js"></script>
+    <script src="simulador/v2/intervalo.js"></script>
+    <script src="simulador/v2/metricaDeInteresse.js"></script>
+    <script src="simulador/v2/metricaDeRejuvenecimento.js"></script>
+    <script src="simulador/v2/metricas.js"></script>
+    <script src="simulador/v2/random.js"></script>
+    <script src="simulador/v2/simulacao.js"></script>
+    <script src="simulador/v2/simulacaoDeterministica.js"></script>
+    <script src="simulador/v2/simulacaoPreemptiva.js"></script>
+    <script src="simulador/v2/simulacaoResultado.js"></script>
+    <script src="simulador/v2/simulador.js"></script>
+    <script src="simulador/v2/simuladorDeterministico.js"></script>
+    <script src="simulador/v2/simuladorPreemptivo.js"></script>
+    <script src="simulador/v2/simuladorRejuvenecimento.js"></script>
+    <script src="simulador/v2/tarefa.js"></script>
+    <script src="simulador/v2/tarefaComparator.js"></script>
+    <script src="simulador/v2/temporizador.js"></script>
+    <script src="simulador/v2/utils.js"></script>
 </head>
 
 <body>
@@ -56,7 +77,6 @@
                 avgCustomersQueue: totalAvgCustomersQueue,
                 avgWaitQueue: totalAvgWaitQueue
             }
-
         }
 
         $(document).ready(function(){
@@ -72,40 +92,40 @@
 
             var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambdaData);
             var chartWait = graphs.LambdaVsAvgWaitQueue(lambdaData);
-            var tipoSaida = "exponencial";
-            var MAX_AMOSTRAS = 1000;
-            var MAX_EVENTOS = 1000;
+
+            var simulacao = new Simulacao(
+                new Classe(queue1.lambda, queue1.Mu, 0, function() { return Random.Exponencial(queue1.Mu); }), 
+                new Classe(queue2.lambda, queue2.Mu, 0, function() { return Random.Exponencial(queue2.Mu); })
+            );
 
             for (var lambda1 of lambda1Data) {
                 queue1.lambda = lambda1;
 
                 // Fila única, sem prioridades
                 var finalQueue = calculateQueueTwoClasses(queue1, queue2);
+                var simulationCustomers = simulacao.executarPessoasNaFila(lambda1);
+                var simulationWait = simulacao.executarTempoPessoasNaFila(lambda1);
+
                 chartCustomers.series[0].addPoint(finalQueue.avgCustomersQueue, false);
                 chartWait.series[0].addPoint(finalQueue.avgWaitQueue, false);
+                chartCustomers.series[3].addPoint(simulationCustomers.media, false);
+                chartWait.series[3].addPoint(simulationWait.media, false);
 
-                var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", lambda1, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
-                chartCustomers.series[3].addPoint(simulationCustomers, false);
-                var simulationWait = [];
+                // // Com prioridades, sem preempção
+                // var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
+                // chartCustomers.series[1].addPoint(finalQueue2.avgCustomersQueue, false);
+                // chartWait.series[1].addPoint(finalQueue2.avgWaitQueue, false);
 
+                // chartCustomers.series[4].addPoint(simulationCustomers.media, false);
+                // chartWait.series[4].addPoint(simulationWait.media, false);
 
-                // Com prioridades, sem preempção
-                var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
-                chartCustomers.series[1].addPoint(finalQueue2.avgCustomersQueue, false);
-                chartWait.series[1].addPoint(finalQueue2.avgWaitQueue, false);
+                // // Com prioridades, com preempção
+                // var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
+                // chartCustomers.series[2].addPoint(finalQueue3.avgCustomersQueue, false);
+                // chartWait.series[2].addPoint(finalQueue3.avgWaitQueue, false);
 
-                var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", lambda1, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
-                chartCustomers.series[4].addPoint(simulationCustomers2, false);
-                var simulationWait2 = [];
-
-                // Com prioridades, com preempção
-                var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
-                chartCustomers.series[2].addPoint(finalQueue3.avgCustomersQueue, false);
-                chartWait.series[2].addPoint(finalQueue3.avgWaitQueue, false);
-
-                var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", lambda1, tipoSaida, queue1.Mu, queue2.lambda, tipoSaida, queue2.Mu);
-                chartCustomers.series[5].addPoint(simulationCustomers3, false);
-                var simulationWait3 = [];
+                // chartCustomers.series[5].addPoint(simulationCustomers.media, false);
+                // chartWait.series[5].addPoint(simulationWait.media, false);
                 
                 chartCustomers.redraw();
                 chartWait.redraw();
