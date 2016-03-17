@@ -192,7 +192,7 @@ function Simulacao( classe1,  classe2) {
         Simulador simulador = getSimulador(tempoFinal, classe1, classe2);
         MetricaDeInteresse metricaDeInteresse = simulador.iniciarSimulacao();
         var tempoEntreSaidas = metricaDeInteresse.getTempoEntreSaidas();
-        tempoEntreSaidas.sort(Comparator.<Double>naturalOrder()); //////////
+        tempoEntreSaidas.sort(function(a, b){return a-b});
 
         var blobs = [];
         for (var i = 0; i < tempoEntreSaidas.size(); i++) {
