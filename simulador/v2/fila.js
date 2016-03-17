@@ -35,9 +35,7 @@ Fila.prototype.tamanho = function(){
 
     var contagem = 0;
     for (var i = 0; i < this.filas.length; i++) {
-        for (var j = 0; j < this.filas[i].length; j++) {
-            contagem++;
-        }
+        contagem += this.filas[i].length;
     }
 
     return contagem;

@@ -9,9 +9,8 @@ function SimuladorPreemptivo(tempoFinal, classeObrigatoria, classes) {
     this.nClientesComServidorVazio = 0;
     this.clienteAtual;
 
-    this.listaClasse = [];
-    this.listaClasse.push(classeObrigatoria);
-    this.listaClasse.concat(classes);
+    this.listaClasse = [classeObrigatoria];
+    this.listaClasse = this.listaClasse.concat([].concat(classes));
 
     this.fila = new Fila(this.listaClasse);
     this.prepararSimulacao(this.listaClasse);
