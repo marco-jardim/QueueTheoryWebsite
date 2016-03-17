@@ -15,7 +15,7 @@ Tarefa.prototype.setHorario  = function( horario) {
 }
 
 Tarefa.prototype.executar  = function( hora){
-    this.funcao.accept(hora);
+    this.funcao(hora);
 }
 
 Tarefa.prototype.hashCode  = function() {
