@@ -6,7 +6,7 @@ function SimulacaoDeterministica(classe1, classe2) {
 	return Simulacao(classe1, classe2);
 }
 
-SimulacaoDeterministica.prototype.getSimulador(tempoFinal, classe1, classe2) {
+SimulacaoDeterministica.prototype.getSimulador = function(tempoFinal, classe1, classe2) {
 	if (classe2)
 		return new SimuladorDeterministico(tempoFinal, classe1, classe2);
 	else

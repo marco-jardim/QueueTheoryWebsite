@@ -17,33 +17,33 @@ function SimuladorPreemptivo(tempoFinal, classeObrigatoria, classes) {
     this.prepararSimulacao(this.listaClasse);
 }
 
-SimuladorPreemptivo.prototype.setServidorOcupado( servidorOcupado) {
+SimuladorPreemptivo.prototype.setServidorOcupado = function( servidorOcupado) {
     this.servidorOcupado = servidorOcupado;
 }
 
-SimuladorPreemptivo.prototype.getServidorOcupado() {
+SimuladorPreemptivo.prototype.getServidorOcupado = function() {
     return this.servidorOcupado;
 }
 
-SimuladorPreemptivo.prototype.getTemporizador() {
+SimuladorPreemptivo.prototype.getTemporizador = function() {
     return this.temporizador;
 }
 
-SimuladorPreemptivo.prototype.getFila() {
+SimuladorPreemptivo.prototype.getFila = function() {
     return this.fila;
 }
 
-SimuladorPreemptivo.prototype.getMetricaDeInteresse() {
+SimuladorPreemptivo.prototype.getMetricaDeInteresse = function() {
     return this.metricaDeInteresse;
 }
 
-SimuladorPreemptivo.prototype.prepararSimulacao( classes){
+SimuladorPreemptivo.prototype.prepararSimulacao = function( classes){
     for( c of classes){
-        this.temporizador.registrarTarefaPorAtraso(getClasseRandomLambda(c), (tempo) -> InsereClienteNaFila(tempo, c)); //////////////////////
+        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), function(tempo) { this.InsereClienteNaFila(tempo,c); }); ////////////////////// 
     }
 }
 
-SimuladorPreemptivo.prototype.LiberaServidorEBuscaNovoCliente(horarioDeEntradaNoServidor, cliente){
+SimuladorPreemptivo.prototype.LiberaServidorEBuscaNovoCliente = function(horarioDeEntradaNoServidor, cliente){
     metricaDeInteresse.adicionaClienteProcessado(cliente);
     //tira o cliente do servidor
     clienteNoServidor = null;
@@ -58,7 +58,7 @@ SimuladorPreemptivo.prototype.LiberaServidorEBuscaNovoCliente(horarioDeEntradaNo
     }
 }
 
-SimuladorPreemptivo.prototype.ProcessarCliente(cliente, horarioAtual){
+SimuladorPreemptivo.prototype.ProcessarCliente = function(cliente, horarioAtual){
     //guarda o cliente no servidor
     clienteNoServidor = (ClientePreemptivo) cliente;
     //marca o tempo de saida da fila
@@ -68,10 +68,10 @@ SimuladorPreemptivo.prototype.ProcessarCliente(cliente, horarioAtual){
     //dispara o evento
     tarefaDeProcessamento =
     temporizador.registrarTarefaPorAtraso(
-        clienteNoServidor.getTempoPendente() , (tempo) -> LiberaServidorEBuscaNovoCliente(tempo, cliente));
+        clienteNoServidor.getTempoPendente() , function(tempo) { this.LiberaServidorEBuscaNovoCliente(tempo, cliente); });
 }
 
-SimuladorPreemptivo.prototype.InsereClienteNaFila(horarioDeEntrada, classe){
+SimuladorPreemptivo.prototype.InsereClienteNaFila = function(horarioDeEntrada, classe){
     //marca o horario de entrada
     ClientePreemptivo novoCliente = new ClientePreemptivo(classe, horarioDeEntrada);
     //Se tem cliente no Servidor
@@ -100,10 +100,10 @@ SimuladorPreemptivo.prototype.InsereClienteNaFila(horarioDeEntrada, classe){
     }
 
     // Usa-se Random.Exponecial Sempre pois a entrada eh sempre Memoryless
-    temporizador.registrarTarefaPorAtraso(Random.Exponencial(classe.getLambda()), (tempo) -> InsereClienteNaFila(tempo, classe));
+    temporizador.registrarTarefaPorAtraso(Random.Exponencial(classe.getLambda()), function(tempo) { this.InsereClienteNaFila(tempo, classe); });
 }
 
-SimuladorPreemptivo.prototype.getTrabalhoPendenteAtual( xResidual) {
+SimuladorPreemptivo.prototype.getTrabalhoPendenteAtual = function( xResidual) {
     //Nq1*E[X1] + Nq2*E[X2] + Xr
     var total = 0.0;
     for( f of this.fila.getFilas()) {
@@ -114,27 +114,27 @@ SimuladorPreemptivo.prototype.getTrabalhoPendenteAtual( xResidual) {
     return total + xResidual;
 }
 
-SimuladorPreemptivo.prototype.iniciarSimulacao(){
+SimuladorPreemptivo.prototype.iniciarSimulacao = function(){
     this.temporizador.play();
-    this.getMetricaDeInteresse().setFracaoDeTempoServidorVazio(this.tempoVazioTotal / this.temporizador.getTempoFinal());
+    this.getMetricaDeInteresse().setFracaoDeTempoServidorVazio(this.tempoVazioTzxotal / this.temporizador.getTempoFinal());
     return this.getMetricaDeInteresse();
 }
 
-SimuladorPreemptivo.prototype.continuarSimulação( tempoFinal){
+SimuladorPreemptivo.prototype.continuarSimulação = function( tempoFinal){
     this.getMetricaDeInteresse().setMediaCalculada(null);
     this.temporizador.setTempoFinal(tempoFinal);
     return this.iniciarSimulacao();
 }
 
-SimuladorPreemptivo.prototype.setTempoVazioTotal( tempoVazioTotal) {
+SimuladorPreemptivo.prototype.setTempoVazioTotal = function( tempoVazioTotal) {
     this.tempoVazioTotal = tempoVazioTotal;
 }
 
-SimuladorPreemptivo.prototype.setTempoVazio( tempoVazio) {
+SimuladorPreemptivo.prototype.setTempoVazio = function( tempoVazio) {
     this.tempoVazio = tempoVazio;
 }
 
-SimuladorPreemptivo.prototype.getClasseRandomLambda( classe) {
+SimuladorPreemptivo.prototype.getClasseRandomLambda = function( classe) {
     return Random.Exponencial(classe.getLambda());
 }
 
