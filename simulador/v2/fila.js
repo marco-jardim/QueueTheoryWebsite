@@ -14,9 +14,9 @@ Fila.prototype.getFilas = function() {
 
 Fila.prototype.adicionar = function( cliente,  preemptivo){
     if(preemptivo){
-        this.getFilas()[this.cliente.getClasse().getPrioridade()].unshift(cliente);
+        this.getFilas()[cliente.getClasse().getPrioridade()].unshift(cliente);
     }else{
-        this.getFilas()[this.cliente.getClasse().getPrioridade()].unshift(cliente);
+        this.getFilas()[cliente.getClasse().getPrioridade()].unshift(cliente);
     }
 }
 

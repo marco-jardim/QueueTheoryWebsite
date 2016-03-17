@@ -1,17 +1,3 @@
-/* require:
-
-simulador
-simulacaoresultado
-metricadeinteresse
-classe
-metricas
-
-*/
-
-
-
-
-
 function Simulacao( classe1,  classe2) {
     this.nLoops = 30;
     this.tempoFinal = 100000.;
@@ -23,138 +9,131 @@ function Simulacao( classe1,  classe2) {
     }
 }
 
-
-
 Simulacao.prototype.PrintSimulacaoResultado = function( titulo, resultado){
     var media = [];
     var intervaloDeConfiacaInferior = [];
     var intervaloDeConfiacaSuperior = [];
-
     for( r of resultado){
         media.push(r.media.toString());
         intervaloDeConfiacaInferior.push(r.intConfInferior.toString());
         intervaloDeConfiacaSuperior.push(r.intConfSuperior.toString());
     }
     console.log(titulo);
-        //console.log("Media");
-        console.log(media.toString().replace('.',','));
-        //console.log("Inferior");
-        console.log(intervaloDeConfiacaInferior.toString().replace('.',','));
-        //console.log("Superior");
-        console.log(intervaloDeConfiacaSuperior.toString().replace('.',','));
-    }
+    console.log("Media");
+    console.log(media);
+    console.log("Inferior");
+    console.log(intervaloDeConfiacaInferior);
+    console.log("Superior");
+    console.log(intervaloDeConfiacaSuperior);
+}
 
+Simulacao.prototype.getSimulador = function(tempoFinal, classe1) {
+    return new Simulador(tempoFinal, classe1);
+}
 
+Simulacao.prototype.getSimulador = function(tempoFinal, classe1, classe2) {
+    return new Simulador(tempoFinal, classe1, classe2);
+}
 
-    Simulacao.prototype.getSimulador = function(tempoFinal, classe1) {
-        return new Simulador(tempoFinal, classe1);
-    }
-
-    Simulacao.prototype.getSimulador = function(tempoFinal, classe1, classe2) {
-        return new Simulador(tempoFinal, classe1, classe2);
-    }
-
-    Simulacao.prototype.executarPessoasNaFila = function(lambda){
-        this.classe1.setLambda(lambda);
-        var MediasPessoasNaFilaColhetadas = [];
-        var intervaloInferior;
-        var intervaloSuperior;
-        var media;
-        do{
-            for(var i = 0; i < this.nLoops; i++){
-                var simulador = this.getSimulador(this.tempoFinal,this.classe1,this.classe2);
-                var metricaDeInteresse = simulador.iniciarSimulacao();
-                MediasPessoasNaFilaColhetadas.push( Metricas.Little(this.classe1.getLambda() + this.classe2.getLambda(), metricaDeInteresse.getMediaTempoDeEspera()));
-            }
-
-            media = Metricas.Media(MediasPessoasNaFilaColhetadas);
-            intervaloInferior = Metricas.IntervaloConfiancaInferior(MediasPessoasNaFilaColhetadas);
-            intervaloSuperior = Metricas.IntervaloConfiancaSuperior(MediasPessoasNaFilaColhetadas);
-
-        }while( media < intervaloInferior || media > intervaloSuperior );
-
-        return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
-    }
-
-    Simulacao.prototype.executarTempoPessoasNaFila = function(lambda){
-        this.classe1.setLambda(lambda);
-        var mediasTempoDePessoasNaFila = [];
-        var intervaloInferior;
-        var intervaloSuperior;
-        var media;
-        do{
-            for(var i = 0; i < this.nLoops; i++){
-                var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
-                var metricaDeInteresse = simulador.iniciarSimulacao();
-                mediasTempoDePessoasNaFila.push(metricaDeInteresse.getMediaTempoDeEspera());
-            }
-
-            media = Metricas.Media(mediasTempoDePessoasNaFila);
-            intervaloInferior = Metricas.IntervaloConfiancaInferior(mediasTempoDePessoasNaFila);
-            intervaloSuperior = Metricas.IntervaloConfiancaSuperior(mediasTempoDePessoasNaFila);
-
-        }while( media < intervaloInferior || media > intervaloSuperior );
-
-        return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
-    }
-
-    Simulacao.prototype.executarFracaoTempoServidorVazio = function(lambda){
-        this.classe1.setLambda(lambda);
-        var mediasFracaoServidorVazio = [];
-        var intervaloInferior;
-        var intervaloSuperior;
-        var media;
-        do{
-            for(var i = 0; i < this.nLoops; i++){
-                var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
-                var metricaDeInteresse = simulador.iniciarSimulacao();
-                mediasFracaoServidorVazio.push(metricaDeInteresse.getFracaoDeTempoServidorVazio());
-            }
-
-            media = Metricas.Media(mediasFracaoServidorVazio);
-            intervaloInferior = Metricas.IntervaloConfiancaInferior(mediasFracaoServidorVazio);
-            intervaloSuperior = Metricas.IntervaloConfiancaSuperior(mediasFracaoServidorVazio);
-
-        }while( media < intervaloInferior || media > intervaloSuperior );
-
-        return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
-    }
-
-    Simulacao.prototype.executarFracaoChegadasServidorVazio = function(lambda){
-        this.classe1.setLambda(lambda);
-        var mediasFracaoChegadasServidorVazio = [];
-        var intervaloInferior;
-        var intervaloSuperior;
-        var media;
-        do{
-            for(var i = 0; i < this.nLoops; i++){
-                var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
-                var metricaDeInteresse = simulador.iniciarSimulacao();
-                mediasFracaoChegadasServidorVazio.push(metricaDeInteresse.getFracaoDeChegadasServidorVazio());
-            }
-
-            media = Metricas.Media(mediasFracaoChegadasServidorVazio);
-            intervaloInferior = Metricas.IntervaloConfiancaInferior(mediasFracaoChegadasServidorVazio);
-            intervaloSuperior = Metricas.IntervaloConfiancaSuperior(mediasFracaoChegadasServidorVazio);
-
-        }while( media < intervaloInferior || media > intervaloSuperior );
-
-        return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
-    }
-
-    Simulacao.prototype.executar = function(inicio, _final, incremento){
-        var mediaPessoa = [];
-        var mediaTempo = [];
-        var mediaTempoVazio = [];
-        var mediaChegadaVazio = [];
-
-        for(var lambda = inicio; lambda <= _final; lambda += incremento){
-            mediaPessoa.push(this.executarPessoasNaFila(lambda));
+Simulacao.prototype.executarPessoasNaFila = function(lambda){
+    this.classe1.setLambda(lambda);
+    var MediasPessoasNaFilaColetadas = [];
+    var intervaloInferior;
+    var intervaloSuperior;
+    var media;
+    do{
+        for(var i = 0; i < this.nLoops; i++){
+            var simulador = this.getSimulador(this.tempoFinal,this.classe1,this.classe2);
+            var metricaDeInteresse = simulador.iniciarSimulacao();
+            MediasPessoasNaFilaColetadas.push( Metricas.Little(this.classe1.getLambda() + this.classe2.getLambda(), metricaDeInteresse.getMediaTempoDeEspera()));
         }
 
-        for(var lambda = inicio; lambda <= _final; lambda += incremento){
-            mediaTempo.push(this.executarTempoPessoasNaFila(lambda));
+        media = Metricas.Media(MediasPessoasNaFilaColetadas);
+        intervaloInferior = Metricas.IntervaloConfiancaInferior(MediasPessoasNaFilaColetadas);
+        intervaloSuperior = Metricas.IntervaloConfiancaSuperior(MediasPessoasNaFilaColetadas);
+    }while( media < intervaloInferior || media > intervaloSuperior );
+
+    return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
+}
+
+Simulacao.prototype.executarTempoPessoasNaFila = function(lambda){
+    this.classe1.setLambda(lambda);
+    var mediasTempoDePessoasNaFila = [];
+    var intervaloInferior;
+    var intervaloSuperior;
+    var media;
+    do{
+        for(var i = 0; i < this.nLoops; i++){
+            var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
+            var metricaDeInteresse = simulador.iniciarSimulacao();
+            mediasTempoDePessoasNaFila.push(metricaDeInteresse.getMediaTempoDeEspera());
         }
+        media = Metricas.Media(mediasTempoDePessoasNaFila);
+        intervaloInferior = Metricas.IntervaloConfiancaInferior(mediasTempoDePessoasNaFila);
+        intervaloSuperior = Metricas.IntervaloConfiancaSuperior(mediasTempoDePessoasNaFila);
+
+    }while( media < intervaloInferior || media > intervaloSuperior );
+
+    return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
+}
+
+Simulacao.prototype.executarFracaoTempoServidorVazio = function(lambda){
+    this.classe1.setLambda(lambda);
+    var mediasFracaoServidorVazio = [];
+    var intervaloInferior;
+    var intervaloSuperior;
+    var media;
+    do{
+        for(var i = 0; i < this.nLoops; i++){
+            var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
+            var metricaDeInteresse = simulador.iniciarSimulacao();
+            mediasFracaoServidorVazio.push(metricaDeInteresse.getFracaoDeTempoServidorVazio());
+        }
+
+        media = Metricas.Media(mediasFracaoServidorVazio);
+        intervaloInferior = Metricas.IntervaloConfiancaInferior(mediasFracaoServidorVazio);
+        intervaloSuperior = Metricas.IntervaloConfiancaSuperior(mediasFracaoServidorVazio);
+
+    }while( media < intervaloInferior || media > intervaloSuperior );
+
+    return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
+}
+
+Simulacao.prototype.executarFracaoChegadasServidorVazio = function(lambda){
+    this.classe1.setLambda(lambda);
+    var mediasFracaoChegadasServidorVazio = [];
+    var intervaloInferior;
+    var intervaloSuperior;
+    var media;
+    do{
+        for(var i = 0; i < this.nLoops; i++){
+            var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
+            var metricaDeInteresse = simulador.iniciarSimulacao();
+            mediasFracaoChegadasServidorVazio.push(metricaDeInteresse.getFracaoDeChegadasServidorVazio());
+        }
+
+        media = Metricas.Media(mediasFracaoChegadasServidorVazio);
+        intervaloInferior = Metricas.IntervaloConfiancaInferior(mediasFracaoChegadasServidorVazio);
+        intervaloSuperior = Metricas.IntervaloConfiancaSuperior(mediasFracaoChegadasServidorVazio);
+
+    }while( media < intervaloInferior || media > intervaloSuperior );
+
+    return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
+}
+
+Simulacao.prototype.executar = function(inicio, _final, incremento){
+    var mediaPessoa = [];
+    var mediaTempo = [];
+    var mediaTempoVazio = [];
+    var mediaChegadaVazio = [];
+
+    for(var lambda = inicio; lambda <= _final; lambda += incremento){
+        mediaPessoa.push(this.executarPessoasNaFila(lambda));
+    }
+
+    for(var lambda = inicio; lambda <= _final; lambda += incremento){
+        mediaTempo.push(this.executarTempoPessoasNaFila(lambda));
+    }
 
         // Questão 7
         /*for(var lambda = inicio; lambda <= _final; lambda += incremento){

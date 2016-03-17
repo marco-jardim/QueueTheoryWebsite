@@ -1,11 +1,9 @@
 Array.prototype.average = function() {
-
-    var sum = this.reduce(function(result, currentValue) {
-        return result + currentValue
-    }, 0);
-
+    var sum = 0;
+    for (var value of this) {
+    	sum += value;
+    }
     return sum / this.length;
-
 };
 
 Array.prototype.last = function() {

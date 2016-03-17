@@ -84,7 +84,7 @@ Simulador.prototype.InsereClienteNaFila= function( horarioDeEntrada,  classe){
         this.metricaDeInteresse.setFracaoDeChegadasServidorVazio(++this.nClientesComServidorVazio/++this.nClientesChegadas);
         this.ProcessarCliente(cliente);
     }else{
-        cliente.setTrabalhoPendente(getTrabalhoPendenteAtual(this.clienteAtual.getTempoDeServico())); //TODO: XResidual do cliente que está ocupando o servidor
+        cliente.setTrabalhoPendente(this.getTrabalhoPendenteAtual(this.clienteAtual.getTempoDeServico())); //TODO: XResidual do cliente que está ocupando o servidor
         this.metricaDeInteresse.setFracaoDeChegadasServidorVazio(this.nClientesComServidorVazio/++this.nClientesChegadas);
         this.fila.adicionar(cliente,false);
     }

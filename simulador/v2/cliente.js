@@ -5,7 +5,7 @@ function Cliente (classe, tempoEntrada) {
     this.trabalhoPendente;
     this.classe = classe;
     this.tempoEntrada = tempoEntrada;
-    this.tempoSaida = null;
+    this.tempoSaida;
     this.tempoDeServico = this.classe.getRandom();
 }
 
@@ -37,6 +37,6 @@ Cliente.prototype.getTrabalhoPendente  = function() {
     return this.trabalhoPendente;
 }
 
-Cliente.prototype.getTempoDeServico  = function() {
-    return this.tempoDeServico;
+Cliente.prototype.getTempoDeServico = function() {
+    return this.tempoDeServico();
 }
