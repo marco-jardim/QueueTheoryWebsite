@@ -1,6 +1,6 @@
 function Simulacao( classe1,  classe2) {
     this.nLoops = 30;
-    this.tempoFinal = 1000;
+    this.tempoFinal = 10000;
     this.classe1 = classe1;
     this.classe2 = classe2;
 }
