@@ -140,8 +140,17 @@
 
                 var simulacaoTempoChegadasServidorVazio = simulacao.executarFracaoChegadasServidorVazio(lambda1);
                 chartPasta.series[1].addPoint(simulacaoTempoChegadasServidorVazio.media);
-
             }
+
+            var simulacaoTempoEntreSaidas = simulacao.executarTempoEntreSaidasDeCliente(lambda1);
+            var chartCDF = graphs.CDF(simulacaoTempoEntreSaidas.x);
+
+            for (var y of simulacaoTempoEntreSaidas.y) {
+              // CDF (Questao 6)
+              chartCDF.series[0].addPoint(y, false);
+              //debugger;
+            }
+            chartCDF.redraw();
         });
     </script>
 
@@ -157,6 +166,10 @@
 
         <div>
             <div id="averageTimePastaChart" style="height:400px; width:100%"></div>
+        </div>
+
+        <div>
+            <div id="cdfChart" style="height:400px; width:100%"></div>
         </div>
     </div>
 

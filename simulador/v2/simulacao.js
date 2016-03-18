@@ -168,16 +168,19 @@ Simulacao.prototype.executarTempoEntreSaidasDeCliente = function(filename) {
     var tempoEntreSaidas = metricaDeInteresse.getTempoEntreSaidas();
     tempoEntreSaidas.sort(function(a, b){return a-b});
 
-    var blobs = [];
-    for (var i = 0; i < tempoEntreSaidas.size(); i++) {
-        blobs.push(tempoEntreSaidas.get(i) + " " + (i + 1) / tempoEntreSaidas.size() + '\n');
+    var blobs = {x: [], y: []};
+    for (var i = 0; i < tempoEntreSaidas.length; i++) {
+        blobs.x.push(Stats.round(tempoEntreSaidas[i], 4));
+        blobs.y.push(Stats.round((i + 1) / tempoEntreSaidas.length, 4));
     }
-    var data = new Blob(blobs, {type: 'text/plain'});
-    if (textFile !== null) {
-      window.URL.revokeObjectURL(textFile);
-  }
+    // var data = new Blob(blobs, {type: 'text/plain'});
+    // if (textFile !== null) {
+    //     window.URL.revokeObjectURL(textFile);
+    // }
 
-  textFile = window.URL.createObjectURL(data);
+    return blobs;
+
+  //textFile = window.URL.createObjectURL(data);
 }
 
 //Questão 8

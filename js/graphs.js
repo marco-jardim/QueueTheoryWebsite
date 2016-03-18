@@ -150,5 +150,40 @@ var graphs = {
         });
         $('#'+element).highcharts();
         return chart;
-    }
+    },
+
+    CDF: function(xData, element) {
+        element = element || 'cdfChart';
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: element,
+                shadow: true
+            },
+            title: {
+                text: 'CDF'
+            },
+            xAxis: {
+                //reversed: true,
+                categories: xData,
+                title:{
+                    text: 'X'
+                }
+            },
+            yAxis: {
+                //reversed: true,
+                title: {
+                    text: 'Y'
+                }
+            },
+            series: [
+                {
+                    name: 'Analítico',
+                    type: 'line',
+                    data: []
+                }
+            ]
+        });
+        $('#'+element).highcharts();
+        return chart;
+    },
 };
