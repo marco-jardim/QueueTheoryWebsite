@@ -20,7 +20,7 @@ var graphs = {
                     text: 'Número médio de clientes na fila'
                 }
             },
-            series: [ 
+            series: [
             {
                 name: 'Analítico, sem prioridade',
                 type: 'line',
@@ -78,7 +78,7 @@ var graphs = {
                     text: 'Tempo médio de espera na fila'
                 }
             },
-            series: [ 
+            series: [
             {
                 name: 'Analítico, sem prioridade',
                 type: 'line',
@@ -137,7 +137,7 @@ var graphs = {
                     text: 'Fração'
                 }
             },
-            series: [ 
+            series: [
             {
                 name: 'Sistema está vazio',
                 data: []
@@ -182,7 +182,7 @@ var graphs = {
                     text: 'Trabalho pendente médio'
                 }
             },
-            series: [ 
+            series: [
             {
                 name: 'Trab. pendente, sem prioridade',
                 data: []
@@ -223,7 +223,7 @@ var graphs = {
                     text: 'Trabalho pendente médio'
                 }
             },
-            series: [ 
+            series: [
             {
                 name: 'Nº clientes fila 1, sem prioridade',
                 data: []
@@ -277,7 +277,7 @@ var graphs = {
             yAxis: {
                 //reversed: true,
                 title: {
-                    text: 'Y'
+                    text: 'P(X<=x)'
                 }
             },
             series: [
@@ -287,7 +287,7 @@ var graphs = {
                     data: []
                 },
                 {
-                    name: 'Analítico',
+                    name: 'Analítico (Exponencial)',
                     type: 'line',
                     data: []
                 }

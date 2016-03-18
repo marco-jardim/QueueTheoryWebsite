@@ -163,16 +163,16 @@
             }
 
             // CDF (Questao 6)
-            var simulacaoTempoEntreChegadas = simulacao.executarTempoEntreChegadasDeCliente();
-            var totalDeAmostras = simulacaoTempoEntreChegadas.x.length;
-            var maxValue = simulacaoTempoEntreChegadas.x[totalDeAmostras];
+            var simulacaoTempoEntreSaidas = simulacao.executarTempoEntreSaidasDeCliente();
+            var totalDeAmostras = simulacaoTempoEntreSaidas.x.length;
+            var maxValue = simulacaoTempoEntreSaidas.x[totalDeAmostras];
             var chartCDF = graphs.CDF(maxValue);
 
             for (i = 0; i < totalDeAmostras; i += 1) {
-              chartCDF.series[0].addPoint([simulacaoTempoEntreChegadas.x[i], simulacaoTempoEntreChegadas.y[i]], false);
+              chartCDF.series[0].addPoint([simulacaoTempoEntreSaidas.x[i], simulacaoTempoEntreSaidas.y[i]], false);
 
-              yAnalitico = jStat.exponential.cdf( simulacaoTempoEntreChegadas.x[i], 0.9 );
-              chartCDF.series[1].addPoint([simulacaoTempoEntreChegadas.x[i], yAnalitico], false);
+              yAnalitico = jStat.exponential.cdf( simulacaoTempoEntreSaidas.x[i], 0.9 );
+              chartCDF.series[1].addPoint([simulacaoTempoEntreSaidas.x[i], yAnalitico], false);
             }
 
 

@@ -43,15 +43,15 @@
             var totalRho = rho1 + rho2;
             var totalLambda = queue1.lambda + queue2.lambda;
             var totalMu = (queue1.Mu + queue2.Mu)/2;
-            
+
             var X1 = 1/queue1.Mu;
             var X2 = 1/queue2.Mu;
-            
+
             var Xres1 = X1/2;
             var Xres2 = X2/2;
-            
+
             var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
-            
+
             var W1, W2, totalAvgWaitQueue;
             if (!prioritiesEnabled) {
                 // filas sem prioridades
@@ -113,7 +113,7 @@
                     return Random.Deterministico(queue1.Mu);
                 }, function() {
                     return Random.Exponencial(queue1.lambda);
-                }), 
+                }),
                 new Classe(queue2.lambda, queue2.Mu, 1, function() {
                     return Random.Deterministico(queue2.Mu);
                 }, function() {
@@ -126,7 +126,7 @@
                     return Random.Deterministico(queue1.Mu);
                 }, function() {
                     return Random.Exponencial(queue1.lambda);
-                }), 
+                }),
                 new Classe(queue2.lambda, queue2.Mu, 1, function() {
                     return Random.Deterministico(queue2.Mu);
                 }, function() {
@@ -187,16 +187,16 @@
 
 
             // CDF (Questao 6)
-            var simulacaoTempoEntreChegadas = simulacao.executarTempoEntreChegadasDeCliente();
-            var totalDeAmostras = simulacaoTempoEntreChegadas.x.length;
-            var maxValue = simulacaoTempoEntreChegadas.x[totalDeAmostras];
+            var simulacaoTempoEntreSaidas = simulacao.executarTempoEntreSaidasDeCliente();
+            var totalDeAmostras = simulacaoTempoEntreSaidas.x.length;
+            var maxValue = simulacaoTempoEntreSaidas.x[totalDeAmostras];
             var chartCDF = graphs.CDF(maxValue);
 
             for (i = 0; i < totalDeAmostras; i += 1) {
-              chartCDF.series[0].addPoint([simulacaoTempoEntreChegadas.x[i], simulacaoTempoEntreChegadas.y[i]], false);
+              chartCDF.series[0].addPoint([simulacaoTempoEntreSaidas.x[i], simulacaoTempoEntreSaidas.y[i]], false);
 
-              yAnalitico = jStat.exponential.cdf( simulacaoTempoEntreChegadas.x[i], 0.6 );
-              chartCDF.series[1].addPoint([simulacaoTempoEntreChegadas.x[i], yAnalitico], false);
+              yAnalitico = jStat.exponential.cdf( simulacaoTempoEntreSaidas.x[i], 0.6 );
+              chartCDF.series[1].addPoint([simulacaoTempoEntreSaidas.x[i], yAnalitico], false);
             }
 
             chartCDF.redraw();

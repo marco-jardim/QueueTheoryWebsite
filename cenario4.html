@@ -8,6 +8,7 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/Random.js"></script>
     <script src="assets/js/highcharts.js"></script>
+    <script src="assets/js/jstat.min.js"></script>
     <script src="js/stats.js"></script>
     <script src="js/graphs.js"></script>
 
@@ -51,12 +52,12 @@
             var totalRho = rho1 + rho2;
             var totalLambda = queue1.lambda + queue2.lambda;
             var totalMu = (queue1.Mu + queue2.Mu)/2;
-            
+
             var Xsquared1 = ((Math.pow(a1,2)+ a1*b1 + Math.pow(b1,2))/3);  // expected value of X^2
             var Xres1 = Xsquared1/(2*X1);
             var Xsquared2 = ((Math.pow(a2,2)+ a2*b2 + Math.pow(b2,2))/3);
             var Xres2 = Xsquared2/(2*X2);
-            
+
             var W1, W2, totalAvgWaitQueue;
             if (!prioritiesEnabled) {
                 // filas sem prioridades
@@ -74,7 +75,7 @@
                 W2 = (rho1*X2 + W1*rho1 + (rho1*Xres1 + rho2*Xres2)) / (1 - totalRho);
                 totalAvgWaitQueue = (queue1.lambda*W1 + queue2.lambda*W2)/totalLambda;
             }
-            
+
             var totalAvgCustomersQueue = totalLambda * totalAvgWaitQueue;
 
             return {
@@ -93,7 +94,7 @@
             var simulacao = new Simulacao(
                 new Classe(queue1.lambda, queue1.Mu, 0, queue1Service, function() {
                     return Random.Exponencial(queue1.lambda);
-                }), 
+                }),
                 new Classe(queue2.lambda, queue2.Mu, 0, queue2Service, function() {
                     return Random.Exponencial(queue2.lambda);
                 })
@@ -101,7 +102,7 @@
             var simulacaoPrioridades = new Simulacao(
                 new Classe(queue1.lambda, queue1.Mu, 0, queue1Service, function() {
                     return Random.Exponencial(queue1.lambda);
-                }), 
+                }),
                 new Classe(queue2.lambda, queue2.Mu, 1, queue2Service, function() {
                     return Random.Exponencial(queue2.lambda);
                 })
@@ -109,7 +110,7 @@
             var simulacaoPreemptiva = new SimulacaoPreemptiva(
                 new Classe(queue1.lambda, queue1.Mu, 0, queue1Service, function() {
                     return Random.Exponencial(queue1.lambda);
-                }), 
+                }),
                 new Classe(queue2.lambda, queue2.Mu, 1, queue2Service, function() {
                     return Random.Exponencial(queue2.lambda);
                 })
@@ -140,6 +141,24 @@
             simulationWait = simulacaoPreemptiva.executarTempoPessoasNaFila(queue1.lambda);
             $('#avgCustomersQueueDataSimulation3').html(simulationCustomers.media);
             $('#avgWaitQueueDataSimulation3').html(simulationWait.media);
+
+
+
+
+            // CDF (Questao 6)
+            var simulacaoTempoEntreSaidas = simulacao.executarTempoEntreSaidasDeCliente();
+            var totalDeAmostras = simulacaoTempoEntreSaidas.x.length;
+            var maxValue = simulacaoTempoEntreSaidas.x[totalDeAmostras];
+            var chartCDF = graphs.CDF(maxValue);
+
+            for (i = 0; i < totalDeAmostras; i += 1) {
+              chartCDF.series[0].addPoint([simulacaoTempoEntreSaidas.x[i], simulacaoTempoEntreSaidas.y[i]], false);
+
+              yAnalitico = jStat.exponential.cdf( simulacaoTempoEntreSaidas.x[i], 0.13 );
+              chartCDF.series[1].addPoint([simulacaoTempoEntreSaidas.x[i], yAnalitico], false);
+            }
+
+            chartCDF.redraw();
         });
     </script>
 
@@ -185,6 +204,10 @@
             <h2>Avg. wait in the queue</h2>
             <h3>Analytic: <span id="avgWaitQueueDataAnalytic3"></span></h3>
             <h3>Simulation: <span id="avgWaitQueueDataSimulation3"></span></h3>
+        </div>
+
+        <div>
+            <div id="cdfChart" style="height:400px; width:100%"></div>
         </div>
 
     </div>
