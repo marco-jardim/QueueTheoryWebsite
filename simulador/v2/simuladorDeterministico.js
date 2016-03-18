@@ -20,7 +20,9 @@ function SimuladorDeterministico( tempoFinal,  classeObrigatoria, classes) {
     this.clienteAtual;
 
     this.listaClasse = [classeObrigatoria];
-    this.listaClasse = this.listaClasse.concat([].concat(classes));
+    if (classes) {
+        this.listaClasse = this.listaClasse.concat(classes);
+    }
 
     this.fila = new Fila(this.listaClasse);
     this.prepararSimulacao(this.listaClasse);
