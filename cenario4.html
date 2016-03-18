@@ -91,16 +91,28 @@
             var queue2Service = function() { return Random.Uniforme(queue2.serviceMin, queue2.serviceMax); }
 
             var simulacao = new Simulacao(
-                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service), 
-                new Classe(queue2.lambda, queue2.Mu, 0, queue2Service)
+                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service, function() {
+                    return Random.Exponencial(queue1.lambda);
+                }), 
+                new Classe(queue2.lambda, queue2.Mu, 0, queue2Service, function() {
+                    return Random.Exponencial(queue2.lambda);
+                })
             );
             var simulacaoPrioridades = new Simulacao(
-                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service), 
-                new Classe(queue2.lambda, queue2.Mu, 1, queue2Service)
+                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service, function() {
+                    return Random.Exponencial(queue1.lambda);
+                }), 
+                new Classe(queue2.lambda, queue2.Mu, 1, queue2Service, function() {
+                    return Random.Exponencial(queue2.lambda);
+                })
             );
             var simulacaoPreemptiva = new SimulacaoPreemptiva(
-                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service), 
-                new Classe(queue2.lambda, queue2.Mu, 1, queue2Service)
+                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service, function() {
+                    return Random.Exponencial(queue1.lambda);
+                }), 
+                new Classe(queue2.lambda, queue2.Mu, 1, queue2Service, function() {
+                    return Random.Exponencial(queue2.lambda);
+                })
             );
 
             var finalQueue, simulationCustomers, simulationWait;

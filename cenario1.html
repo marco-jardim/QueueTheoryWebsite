@@ -92,8 +92,7 @@
             var simulacao = new Simulacao(
                 new Classe(queue1.lambda, queue1.Mu, 0, function() { 
                     return Random.Exponencial(queue1.Mu); 
-                }, 
-                function() {
+                }, function() {
                     return Random.Exponencial(queue1.lambda);
                 }),
                 new Classe(0,0,0,null, function() {

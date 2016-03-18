@@ -95,27 +95,39 @@
             var simulacao = new Simulacao(
                 new Classe(queue1.lambda, queue1.Mu, 0, function() {
                     return Random.Deterministico(queue1.Mu);
+                }, function() {
+                    return Random.Exponencial(queue1.lambda);
                 }), 
                 new Classe(queue2.lambda, queue2.Mu, 0, function() {
                     return Random.Deterministico(queue2.Mu);
+                }, function() {
+                    return Random.Exponencial(queue2.lambda);
                 })
             );
 
             var simulacaoPrioridades = new Simulacao(
                 new Classe(queue1.lambda, queue1.Mu, 0, function() {
                     return Random.Deterministico(queue1.Mu);
+                }, function() {
+                    return Random.Exponencial(queue1.lambda);
                 }), 
                 new Classe(queue2.lambda, queue2.Mu, 1, function() {
                     return Random.Deterministico(queue2.Mu);
+                }, function() {
+                    return Random.Exponencial(queue2.lambda);
                 })
             );
 
             var simulacaoPreemptiva = new SimulacaoPreemptiva(
                 new Classe(queue1.lambda, queue1.Mu, 0, function() {
                     return Random.Deterministico(queue1.Mu);
+                }, function() {
+                    return Random.Exponencial(queue1.lambda);
                 }), 
                 new Classe(queue2.lambda, queue2.Mu, 1, function() {
                     return Random.Deterministico(queue2.Mu);
+                }, function() {
+                    return Random.Exponencial(queue2.lambda);
                 })
             );
 
