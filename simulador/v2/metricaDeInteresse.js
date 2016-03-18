@@ -67,7 +67,7 @@ MetricaDeInteresse.prototype.getTempoEntreSaidas  = function() {
 
 MetricaDeInteresse.prototype.getTrabalhoPendente  = function() {
     var listaTrabalhoPendente = [];
-    for (trabalhoPendente of listaTrabalhoPendente)
+    for (cliente of this.clientesProcessados)
         listaTrabalhoPendente.push(cliente.getTrabalhoPendente());
 
     return Metricas.Media(listaTrabalhoPendente);

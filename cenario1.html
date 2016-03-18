@@ -41,15 +41,15 @@
             var rho2 = 0;
             var totalRho = rho1 + rho2;
             var totalLambda = queue1.lambda + queue2.lambda;
-            
+
             var X1 = 1/queue1.Mu;
             var X2 = 0;
-            
+
             var Xres1 = X1;
             var Xres2 = X2;
-            
+
             var totalX = (X1 * queue1.lambda) / totalLambda + (X2 * queue2.lambda) / totalLambda;
-            
+
             var W1, W2, totalAvgWaitQueue;
             if (!prioritiesEnabled) {
                 // filas sem prioridades
@@ -91,10 +91,21 @@
             var queue2 = { lambda: 0.0, Mu: 0.0, X: 1 };
 
             var simulacao = new Simulacao(
-                new Classe(queue1.lambda, queue1.Mu, 0, function() { 
-                    return Random.Exponencial(queue1.Mu); 
+                new Classe(queue1.lambda, queue1.Mu, 0, function() {
+                    return Random.Exponencial(queue1.Mu);
                 }, function() {
                     return Random.Exponencial(queue1.lambda);
+                }),
+                new Classe(0,0,0,null, function() {
+                    return Infinity;
+                })
+            );
+
+            var simulacaoChegadasDeterministico = new Simulacao(
+                new Classe(queue1.lambda, queue1.Mu, 0, function() {
+                    return Random.Exponencial(queue1.Mu);
+                }, function() {
+                    return Random.Deterministico(queue1.lambda);
                 }),
                 new Classe(0,0,0,null, function() {
                     return Infinity;
@@ -130,16 +141,24 @@
 
                 chartCustomers.series[5].addPoint(simulationCustomers.media, false);
                 chartWait.series[5].addPoint(simulationWait.media, false);
-                
+
                 chartCustomers.redraw();
                 chartWait.redraw();
 
                 // PASTA
-                var simulacaoTempoServidorVazio = simulacao.executarFracaoTempoServidorVazio(lambda1);
+                var simulacaoTempoServidorVazio, simulacaoChegadasDeterministico;
+                simulacaoTempoServidorVazio = simulacao.executarFracaoTempoServidorVazio(lambda1);
                 chartPasta.series[0].addPoint(simulacaoTempoServidorVazio.media);
 
-                var simulacaoTempoChegadasServidorVazio = simulacao.executarFracaoChegadasServidorVazio(lambda1);
+                simulacaoTempoChegadasServidorVazio = simulacao.executarFracaoChegadasServidorVazio(lambda1);
                 chartPasta.series[1].addPoint(simulacaoTempoChegadasServidorVazio.media);
+
+                // PASTA, chegadas deterministicas
+                simulacaoTempoServidorVazio = simulacaoChegadasDeterministico.executarFracaoTempoServidorVazio(lambda1);
+                chartPasta.series[2].addPoint(simulacaoTempoServidorVazio.media);
+
+                simulacaoTempoChegadasServidorVazio = simulacaoChegadasDeterministico.executarFracaoChegadasServidorVazio(lambda1);
+                chartPasta.series[3].addPoint(simulacaoTempoChegadasServidorVazio.media);
             }
 
             var simulacaoTempoEntreSaidas = simulacao.executarTempoEntreSaidasDeCliente(lambda1);

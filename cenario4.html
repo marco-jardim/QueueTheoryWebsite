@@ -125,7 +125,7 @@
             $('#avgCustomersQueueDataSimulation').html(simulationCustomers.media);
             $('#avgWaitQueueDataSimulation').html(simulationWait.media);
 
-            var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
+            finalQueue = calculateQueueTwoClasses(queue1, queue2, true);
             $('#avgCustomersQueueDataAnalytic2').html(finalQueue.avgCustomersQueue);
             $('#avgWaitQueueDataAnalytic2').html(finalQueue.avgWaitQueue);
             simulationCustomers = simulacaoPrioridades.executarPessoasNaFila(queue1.lambda);
@@ -133,7 +133,7 @@
             $('#avgCustomersQueueDataSimulation2').html(simulationCustomers.media);
             $('#avgWaitQueueDataSimulation2').html(simulationWait.media);
 
-            var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
+            finalQueue = calculateQueueTwoClasses(queue1, queue2, true, true);
             $('#avgCustomersQueueDataAnalytic3').html(finalQueue.avgCustomersQueue);
             $('#avgWaitQueueDataAnalytic3').html(finalQueue.avgWaitQueue);
             simulationCustomers = simulacaoPreemptiva.executarPessoasNaFila(queue1.lambda);
