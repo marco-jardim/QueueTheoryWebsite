@@ -145,6 +145,14 @@ var graphs = {
                 {
                     name: 'Chegadas encontram o sistema vazio',
                     data: []
+                },
+                {
+                    name: 'Sistema está vazio (chegadas tempo determ.)',
+                    data: []
+                },
+                {
+                    name: 'Chegadas encontram o sistema vazio (chegadas tempo determ.)',
+                    data: []
                 }
             ]
         });

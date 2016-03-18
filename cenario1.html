@@ -101,6 +101,17 @@
                 })
             );
 
+            var simulacaoChegadasDeterministico = new Simulacao(
+                new Classe(queue1.lambda, queue1.Mu, 0, function() { 
+                    return Random.Exponencial(queue1.Mu); 
+                }, function() {
+                    return Random.Deterministico(queue1.lambda);
+                }),
+                new Classe(0,0,0,null, function() {
+                    return Infinity;
+                })
+            );
+
             for (var lambda1 of lambda1Data) {
                 queue1.lambda = lambda1;
 
@@ -135,11 +146,19 @@
                 chartWait.redraw();
 
                 // PASTA
-                var simulacaoTempoServidorVazio = simulacao.executarFracaoTempoServidorVazio(lambda1);
+                var simulacaoTempoServidorVazio, simulacaoChegadasDeterministico;
+                simulacaoTempoServidorVazio = simulacao.executarFracaoTempoServidorVazio(lambda1);
                 chartPasta.series[0].addPoint(simulacaoTempoServidorVazio.media);
 
-                var simulacaoTempoChegadasServidorVazio = simulacao.executarFracaoChegadasServidorVazio(lambda1);
+                simulacaoTempoChegadasServidorVazio = simulacao.executarFracaoChegadasServidorVazio(lambda1);
                 chartPasta.series[1].addPoint(simulacaoTempoChegadasServidorVazio.media);
+
+                // PASTA, chegadas deterministicas
+                simulacaoTempoServidorVazio = simulacaoChegadasDeterministico.executarFracaoTempoServidorVazio(lambda1);
+                chartPasta.series[2].addPoint(simulacaoTempoServidorVazio.media);
+
+                simulacaoTempoChegadasServidorVazio = simulacaoChegadasDeterministico.executarFracaoChegadasServidorVazio(lambda1);
+                chartPasta.series[3].addPoint(simulacaoTempoChegadasServidorVazio.media);
 
             }
         });
