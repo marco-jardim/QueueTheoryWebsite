@@ -15,7 +15,7 @@ Classe.prototype.getLambda  = function() {
 }
 
 Classe.prototype.getRandom  = function() {
-    return this.funcao;
+    return this.funcao();
 }
 
 Classe.prototype.setLambda  = function( lambda) {

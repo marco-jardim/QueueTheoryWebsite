@@ -72,11 +72,8 @@ SimuladorPreemptivo.prototype.ProcessarCliente = function(cliente, horarioAtual)
     //guarda o evento
     //dispara o evento
     var self = this;
-    var callback = function(cliente) {
-        return function(tempo) { self.LiberaServidorEBuscaNovoCliente(tempo, cliente); }
-    }
     tarefaDeProcessamento =
-    this.temporizador.registrarTarefaPorAtraso(this.clienteNoServidor.getTempoPendente() , callback(cliente));
+    this.temporizador.registrarTarefaPorAtraso(this.clienteNoServidor.getTempoPendente() , function(tempo) { self.LiberaServidorEBuscaNovoCliente(tempo, cliente); });
 }
 
 SimuladorPreemptivo.prototype.InsereClienteNaFila = function(horarioDeEntrada, classe){
@@ -109,7 +106,7 @@ SimuladorPreemptivo.prototype.InsereClienteNaFila = function(horarioDeEntrada, c
 
     // Usa-se Random.Exponecial Sempre pois a entrada eh sempre Memoryless
     var self = this;
-    this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(classe.getLambda()), function(tempo) { self.InsereClienteNaFila(tempo, classe); });
+    this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(classe), function(tempo) { self.InsereClienteNaFila(tempo, classe); }); ///////////////
 }
 
 SimuladorPreemptivo.prototype.getTrabalhoPendenteAtual = function( xResidual) {
@@ -125,7 +122,7 @@ SimuladorPreemptivo.prototype.getTrabalhoPendenteAtual = function( xResidual) {
 
 SimuladorPreemptivo.prototype.iniciarSimulacao = function(){
     this.temporizador.play();
-    this.getMetricaDeInteresse().setFracaoDeTempoServidorVazio(this.tempoVazioTzxotal / this.temporizador.getTempoFinal());
+    this.getMetricaDeInteresse().setFracaoDeTempoServidorVazio(this.tempoVazioTotal / this.temporizador.getTempoFinal());
     return this.getMetricaDeInteresse();
 }
 

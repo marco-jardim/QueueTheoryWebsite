@@ -35,5 +35,5 @@ Cliente.prototype.getTrabalhoPendente  = function() {
 }
 
 Cliente.prototype.getTempoDeServico = function() {
-    return this.tempoDeServico();
+    return this.tempoDeServico;
 }
