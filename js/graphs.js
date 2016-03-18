@@ -113,5 +113,42 @@ var graphs = {
         });
         $('#'+element).highcharts();
         return chart;
+    },
+
+    LambdaVsPasta: function(lambdaData) {
+        element = 'averageTimePastaChart';
+        chart = new Highcharts.Chart({
+            chart: {
+                type: 'column',
+                renderTo: element,
+                shadow: true
+            },
+            title: {
+                text: 'Lambda vs. Fração de tempo do servidor vazio'
+            },
+            xAxis: {
+                categories: lambdaData,
+                title:{
+                    text:'λ (λ1 + λ2)'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Fração'
+                }
+            },
+            series: [ 
+                {
+                    name: 'Sistema está vazio',
+                    data: []
+                },
+                {
+                    name: 'Chegadas encontram o sistema vazio',
+                    data: []
+                }
+            ]
+        });
+        $('#'+element).highcharts();
+        return chart;
     }
 };

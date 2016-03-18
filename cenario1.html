@@ -85,6 +85,7 @@
 
             var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambda1Data);
             var chartWait = graphs.LambdaVsAvgWaitQueue(lambda1Data);
+            var chartPasta = graphs.LambdaVsPasta(lambda1Data);
 
             var queue1 = { lambda: undefined, Mu: 1.0, X: 1 };
             var queue2 = { lambda: 0.0, Mu: 0.0, X: 1 };
@@ -132,6 +133,14 @@
                 
                 chartCustomers.redraw();
                 chartWait.redraw();
+
+                // PASTA
+                var simulacaoTempoServidorVazio = simulacao.executarFracaoTempoServidorVazio(lambda1);
+                chartPasta.series[0].addPoint(simulacaoTempoServidorVazio.media);
+
+                var simulacaoTempoChegadasServidorVazio = simulacao.executarFracaoChegadasServidorVazio(lambda1);
+                chartPasta.series[1].addPoint(simulacaoTempoChegadasServidorVazio.media);
+
             }
         });
     </script>
@@ -144,6 +153,10 @@
 
         <div>
             <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+        </div>
+
+        <div>
+            <div id="averageTimePastaChart" style="height:400px; width:100%"></div>
         </div>
     </div>
 
