@@ -51,14 +51,17 @@ SimuladorDeterministico.prototype.getMetricaDeInteresse = function() {
 SimuladorDeterministico.prototype.prepararSimulacao = function( classes){
     var self = this;
     for( c of classes){
-        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), function(tempo) { self.InsereClienteNaFila(tempo,c); }); //////////////////////
+        var callback = function(c) {
+            return function(tempo) { self.InsereClienteNaFila(tempo,c); }
+        }
+        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), callback(c)); ////////////////////// 
     }
 }
 
 SimuladorDeterministico.prototype.LiberaServidorEBuscaNovoCliente = function( horarioDeEntradaNoServidor,  cliente){
     this.setServidorOcupado(false);
-    this.setTempoVazio(temporizador.getTempoAtual());
-    metricaDeInteresse.adicionaClienteProcessado(cliente);
+    this.setTempoVazio(this.temporizador.getTempoAtual());
+    this.metricaDeInteresse.adicionaClienteProcessado(cliente);
     if(this.fila.tamanho() > 0){
         var novoCliente = this.fila.remover();
         novoCliente.setTempoSaida(horarioDeEntradaNoServidor);
@@ -85,13 +88,13 @@ SimuladorDeterministico.prototype.InsereClienteNaFila = function( horarioDeEntra
         this.metricaDeInteresse.setFracaoDeChegadasServidorVazio(++this.nClientesComServidorVazio/++this.nClientesChegadas);
         this.ProcessarCliente(cliente);
     }else{
-        cliente.setTrabalhoPendente(getTrabalhoPendenteAtual(this.clienteAtual.getTempoDeServico())); //TODO: XResidual do cliente que está ocupando o servidor
+        cliente.setTrabalhoPendente(this.getTrabalhoPendenteAtual(this.clienteAtual.getTempoDeServico())); //TODO: XResidual do cliente que está ocupando o servidor
         this.metricaDeInteresse.setFracaoDeChegadasServidorVazio(this.nClientesComServidorVazio/++this.nClientesChegadas);
         this.fila.adicionar(cliente,false);
     }
     // Usa-se Random.Exponecial Sempre pois a entrada eh sempre Memoryless
     var self = this;
-    this.temporizador.registrarTarefaPorAtraso(getClasseRandomLambda(classe), function(tempo) { self.InsereClienteNaFila(tempo, classe); }); 
+    this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(classe), function(tempo) { self.InsereClienteNaFila(tempo, classe); }); 
 }
 
 SimuladorDeterministico.prototype.getTrabalhoPendenteAtual = function( xResidual) {
