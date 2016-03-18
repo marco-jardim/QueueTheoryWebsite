@@ -4,7 +4,7 @@ function MetricaRejuvenecimento () {
     this.iteracoes = 0;
     this.nFalhas = 0;
     this.nRejuvenecimentoAteFalhar = [];
-    this.tempoEntreFalhas = [];
+    this.tempoUltimoRejuvenescimento = [];
 }
 
 MetricaRejuvenecimento.prototype.incrementaIteracoes  = function() {
@@ -19,8 +19,8 @@ MetricaRejuvenecimento.prototype.getProbabilidadeDeFalhar  = function() {
     return 1.0 * this.nFalhas/ this.iteracoes;
 }
 
-MetricaRejuvenecimento.prototype.adicionaTempoEntreFalhas  = function(tempoEntreFalhas) {
-    this.tempoEntreFalhas.push(tempoEntreFalhas);
+MetricaRejuvenecimento.prototype.adicionaTempoDesdeUltimoRejuvenescimento  = function(tempoUltimoRejuvenescimento) {
+    this.tempoUltimoRejuvenescimento.push(tempoUltimoRejuvenescimento);
 }
 
 MetricaRejuvenecimento.prototype.adicionaNRejuvenecimentosAteFalhar  = function(nRejuvenecimentosAteFalhar){
@@ -31,6 +31,6 @@ MetricaRejuvenecimento.prototype.getnRejuvenecimentoAteFalhar  = function() {
     return 1.0 * this.nRejuvenecimentoAteFalhar.average();
 }
 
-MetricaRejuvenecimento.prototype.getTempoEntreFalhas  = function() {
-    return this.tempoEntreFalhas.average();
+MetricaRejuvenecimento.prototype.getTempoUltimoRejuvenescimento  = function() {
+    return this.tempoUltimoRejuvenescimento.average();
 }
