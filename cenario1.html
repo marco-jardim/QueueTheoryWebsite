@@ -161,13 +161,14 @@
                 chartPasta.series[3].addPoint(simulacaoTempoChegadasServidorVazio.media);
             }
 
+            // CDF (Questao 6)
             var simulacaoTempoEntreSaidas = simulacao.executarTempoEntreSaidasDeCliente(lambda1);
-            var chartCDF = graphs.CDF(simulacaoTempoEntreSaidas.x);
+            var totalDeAmostras = simulacaoTempoEntreSaidas.x.length;
+            var maxValue = simulacaoTempoEntreSaidas.x[totalDeAmostras];
+            var chartCDF = graphs.CDF(maxValue);
 
-            for (var y of simulacaoTempoEntreSaidas.y) {
-              // CDF (Questao 6)
-              chartCDF.series[0].addPoint(y, false);
-              //debugger;
+            for (i = 0; i < totalDeAmostras; i += 1) {
+              chartCDF.series[0].addPoint([simulacaoTempoEntreSaidas.x[i], simulacaoTempoEntreSaidas.y[i]], false);
             }
             chartCDF.redraw();
         });

@@ -254,22 +254,25 @@ var graphs = {
         return chart;
     },
 
-    CDF: function(xData, element) {
+    CDF: function(maxValue, element) {
         element = element || 'cdfChart';
         chart = new Highcharts.Chart({
             chart: {
+                type: 'spline',
                 renderTo: element,
                 shadow: true
+                //inverted: true
             },
             title: {
                 text: 'CDF'
             },
             xAxis: {
                 //reversed: true,
-                categories: xData,
+                //categories: xData,
                 title:{
                     text: 'X'
-                }
+                },
+                max: maxValue
             },
             yAxis: {
                 //reversed: true,
