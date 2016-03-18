@@ -8,6 +8,7 @@
     <script src="assets/js/jquery-2.2.1.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/highcharts.js"></script>
+    <script src="assets/js/jstat.min.js"></script>
     <script src="js/stats.js"></script>
     <script src="js/graphs.js"></script>
 
@@ -99,7 +100,7 @@
                     return Random.Deterministico(queue1.Mu);
                 }, function() {
                     return Random.Exponencial(queue1.lambda);
-                }), 
+                }),
                 new Classe(queue2.lambda, queue2.Mu, 0, function() {
                     return Random.Deterministico(queue2.Mu);
                 }, function() {
@@ -184,6 +185,22 @@
                 chartCustomersQueue.series[5].addPoint(avgQueue[1], false);
             }
 
+
+            // CDF (Questao 6)
+            var simulacaoTempoEntreChegadas = simulacao.executarTempoEntreChegadasDeCliente();
+            var totalDeAmostras = simulacaoTempoEntreChegadas.x.length;
+            var maxValue = simulacaoTempoEntreChegadas.x[totalDeAmostras];
+            var chartCDF = graphs.CDF(maxValue);
+
+            for (i = 0; i < totalDeAmostras; i += 1) {
+              chartCDF.series[0].addPoint([simulacaoTempoEntreChegadas.x[i], simulacaoTempoEntreChegadas.y[i]], false);
+
+              yAnalitico = jStat.exponential.cdf( simulacaoTempoEntreChegadas.x[i], 0.6 );
+              chartCDF.series[1].addPoint([simulacaoTempoEntreChegadas.x[i], yAnalitico], false);
+            }
+
+            chartCDF.redraw();
+
             chartCustomers.redraw();
             chartWait.redraw();
             chartWork.redraw();
@@ -208,6 +225,10 @@
 
         <div>
             <div id="averageCustomersEachQueueChart" style="height:500px; width:100%"></div>
+        </div>
+
+        <div>
+            <div id="cdfChart" style="height:400px; width:100%"></div>
         </div>
     </div>
 
