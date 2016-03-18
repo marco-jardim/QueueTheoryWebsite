@@ -90,6 +90,8 @@
 
             var chartCustomers = graphs.LambdaVsAvgClientsQueue(lambdaData);
             var chartWait = graphs.LambdaVsAvgWaitQueue(lambdaData);
+            var chartWork = graphs.LambdaVsPendingWork(lambdaData);
+            var chartCustomersQueue = graphs.LambdaVsCustomersEachQueue(lambdaData);
 
             var simulacao = new Simulacao(
                 new Classe(queue1.lambda, queue1.Mu, 0, function() { 
@@ -137,35 +139,52 @@
                 finalQueue = calculateQueueTwoClasses(queue1, queue2);
                 simulationCustomers = simulacao.executarPessoasNaFila(lambda1);
                 simulationWait = simulacao.executarTempoPessoasNaFila(lambda1);
+                simulationWork = simulacao.executarTrabalhoPendente(lambda1);
+                avgQueue = simulacao.executarMediaPessoasFilas(lambda1);
 
                 chartCustomers.series[0].addPoint(finalQueue.avgCustomersQueue, false);
                 chartWait.series[0].addPoint(finalQueue.avgWaitQueue, false);
                 chartCustomers.series[3].addPoint(simulationCustomers.media, false);
                 chartWait.series[3].addPoint(simulationWait.media, false);
+                chartWork.series[0].addPoint(simulationWork, false);
+                chartCustomersQueue.series[0].addPoint(avgQueue[0], false);
+                chartCustomersQueue.series[1].addPoint(avgQueue[1], false);
 
-                // // Com prioridades, sem preempção
+                // Com prioridades, sem preempção
                 finalQueue = calculateQueueTwoClasses(queue1, queue2, true);
                 simulationCustomers = simulacaoPrioridades.executarPessoasNaFila(lambda1);
                 simulationWait = simulacaoPrioridades.executarTempoPessoasNaFila(lambda1);
+                simulationWork = simulacaoPrioridades.executarTrabalhoPendente(lambda1);
+                avgQueue = simulacaoPrioridades.executarMediaPessoasFilas(lambda1);
 
                 chartCustomers.series[1].addPoint(finalQueue.avgCustomersQueue, false);
                 chartWait.series[1].addPoint(finalQueue.avgWaitQueue, false);
                 chartCustomers.series[4].addPoint(simulationCustomers.media, false);
                 chartWait.series[4].addPoint(simulationWait.media, false);
+                chartWork.series[1].addPoint(simulationWork, false);
+                chartCustomersQueue.series[2].addPoint(avgQueue[0], false);
+                chartCustomersQueue.series[3].addPoint(avgQueue[1], false);
 
                 // Com prioridades, com preempção
                 finalQueue = calculateQueueTwoClasses(queue1, queue2, true, true);
                 simulationCustomers = simulacaoPreemptiva.executarPessoasNaFila(lambda1);
                 simulationWait = simulacaoPreemptiva.executarTempoPessoasNaFila(lambda1);
+                simulationWork = simulacaoPreemptiva.executarTrabalhoPendente(lambda1);
+                avgQueue = simulacaoPreemptiva.executarMediaPessoasFilas(lambda1);
 
                 chartCustomers.series[2].addPoint(finalQueue.avgCustomersQueue, false);
                 chartWait.series[2].addPoint(finalQueue.avgWaitQueue, false);
                 chartCustomers.series[5].addPoint(simulationCustomers.media, false);
                 chartWait.series[5].addPoint(simulationWait.media, false);
-                
-                chartCustomers.redraw();
-                chartWait.redraw();
+                chartWork.series[2].addPoint(simulationWork, false);
+                chartCustomersQueue.series[4].addPoint(avgQueue[0], false);
+                chartCustomersQueue.series[5].addPoint(avgQueue[1], false);
             }
+
+            chartCustomers.redraw();
+            chartWait.redraw();
+            chartWork.redraw();
+            chartCustomersQueue.redraw();
         });
     </script>
 
@@ -177,6 +196,14 @@
 
         <div>
             <div id="averageWaitQueueChart" style="height:400px; width:100%"></div>
+        </div>
+
+        <div>
+            <div id="averagePendingWorkChart" style="height:500px; width:100%"></div>
+        </div>
+
+        <div>
+            <div id="averageCustomersEachQueueChart" style="height:500px; width:100%"></div>
         </div>
     </div>
 

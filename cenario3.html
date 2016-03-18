@@ -147,14 +147,14 @@
 
                 chartCustomers.series[0].addPoint(finalQueue.avgCustomersQueue, false);
                 chartWait.series[0].addPoint(finalQueue.avgWaitQueue, false);
-                chartCustomers.series[3].addPoint(simulationCustomers, false);
+                chartCustomers.series[3].addPoint(simulationCustomers.media, false);
                 chartWait.series[3].addPoint(simulationWait.media, false);
                 chartWork.series[0].addPoint(simulationWork, false);
                 chartCustomersQueue.series[0].addPoint(avgQueue[0], false);
                 chartCustomersQueue.series[1].addPoint(avgQueue[1], false);
 
                 // Com prioridades, sem preempção
-                finalQueue = calculateQueueTwoClasses(queue1, queue2);
+                finalQueue = calculateQueueTwoClasses(queue1, queue2, true);
                 simulationCustomers = simulacaoPrioridades.executarPessoasNaFila(lambda1);
                 simulationWait = simulacaoPrioridades.executarTempoPessoasNaFila(lambda1);
                 simulationWork = simulacaoPrioridades.executarTrabalhoPendente(lambda1);
