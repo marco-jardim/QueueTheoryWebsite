@@ -8,6 +8,7 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/Random.js"></script>
     <script src="assets/js/highcharts.js"></script>
+    <script src="assets/js/jstat.min.js"></script>
     <script src="js/stats.js"></script>
     <script src="js/graphs.js"></script>
 
@@ -162,14 +163,19 @@
             }
 
             // CDF (Questao 6)
-            var simulacaoTempoEntreSaidas = simulacao.executarTempoEntreSaidasDeCliente(lambda1);
-            var totalDeAmostras = simulacaoTempoEntreSaidas.x.length;
-            var maxValue = simulacaoTempoEntreSaidas.x[totalDeAmostras];
+            var simulacaoTempoEntreChegadas = simulacao.executarTempoEntreSaidasDeCliente();
+            var totalDeAmostras = simulacaoTempoEntreChegadas.x.length;
+            var maxValue = simulacaoTempoEntreChegadas.x[totalDeAmostras];
             var chartCDF = graphs.CDF(maxValue);
 
             for (i = 0; i < totalDeAmostras; i += 1) {
-              chartCDF.series[0].addPoint([simulacaoTempoEntreSaidas.x[i], simulacaoTempoEntreSaidas.y[i]], false);
+              chartCDF.series[0].addPoint([simulacaoTempoEntreChegadas.x[i], simulacaoTempoEntreChegadas.y[i]], false);
+
+              yAnalitico = jStat.chisquare.cdf( simulacaoTempoEntreChegadas.x[i], 1.5 );
+              chartCDF.series[1].addPoint([simulacaoTempoEntreChegadas.x[i], yAnalitico], false);
             }
+
+
             chartCDF.redraw();
         });
     </script>

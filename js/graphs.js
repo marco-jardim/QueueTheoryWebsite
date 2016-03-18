@@ -282,6 +282,11 @@ var graphs = {
             },
             series: [
                 {
+                    name: 'Simulação',
+                    type: 'line',
+                    data: []
+                },
+                {
                     name: 'Analítico',
                     type: 'line',
                     data: []

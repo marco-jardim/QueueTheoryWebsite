@@ -65,6 +65,19 @@ MetricaDeInteresse.prototype.getTempoEntreSaidas  = function() {
     return tempoEntreSaidas;
 }
 
+MetricaDeInteresse.prototype.getTempoEntreChegadas  = function() {
+    var tempoDeChegadas = [];
+    var tempoEntreChegadas = [];
+    for (cliente of this.clientesProcessados)
+        tempoDeChegadas.push(cliente.getTempoEntrada());
+
+    tempoDeChegadas.sort(function(a, b){return a-b});
+    for (var i = 0; i < tempoDeChegadas.length - 1; i++) {
+        tempoEntreChegadas.push(tempoDeChegadas[(i + 1)] - tempoDeChegadas[i]);
+    }
+    return tempoEntreChegadas;
+}
+
 MetricaDeInteresse.prototype.getTrabalhoPendente  = function() {
     var listaTrabalhoPendente = [];
     for (cliente of this.clientesProcessados)
