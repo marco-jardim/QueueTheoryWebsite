@@ -10,9 +10,30 @@
     <script src="assets/js/highcharts.js"></script>
     <script src="js/stats.js"></script>
     <script src="js/graphs.js"></script>
-    <script src="simulador/atendimentos.js"></script>
-    <script src="simulador/events.js"></script>
-    <script src="simulador/math.min.js"></script>
+
+    <script src="simulador/v2/agendaTarefas.js"></script>
+    <script src="simulador/v2/classe.js"></script>
+    <script src="simulador/v2/agendaTarefas.js"></script>
+    <script src="simulador/v2/cliente.js"></script>
+    <script src="simulador/v2/clientePreemptivo.js"></script>
+    <script src="simulador/v2/fila.js"></script>
+    <script src="simulador/v2/intervalo.js"></script>
+    <script src="simulador/v2/metricaDeInteresse.js"></script>
+    <script src="simulador/v2/metricaDeRejuvenecimento.js"></script>
+    <script src="simulador/v2/metricas.js"></script>
+    <script src="simulador/v2/random.js"></script>
+    <script src="simulador/v2/simulacao.js"></script>
+    <script src="simulador/v2/simulacaoDeterministica.js"></script>
+    <script src="simulador/v2/simulacaoPreemptiva.js"></script>
+    <script src="simulador/v2/simulacaoResultado.js"></script>
+    <script src="simulador/v2/simulador.js"></script>
+    <script src="simulador/v2/simuladorDeterministico.js"></script>
+    <script src="simulador/v2/simuladorPreemptivo.js"></script>
+    <script src="simulador/v2/simuladorRejuvenecimento.js"></script>
+    <script src="simulador/v2/tarefa.js"></script>
+    <script src="simulador/v2/tarefaComparator.js"></script>
+    <script src="simulador/v2/temporizador.js"></script>
+    <script src="simulador/v2/utils.js"></script>
 </head>
 
 <body>
@@ -66,40 +87,53 @@
             var queue1 = { lambda: 0.08, serviceMin: 5, serviceMax: 15 };
             var queue2 = { lambda: 0.05, serviceMin: 1, serviceMax: 3 };
 
-            var finalQueue = calculateQueueTwoClasses(queue1, queue2);
+            var queue1Service = function() { return Random.Uniforme(queue1.serviceMin, queue1.serviceMax); }
+            var queue2Service = function() { return Random.Uniforme(queue2.serviceMin, queue2.serviceMax); }
+
+            var simulacao = new Simulacao(
+                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service), 
+                new Classe(queue2.lambda, queue2.Mu, 0, queue2Service)
+            );
+            var simulacaoPrioridades = new Simulacao(
+                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service), 
+                new Classe(queue2.lambda, queue2.Mu, 1, queue2Service)
+            );
+            var simulacaoPreemptiva = new SimulacaoPreemptiva(
+                new Classe(queue1.lambda, queue1.Mu, 0, queue1Service), 
+                new Classe(queue2.lambda, queue2.Mu, 1, queue2Service)
+            );
+
+            var finalQueue, simulationCustomers, simulationWait;
+
+            finalQueue = calculateQueueTwoClasses(queue1, queue2);
             $('#avgCustomersQueueDataAnalytic').html(finalQueue.avgCustomersQueue);
             $('#avgWaitQueueDataAnalytic').html(finalQueue.avgWaitQueue);
+            simulationCustomers = simulacao.executarPessoasNaFila(queue1.lambda);
+            simulationWait = simulacao.executarTempoPessoasNaFila(queue1.lambda);
+            $('#avgCustomersQueueDataSimulation').html(simulationCustomers.media);
+            $('#avgWaitQueueDataSimulation').html(simulationWait.media);
 
             var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
-            $('#avgCustomersQueueDataAnalytic2').html(finalQueue2.avgCustomersQueue);
-            $('#avgWaitQueueDataAnalytic2').html(finalQueue2.avgWaitQueue);
+            $('#avgCustomersQueueDataAnalytic2').html(finalQueue.avgCustomersQueue);
+            $('#avgWaitQueueDataAnalytic2').html(finalQueue.avgWaitQueue);
+            simulationCustomers = simulacaoPrioridades.executarPessoasNaFila(queue1.lambda);
+            simulationWait = simulacaoPrioridades.executarTempoPessoasNaFila(queue1.lambda);
+            $('#avgCustomersQueueDataSimulation2').html(simulationCustomers.media);
+            $('#avgWaitQueueDataSimulation2').html(simulationWait.media);
 
             var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
-            $('#avgCustomersQueueDataAnalytic3').html(finalQueue3.avgCustomersQueue);
-            $('#avgWaitQueueDataAnalytic3').html(finalQueue3.avgWaitQueue);
-
-            // Simulation
-            var tipoSaida = "uniforme";
-            var MAX_AMOSTRAS = 100;
-            var MAX_EVENTOS = 1000;
-            var simulationCustomers = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "fila_unica", queue1.lambda, tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
-            var simulationWait = [];
-            var simulationCustomers2 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_sem_preempcao", queue1.lambda, tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
-            var simulationWait2 = [];
-            var simulationCustomers3 = processingSimulation(MAX_AMOSTRAS, MAX_EVENTOS, "prioridade_com_preempcao", queue1.lambda, tipoSaida, [queue1.serviceMin, queue1.serviceMax], queue2.lambda, tipoSaida, [queue2.serviceMin, queue2.serviceMax]);
-            var simulationWait3 = [];
-
-            $('#avgCustomersQueueDataSimulation').html(simulationCustomers);
-            $('#avgWaitQueueDataSimulation').html(simulationWait);
-            $('#avgCustomersQueueDataSimulation2').html(simulationCustomers2);
-            $('#avgWaitQueueDataSimulation2').html(simulationWait2);
-            $('#avgCustomersQueueDataSimulation3').html(simulationCustomers3);
-            $('#avgWaitQueueDataSimulation3').html(simulationWait3);
+            $('#avgCustomersQueueDataAnalytic3').html(finalQueue.avgCustomersQueue);
+            $('#avgWaitQueueDataAnalytic3').html(finalQueue.avgWaitQueue);
+            simulationCustomers = simulacaoPreemptiva.executarPessoasNaFila(queue1.lambda);
+            simulationWait = simulacaoPreemptiva.executarTempoPessoasNaFila(queue1.lambda);
+            $('#avgCustomersQueueDataSimulation3').html(simulationCustomers.media);
+            $('#avgWaitQueueDataSimulation3').html(simulationWait.media);
         });
     </script>
 
     <div class="container">
-        <h1>Filas sem prioridades (Fila Única) - Cenário 4</h1>
+        <h1>Cenário 4</h1>
+        <h1>Filas sem prioridades (Fila Única)</h1>
 
         <div>
             <h2>Avg. number of customers in the queue</h2>
@@ -113,7 +147,7 @@
             <h3>Simulation: <span id="avgWaitQueueDataSimulation"></span></h3>
         </div>
 
-        <h1>Filas com prioridades (Sem preempção) - Cenário 4</h1>
+        <h1>Filas com prioridades (Sem preempção)</h1>
 
         <div>
             <h2>Avg. number of customers in the queue</h2>
@@ -127,7 +161,7 @@
             <h3>Simulation: <span id="avgWaitQueueDataSimulation2"></span></h3>
         </div>
 
-        <h1>Filas com prioridades (Com preempção) - Cenário 4</h1>
+        <h1>Filas com prioridades (Com preempção)</h1>
 
         <div>
             <h2>Avg. number of customers in the queue</h2>
