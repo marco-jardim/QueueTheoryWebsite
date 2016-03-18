@@ -8,7 +8,7 @@ function MetricaDeInteresse () {
     this.fracaoDeChegadasServidorVazio = 0.0;
 
     this.clientesProcessados = []; //cliente.js
-    
+
 }
 
 
@@ -57,7 +57,7 @@ MetricaDeInteresse.prototype.getTempoEntreSaidas  = function() {
     var tempoEntreSaidas = [];
     for (cliente of this.clientesProcessados)
         tempoDeSaidas.push(cliente.getTempoSaida());
-    
+
     tempoDeSaidas.sort(function(a, b){return a-b});
     for (var i = 0; i < tempoDeSaidas.length - 1; i++) {
         tempoEntreSaidas.push(tempoDeSaidas[(i + 1)] - tempoDeSaidas[i]);

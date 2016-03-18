@@ -1,6 +1,6 @@
 function Simulacao( classe1,  classe2) {
     this.nLoops = 30;
-    this.tempoFinal = 10000;
+    this.tempoFinal = 1000;
     this.classe1 = classe1;
     this.classe2 = classe2;
 }
@@ -161,8 +161,28 @@ Simulacao.prototype.executar = function(inicio, _final, incremento){
 }
 
 //Questão 6
+Simulacao.prototype.executarTempoEntreChegadasDeCliente = function(filename) {
+    var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
+    var metricaDeInteresse = simulador.iniciarSimulacao();
+    var tempoEntreChegadas = metricaDeInteresse.getTempoEntreChegadas();
+    tempoEntreChegadas.sort(function(a, b){return a-b});
+
+    var blobs = {x: [], y: []};
+    for (var i = 0; i < tempoEntreChegadas.length; i++) {
+        blobs.x.push(Stats.round(tempoEntreChegadas[i], 4));
+        blobs.y.push(Stats.round((i + 1) / tempoEntreChegadas.length, 4));
+    }
+    // var data = new Blob(blobs, {type: 'text/plain'});
+    // if (textFile !== null) {
+    //     window.URL.revokeObjectURL(textFile);
+    // }
+
+    return blobs;
+
+  //textFile = window.URL.createObjectURL(data);
+}
+
 Simulacao.prototype.executarTempoEntreSaidasDeCliente = function(filename) {
-    console.log();
     var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
     var metricaDeInteresse = simulador.iniciarSimulacao();
     var tempoEntreSaidas = metricaDeInteresse.getTempoEntreSaidas();
