@@ -8,11 +8,8 @@ function ClientePreemptivo(classe, tempoEntrada) {
     this.tempoNaFila = [];
     this.marcaEntrada(tempoEntrada);
     this.tempoPendente = classe.getRandom();
-
-    this.trabalhoPendente;
     this.classe = classe;
     this.tempoEntrada = tempoEntrada;
-    this.tempoSaida = tempoSaida;
     this.tempoDeServico = classe.getRandom();
 }
 

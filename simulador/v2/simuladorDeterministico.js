@@ -49,8 +49,9 @@ SimuladorDeterministico.prototype.getMetricaDeInteresse = function() {
 }
 
 SimuladorDeterministico.prototype.prepararSimulacao = function( classes){
+    var self = this;
     for( c of classes){
-        this.temporizador.registrarTarefaPorAtraso(getClasseRandomLambda(c), function(tempo) { this.InsereClienteNaFila(tempo,c); }); //////////////////////
+        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), function(tempo) { self.InsereClienteNaFila(tempo,c); }); //////////////////////
     }
 }
 
@@ -70,7 +71,9 @@ SimuladorDeterministico.prototype.ProcessarCliente = function( cliente){
     this.setServidorOcupado(true);
     this.clienteAtual = cliente;
     this.setTempoVazioTotal(this.tempoVazioTotal + this.temporizador.getTempoAtual() - this.tempoVazio);
-    this.temporizador.registrarTarefaPorAtraso(cliente.getTempoDeServico(), function(tempo) { this.LiberaServidorEBuscaNovoCliente(tempo, cliente); }); ////////////////
+    
+    var self = this;
+    this.temporizador.registrarTarefaPorAtraso(cliente.getTempoDeServico(), function(tempo) { self.LiberaServidorEBuscaNovoCliente(tempo, cliente); }); ////////////////
 }
 
 SimuladorDeterministico.prototype.InsereClienteNaFila = function( horarioDeEntrada,  classe){
@@ -87,7 +90,8 @@ SimuladorDeterministico.prototype.InsereClienteNaFila = function( horarioDeEntra
         this.fila.adicionar(cliente,false);
     }
     // Usa-se Random.Exponecial Sempre pois a entrada eh sempre Memoryless
-    this.temporizador.registrarTarefaPorAtraso(getClasseRandomLambda(classe), function(tempo) { this.InsereClienteNaFila(tempo, classe); }); 
+    var self = this;
+    this.temporizador.registrarTarefaPorAtraso(getClasseRandomLambda(classe), function(tempo) { self.InsereClienteNaFila(tempo, classe); }); 
 }
 
 SimuladorDeterministico.prototype.getTrabalhoPendenteAtual = function( xResidual) {

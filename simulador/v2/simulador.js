@@ -51,7 +51,10 @@ Simulador.prototype.getMetricaDeInteresse= function() {
 Simulador.prototype.prepararSimulacao= function( classes){
     var self = this;
     for( c of classes){
-        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), function(tempo) { self.InsereClienteNaFila(tempo,c); }); ////////////////////// 
+        var callback = function(c) {
+            return function(tempo) { self.InsereClienteNaFila(tempo,c); }
+        }
+        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), callback(c)); ////////////////////// 
     }
 }
 

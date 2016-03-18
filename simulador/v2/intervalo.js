@@ -6,5 +6,5 @@ function Intervalo() {
 }
 
 Intervalo.prototype.delta = function(){
-    return saida - entrada;
+    return this.saida - this.entrada;
 }

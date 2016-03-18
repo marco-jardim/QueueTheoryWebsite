@@ -1,11 +1,8 @@
 // require classe.js
 
 function Cliente (classe, tempoEntrada) {
-
-    this.trabalhoPendente;
     this.classe = classe;
     this.tempoEntrada = tempoEntrada;
-    this.tempoSaida;
     this.tempoDeServico = this.classe.getRandom();
 }
 

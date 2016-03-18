@@ -39,69 +39,77 @@ SimuladorPreemptivo.prototype.getMetricaDeInteresse = function() {
 }
 
 SimuladorPreemptivo.prototype.prepararSimulacao = function( classes){
+    var self = this;
     for( c of classes){
-        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), function(tempo) { this.InsereClienteNaFila(tempo,c); }); ////////////////////// 
+        var callback = function(c) {
+            return function(tempo) { self.InsereClienteNaFila(tempo,c); }
+        }
+        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), callback(c)); ////////////////////// 
     }
 }
 
 SimuladorPreemptivo.prototype.LiberaServidorEBuscaNovoCliente = function(horarioDeEntradaNoServidor, cliente){
-    metricaDeInteresse.adicionaClienteProcessado(cliente);
+    this.metricaDeInteresse.adicionaClienteProcessado(cliente);
     //tira o cliente do servidor
-    clienteNoServidor = null;
+    this.clienteNoServidor = null;
     //se tiver gnt na fila
-    if(fila.tamanho() > 0) {
+    if(this.fila.tamanho() > 0) {
         //tira da fila
-        var novoCliente = fila.remover();
+        var novoCliente = this.fila.remover();
         //Marca a saida do cliente
         novoCliente.marcaSaida(horarioDeEntradaNoServidor);
         //Processa o cliente
-        ProcessarCliente(novoCliente, horarioDeEntradaNoServidor);
+        this.ProcessarCliente(novoCliente, horarioDeEntradaNoServidor);
     }
 }
 
 SimuladorPreemptivo.prototype.ProcessarCliente = function(cliente, horarioAtual){
     //guarda o cliente no servidor
-    clienteNoServidor = cliente;
+    this.clienteNoServidor = cliente;
     //marca o tempo de saida da fila
-    clienteNoServidor.marcaSaida(horarioAtual);
+    this.clienteNoServidor.marcaSaida(horarioAtual);
     //cria o evento para terminar o processamento do cliente, baseado do tempo pendente para terminado
     //guarda o evento
     //dispara o evento
+    var self = this;
+    var callback = function(cliente) {
+        return function(tempo) { self.LiberaServidorEBuscaNovoCliente(tempo, cliente); }
+    }
     tarefaDeProcessamento =
-    temporizador.registrarTarefaPorAtraso(
-        clienteNoServidor.getTempoPendente() , function(tempo) { this.LiberaServidorEBuscaNovoCliente(tempo, cliente); });
+    this.temporizador.registrarTarefaPorAtraso(this.clienteNoServidor.getTempoPendente() , callback(cliente));
 }
 
 SimuladorPreemptivo.prototype.InsereClienteNaFila = function(horarioDeEntrada, classe){
     //marca o horario de entrada
     var novoCliente = new ClientePreemptivo(classe, horarioDeEntrada);
     //Se tem cliente no Servidor
-    if(clienteNoServidor != null) {
+    if(this.clienteNoServidor != null) {
         //Se a prioridade for menor do cliente que esta no servidor
-        if(novoCliente.getClasse().getPrioridade() < clienteNoServidor.getClasse().getPrioridade()){
-            novoCliente.setTrabalhoPendente(getTrabalhoPendenteAtual(0));
+        if(novoCliente.getClasse().getPrioridade() < this.clienteNoServidor.getClasse().getPrioridade()){
+            novoCliente.setTrabalhoPendente(this.getTrabalhoPendenteAtual(0));
             //Cancela o evento de processamento desse cliente
-            temporizador.cancelarTarefa(tarefaDeProcessamento);
+            this.temporizador.cancelarTarefa(tarefaDeProcessamento);
             //Marca o tempo restante que falta para terminar o processamento
-            clienteNoServidor.atualizaTempoPendente(horarioDeEntrada); // i.e horarioDeEntrada corresponde ao horario atual
+            this.clienteNoServidor.atualizaTempoPendente(horarioDeEntrada); // i.e horarioDeEntrada corresponde ao horario atual
             //Marca a nova entrada do cliente
-            clienteNoServidor.marcaEntrada(horarioDeEntrada);
+            this.clienteNoServidor.marcaEntrada(horarioDeEntrada);
             //Colocar como proximo na fila
-            fila.adicionar(clienteNoServidor, true);
+            this.fila.adicionar(this.clienteNoServidor, true);
             //Processa o Cliente que chegou
-            ProcessarCliente(novoCliente,horarioDeEntrada);
+            this.ProcessarCliente(novoCliente,horarioDeEntrada);
         }else{
-            novoCliente.setTrabalhoPendente(getTrabalhoPendenteAtual(novoCliente.getTempoPendente()));
-            fila.adicionar(novoCliente,false);
+            novoCliente.setTrabalhoPendente(this.getTrabalhoPendenteAtual(novoCliente.getTempoPendente()));
+            this.fila.adicionar(novoCliente,false);
         }
     }else{
         //Processa o cliente que chegou
-        novoCliente.setTrabalhoPendente(getTrabalhoPendenteAtual(0));
-        ProcessarCliente(novoCliente,horarioDeEntrada);
+        novoCliente.setTrabalhoPendente(this.getTrabalhoPendenteAtual(0));
+        this.ProcessarCliente(novoCliente,horarioDeEntrada);
     }
 
     // Usa-se Random.Exponecial Sempre pois a entrada eh sempre Memoryless
-    temporizador.registrarTarefaPorAtraso(Random.Exponencial(classe.getLambda()), function(tempo) { this.InsereClienteNaFila(tempo, classe); });
+    var self = this;
+    this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(classe.getLambda()), function(tempo) { self.InsereClienteNaFila(tempo, classe); });
 }
 
 SimuladorPreemptivo.prototype.getTrabalhoPendenteAtual = function( xResidual) {
