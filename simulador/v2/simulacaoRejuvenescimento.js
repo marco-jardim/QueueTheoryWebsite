@@ -8,10 +8,9 @@ function SimulacaoRejuvenescimento(rho, lambda, tempoFinal) {
 
 SimulacaoRejuvenescimento.prototype.getSimulador = function()
 {
-  return new SimuladorRejuvenecimento(this.tempoFinal, this.rho, this.lambda);
+  return new SimuladorRejuvenescimento(this.tempoFinal, this.rho, this.lambda);
 }
 
 SimulacaoRejuvenescimento.prototype.XEstrela = function(l, s) {
     return l/(l+s);
 }
-
