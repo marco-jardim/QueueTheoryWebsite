@@ -6,6 +6,7 @@ function SimuladorRejuvenecimento(tempoFinal, rho, lambda){
     this.temporizador = new Temporizador(tempoFinal);
     this.nRejuvenecimentosAteFalhar = 0;
     this.horarioUltimaFalha = 0.0;
+    this.horarioUltimoRejuvenescimento = 0.0;
     this.metricas = new MetricaRejuvenecimento();
 }
 
@@ -23,7 +24,7 @@ SimuladorRejuvenecimento.prototype.Falhou = function(horario){
     metricas.incrementaNFalhas();
     metricas.incrementaIteracoes();
     metricas.adicionaNRejuvenecimentosAteFalhar(nRejuvenecimentosAteFalhar+1); // +1 é a vez que falha!
-    metricas.adicionaTempoEntreFalhas(horario - horarioUltimaFalha);
+    metricas.adicionaTempoDesdeUltimoRejuvenescimento(horario - horarioUltimoRejuvenescimento);
     horarioUltimaFalha = horario;
     nRejuvenecimentosAteFalhar = 0;
     this.criaTarefas();
@@ -33,6 +34,7 @@ SimuladorRejuvenecimento.prototype.Rejuveneceu = function(horario){
     temporizador.cancelarTarefa(falhaTarefa);
     metricas.incrementaIteracoes();
     nRejuvenecimentosAteFalhar++;
+    horarioUltimoRejuvenescimento = horario;
     this.criaTarefas();
 }
 
