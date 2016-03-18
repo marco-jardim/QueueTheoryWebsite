@@ -44,7 +44,7 @@ SimuladorPreemptivo.prototype.prepararSimulacao = function( classes){
         var callback = function(c) {
             return function(tempo) { self.InsereClienteNaFila(tempo,c); }
         }
-        this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(c), callback(c)); ////////////////////// 
+        this.temporizador.registrarTarefaPorAtraso(c.getRandomChegada(), callback(c)); ////////////////////// 
     }
 }
 
@@ -106,7 +106,7 @@ SimuladorPreemptivo.prototype.InsereClienteNaFila = function(horarioDeEntrada, c
 
     // Usa-se Random.Exponecial Sempre pois a entrada eh sempre Memoryless
     var self = this;
-    this.temporizador.registrarTarefaPorAtraso(this.getClasseRandomLambda(classe), function(tempo) { self.InsereClienteNaFila(tempo, classe); }); ///////////////
+    this.temporizador.registrarTarefaPorAtraso(classe.getRandomChegada(), function(tempo) { self.InsereClienteNaFila(tempo, classe); }); ///////////////
 }
 
 SimuladorPreemptivo.prototype.getTrabalhoPendenteAtual = function( xResidual) {
@@ -138,10 +138,6 @@ SimuladorPreemptivo.prototype.setTempoVazioTotal = function( tempoVazioTotal) {
 
 SimuladorPreemptivo.prototype.setTempoVazio = function( tempoVazio) {
     this.tempoVazio = tempoVazio;
-}
-
-SimuladorPreemptivo.prototype.getClasseRandomLambda = function( classe) {
-    return Random.Exponencial(classe.getLambda());
 }
 
 

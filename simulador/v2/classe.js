@@ -1,9 +1,9 @@
-function Classe( lambda,  mi,  prioridade,  funcao) {
-
+function Classe( lambda,  mi,  prioridade,  funcaoSaida, funcaoChegada) {
     this.lambda = lambda;
     this.mi = mi;
     this.prioridade = prioridade;
-    this.funcao = funcao;
+    this.funcaoSaida = funcaoSaida;
+    this.funcaoChegada = funcaoChegada;
 }
 
 Classe.prototype.getPrioridade  = function() {
@@ -15,7 +15,11 @@ Classe.prototype.getLambda  = function() {
 }
 
 Classe.prototype.getRandom  = function() {
-    return this.funcao();
+    return this.funcaoSaida();
+}
+
+Classe.prototype.getRandomChegada  = function() {
+    return this.funcaoChegada();
 }
 
 Classe.prototype.setLambda  = function( lambda) {
