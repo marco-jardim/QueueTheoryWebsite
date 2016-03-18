@@ -97,14 +97,24 @@
                 new Classe(queue1.lambda, queue1.Mu, 0, function() { return Random.Exponencial(queue1.Mu); }), 
                 new Classe(queue2.lambda, queue2.Mu, 0, function() { return Random.Exponencial(queue2.Mu); })
             );
+            var simulacaoPrioridades = new Simulacao(
+                new Classe(queue1.lambda, queue1.Mu, 0, function() { return Random.Exponencial(queue1.Mu); }), 
+                new Classe(queue2.lambda, queue2.Mu, 1, function() { return Random.Exponencial(queue2.Mu); })
+            );
+            var simulacaoPreemptiva = new SimulacaoPreemptiva(
+                new Classe(queue1.lambda, queue1.Mu, 0, function() { return Random.Exponencial(queue1.Mu); }), 
+                new Classe(queue2.lambda, queue2.Mu, 1, function() { return Random.Exponencial(queue2.Mu); })
+            );
 
             for (var lambda1 of lambda1Data) {
                 queue1.lambda = lambda1;
 
+                var finalQueue, simulationCustomers, simulationWait;
+
                 // Fila única, sem prioridades
-                var finalQueue = calculateQueueTwoClasses(queue1, queue2);
-                var simulationCustomers = simulacao.executarPessoasNaFila(lambda1);
-                var simulationWait = simulacao.executarTempoPessoasNaFila(lambda1);
+                finalQueue = calculateQueueTwoClasses(queue1, queue2);
+                simulationCustomers = simulacao.executarPessoasNaFila(lambda1);
+                simulationWait = simulacao.executarTempoPessoasNaFila(lambda1);
 
                 chartCustomers.series[0].addPoint(finalQueue.avgCustomersQueue, false);
                 chartWait.series[0].addPoint(finalQueue.avgWaitQueue, false);
@@ -112,20 +122,24 @@
                 chartWait.series[3].addPoint(simulationWait.media, false);
 
                 // // Com prioridades, sem preempção
-                // var finalQueue2 = calculateQueueTwoClasses(queue1, queue2, true);
-                // chartCustomers.series[1].addPoint(finalQueue2.avgCustomersQueue, false);
-                // chartWait.series[1].addPoint(finalQueue2.avgWaitQueue, false);
+                finalQueue = calculateQueueTwoClasses(queue1, queue2, true);
+                simulationCustomers = simulacaoPrioridades.executarPessoasNaFila(lambda1);
+                simulationWait = simulacaoPrioridades.executarTempoPessoasNaFila(lambda1);
 
-                // chartCustomers.series[4].addPoint(simulationCustomers.media, false);
-                // chartWait.series[4].addPoint(simulationWait.media, false);
+                chartCustomers.series[1].addPoint(finalQueue.avgCustomersQueue, false);
+                chartWait.series[1].addPoint(finalQueue.avgWaitQueue, false);
+                chartCustomers.series[4].addPoint(simulationCustomers.media, false);
+                chartWait.series[4].addPoint(simulationWait.media, false);
 
-                // // Com prioridades, com preempção
-                // var finalQueue3 = calculateQueueTwoClasses(queue1, queue2, true, true);
-                // chartCustomers.series[2].addPoint(finalQueue3.avgCustomersQueue, false);
-                // chartWait.series[2].addPoint(finalQueue3.avgWaitQueue, false);
+                // Com prioridades, com preempção
+                finalQueue = calculateQueueTwoClasses(queue1, queue2, true, true);
+                simulationCustomers = simulacaoPreemptiva.executarPessoasNaFila(lambda1);
+                simulationWait = simulacaoPreemptiva.executarTempoPessoasNaFila(lambda1);
 
-                // chartCustomers.series[5].addPoint(simulationCustomers.media, false);
-                // chartWait.series[5].addPoint(simulationWait.media, false);
+                chartCustomers.series[2].addPoint(finalQueue.avgCustomersQueue, false);
+                chartWait.series[2].addPoint(finalQueue.avgWaitQueue, false);
+                chartCustomers.series[5].addPoint(simulationCustomers.media, false);
+                chartWait.series[5].addPoint(simulationWait.media, false);
                 
                 chartCustomers.redraw();
                 chartWait.redraw();
