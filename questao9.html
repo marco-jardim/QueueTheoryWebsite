@@ -1,0 +1,74 @@
+<html>
+<head>
+    <title>Cenário 4</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/neon.css">
+    <script src="assets/js/jquery-2.2.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/Random.js"></script>
+    <script src="assets/js/highcharts.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/graphs.js"></script>
+
+    <script src="simulador/v2/agendaTarefas.js"></script>
+    <script src="simulador/v2/classe.js"></script>
+    <script src="simulador/v2/agendaTarefas.js"></script>
+    <script src="simulador/v2/cliente.js"></script>
+    <script src="simulador/v2/clientePreemptivo.js"></script>
+    <script src="simulador/v2/fila.js"></script>
+    <script src="simulador/v2/intervalo.js"></script>
+    <script src="simulador/v2/metricaDeInteresse.js"></script>
+    <script src="simulador/v2/metricaDeRejuvenecimento.js"></script>
+    <script src="simulador/v2/metricas.js"></script>
+    <script src="simulador/v2/random.js"></script>
+    <script src="simulador/v2/simulacao.js"></script>
+    <script src="simulador/v2/simulacaoPreemptiva.js"></script>
+    <script src="simulador/v2/simulacaoResultado.js"></script>
+    <script src="simulador/v2/simulador.js"></script>
+    <script src="simulador/v2/simuladorPreemptivo.js"></script>
+    <script src="simulador/v2/simuladorRejuvenecimento.js"></script>
+    <script src="simulador/v2/SimulacaoRejuvenescimento.js"></script>
+    <script src="simulador/v2/tarefa.js"></script>
+    <script src="simulador/v2/tarefaComparator.js"></script>
+    <script src="simulador/v2/temporizador.js"></script>
+    <script src="simulador/v2/utils.js"></script>
+</head>
+
+<body>
+    <script>
+        $(document).ready(function(){
+            rho = 0.8;
+            lambda = 0.5;
+            tempoFinal = 100000;
+
+            var simulacao = new SimulacaoRejuvenescimento(rho, lambda, tempoFinal);
+            var simulador = simulacao.getSimulador();
+            var metricas = simulador.executar();
+
+            $('#pSimulacao').html(metricas.getProbabilidadeDeFalhar());
+            $('#pSimulacao').html(simulacao.XEstrela(lambda, rho));
+
+            $('#nSimulacao').html(metricas.getnRejuvenecimentoAteFalhar());
+            $('#nAnalitico').html(1/simulacao.XEstrela(lambda, rho));
+
+            $('#rSimulacao').html(metricas.getTempoUltimoRejuvenescimento());
+            $('#rAnalitico').html(1/(lambda + rho));
+        });
+    </script>
+
+    <div class="container">
+        <h1>Questão 9</h1>
+
+        <div>
+            <h3>3.1) Seja p a probabilidade de falhar, logo p(simulacao) = <span id="pSimulacao"></span></h3>
+            <h3>3.1) Seja p a probabilidade de falhar, logo p(analítico) = <span id="pAnalitico"></span></h3>
+            <h3>3.2) Numero de vezes que o sistema reinicia, até falhar, por simulacao = <span id="nSimulacao"></span></h3>
+            <h3>3.2) Numero de vezes que o sistema reinicia, até falhar, analítico = <span id="nAnalitico"></span></h3>
+            <h3>3.3) Tempo do último rejuvenescimento até a falha, simulacao = <span id="rSimulacao"></span></h3>
+            <h3>3.3) Tempo do último rejuvenescimento até a falha, analítico = <span id="rAnalitico"></span></h3>
+        </div>
+    </div>
+</body>
+
+</html>

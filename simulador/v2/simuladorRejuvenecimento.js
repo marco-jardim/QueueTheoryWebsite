@@ -15,31 +15,38 @@ SimuladorRejuvenecimento.prototype.preparaSimulador = function(){
 }
 
 SimuladorRejuvenecimento.prototype.criaTarefas = function(){
-    rejuvenecimentoTarefa = temporizador.registrarTarefaPorAtraso(Random.Exponencial(rho), function(tempo) { this.Rejuveneceu(tempo); });
-    falhaTarefa = temporizador.registrarTarefaPorAtraso(Random.Exponencial(lambda), function(tempo) { this.Falhou(tempo); });
+    var callback = function() {
+        return function(tempo) { this.Rejuveneceu(tempo); }
+    }
+    rejuvenecimentoTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(rho), callback);
+
+    var callback2 = function() {
+        return function(tempo) { this.Falhou(tempo); }
+    }
+    falhaTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(lambda), callback2);
 }
 
 SimuladorRejuvenecimento.prototype.Falhou = function(horario){
-    temporizador.cancelarTarefa(rejuvenecimentoTarefa);
-    metricas.incrementaNFalhas();
-    metricas.incrementaIteracoes();
-    metricas.adicionaNRejuvenecimentosAteFalhar(nRejuvenecimentosAteFalhar+1); // +1 é a vez que falha!
-    metricas.adicionaTempoDesdeUltimoRejuvenescimento(horario - horarioUltimoRejuvenescimento);
-    horarioUltimaFalha = horario;
-    nRejuvenecimentosAteFalhar = 0;
+    this.temporizador.cancelarTarefa(rejuvenecimentoTarefa);
+    this.metricas.incrementaNFalhas();
+    this.metricas.incrementaIteracoes();
+    this.metricas.adicionaNRejuvenecimentosAteFalhar(this.nRejuvenecimentosAteFalhar+1); // +1 é a vez que falha!
+    this.metricas.adicionaTempoDesdeUltimoRejuvenescimento(horario - this.horarioUltimoRejuvenescimento);
+    this.horarioUltimaFalha = horario;
+    this.nRejuvenecimentosAteFalhar = 0;
     this.criaTarefas();
 }
 
 SimuladorRejuvenecimento.prototype.Rejuveneceu = function(horario){
-    temporizador.cancelarTarefa(falhaTarefa);
-    metricas.incrementaIteracoes();
-    nRejuvenecimentosAteFalhar++;
-    horarioUltimoRejuvenescimento = horario;
+    this.temporizador.cancelarTarefa(falhaTarefa);
+    this.metricas.incrementaIteracoes();
+    this.nRejuvenecimentosAteFalhar++;
+    this.horarioUltimoRejuvenescimento = horario;
     this.criaTarefas();
 }
 
 SimuladorRejuvenecimento.prototype.executar = function(){
     this.preparaSimulador();
-    temporizador.play();
-    return metricas;
+    this.temporizador.play();
+    return this.metricas;
 }
