@@ -47,7 +47,7 @@
             var metricas = simulador.executar();
 
             $('#pSimulacao').html(metricas.getProbabilidadeDeFalhar());
-            $('#pSimulacao').html(simulacao.XEstrela(lambda, rho));
+            $('#pAnalitico').html(simulacao.XEstrela(lambda, rho));
 
             $('#nSimulacao').html(metricas.getnRejuvenescimentoAteFalhar());
             $('#nAnalitico').html(1/simulacao.XEstrela(lambda, rho));
