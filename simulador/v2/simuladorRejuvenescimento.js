@@ -17,19 +17,21 @@ SimuladorRejuvenescimento.prototype.preparaSimulador = function(){
 }
 
 SimuladorRejuvenescimento.prototype.criaTarefas = function(){
+    var self = this;
     var callback = function() {
-        return function(tempo) { this.Rejuvenesceu(tempo); }
+        return function(tempo) { self.Rejuvenesceu(tempo); }
     }
-    this.rejuvenescimentoTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(rho), callback);
+    this.rejuvenescimentoTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(rho), callback());
 
     var callback2 = function() {
-        return function(tempo) { this.Falhou(tempo); }
+        return function(tempo) {    
+            self.Falhou(tempo); 
+        }
     }
-    this.falhaTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(lambda), callback2);
+    this.falhaTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(lambda), callback2());
 }
 
 SimuladorRejuvenescimento.prototype.Falhou = function(horario){
-    console.log("falhou");
     this.temporizador.cancelarTarefa(this.rejuvenescimentoTarefa);
     this.metricas.incrementaNFalhas();
     this.metricas.incrementaIteracoes();
@@ -41,7 +43,6 @@ SimuladorRejuvenescimento.prototype.Falhou = function(horario){
 }
 
 SimuladorRejuvenescimento.prototype.Rejuvenesceu = function(horario){
-    console.log("rejuv");
     this.temporizador.cancelarTarefa(this.falhaTarefa);
     this.metricas.incrementaIteracoes();
     this.nRejuvenescimentosAteFalhar++;
