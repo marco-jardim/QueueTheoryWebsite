@@ -1,5 +1,3 @@
-// require agendaTarefas.js
-
 function Temporizador  ( tempoFinal) {
     this.tempoAtual = 0.0;
     this.tempoFinal = tempoFinal;

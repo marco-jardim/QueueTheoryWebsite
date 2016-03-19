@@ -1,4 +1,3 @@
-
 function SimuladorPreemptivo(tempoFinal, classeObrigatoria, classes) {
     this.temporizador = new Temporizador(tempoFinal);
     this.metricaDeInteresse = new MetricaDeInteresse();

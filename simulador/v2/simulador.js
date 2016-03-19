@@ -1,14 +1,3 @@
-/* require:
-
-random
-temporizador
-cliente
-fila
-metricadeinteresse
-classe
-
-*/
-
 function Simulador( tempoFinal,  classeObrigatoria, classes) {
     this.temporizador = new Temporizador(tempoFinal);
     this.metricaDeInteresse = new MetricaDeInteresse();

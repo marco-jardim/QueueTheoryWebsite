@@ -1,6 +1,3 @@
-// require classe.js
-// require utils.js
-
 var AUTOINC = 0;
 
 function ClientePreemptivo(classe, tempoEntrada) {
@@ -56,7 +53,6 @@ ClientePreemptivo.prototype.marcaSaida  = function( tempoSaida) {
 }
 
 ClientePreemptivo.prototype.atualizaTempoPendente  = function( horario){
-    //Ultima saida, foi quando começou o processamento
     this.tempoPendente -= horario - this.tempoNaFila.last().saida;
 }
 

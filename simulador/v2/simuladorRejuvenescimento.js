@@ -1,5 +1,3 @@
-// require tarefa, temporizador, random
-
 function SimuladorRejuvenescimento(tempoFinal, rho, lambda){
     this.rho = rho;
     this.lambda = lambda;

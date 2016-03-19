@@ -1,5 +1,3 @@
-//require utils.js
-
 function MetricaRejuvenescimento () {
     this.iteracoes = 0;
     this.nFalhas = 0;

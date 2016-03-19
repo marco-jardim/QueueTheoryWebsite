@@ -1,8 +1,4 @@
-//require mathjs
-//require utils.js
-
-function Metricas () {
-}
+function Metricas () {}
 
 Metricas.prototype.Little  = function( lambda,  mediaTempo) {
 	return lambda * mediaTempo;

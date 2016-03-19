@@ -1,13 +1,10 @@
-//Questao 9
-
 function SimulacaoRejuvenescimento(rho, lambda, tempoFinal) {
   this.rho = rho;
   this.lambda = lambda;
   this.tempoFinal = tempoFinal;
 }
 
-SimulacaoRejuvenescimento.prototype.getSimulador = function()
-{
+SimulacaoRejuvenescimento.prototype.getSimulador = function() {
   return new SimuladorRejuvenescimento(this.tempoFinal, this.rho, this.lambda);
 }
 

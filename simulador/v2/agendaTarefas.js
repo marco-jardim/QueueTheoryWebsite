@@ -1,5 +1,3 @@
-// require tarefaComparator.js
-
 function AgendaTarefas  () {
         this.tarefas = [];
     }

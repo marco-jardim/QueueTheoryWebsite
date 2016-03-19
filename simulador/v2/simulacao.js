@@ -1,11 +1,11 @@
-function Simulacao( classe1,  classe2) {
+function Simulacao(classe1, classe2) {
     this.nLoops = 30;
     this.tempoFinal = 10000;
     this.classe1 = classe1;
     this.classe2 = classe2;
 }
 
-Simulacao.prototype.PrintSimulacaoResultado = function( titulo, resultado){
+Simulacao.prototype.PrintSimulacaoResultado = function(titulo, resultado){
     var media = [];
     var intervaloDeConfiancaInferior = [];
     var intervaloDeConfiancaSuperior = [];
@@ -15,11 +15,11 @@ Simulacao.prototype.PrintSimulacaoResultado = function( titulo, resultado){
         intervaloDeConfiancaSuperior.push(r.intConfSuperior.toString());
     }
     console.log(titulo);
-    console.log("Media");
+    console.log("Média:");
     console.log(media);
-    console.log("Inferior");
+    console.log("Intervalo de confiança inferior:");
     console.log(intervaloDeConfiancaInferior);
-    console.log("Superior");
+    console.log("Intervalo de confiança superior:");
     console.log(intervaloDeConfiancaSuperior);
 }
 
@@ -116,50 +116,6 @@ Simulacao.prototype.executarFracaoChegadasServidorVazio = function(lambda){
     return new SimulacaoResultado(media,intervaloInferior,intervaloSuperior);
 }
 
-Simulacao.prototype.executar = function(inicio, _final, incremento){
-    var mediaPessoa = [];
-    var mediaTempo = [];
-    var mediaTempoVazio = [];
-    var mediaChegadaVazio = [];
-
-    for(var lambda = inicio; lambda <= _final; lambda += incremento){
-        mediaPessoa.push(this.executarPessoasNaFila(lambda));
-    }
-
-    for(var lambda = inicio; lambda <= _final; lambda += incremento){
-        mediaTempo.push(this.executarTempoPessoasNaFila(lambda));
-    }
-
-    // Questão 7
-    /*for(var lambda = inicio; lambda <= _final; lambda += incremento){
-        mediaTempoVazio.push(executarFracaoTempoServidorVazio(lambda));
-    }
-
-    for(var lambda = inicio; lambda <= _final; lambda += incremento){
-        mediaChegadaVazio.push(executarFracaoChegadasServidorVazio(lambda));
-    }*/
-
-    this.PrintSimulacaoResultado("Media de Pessoas da Fila", mediaPessoa);
-    this.PrintSimulacaoResultado("Media de tempo das pessoas na fila", mediaTempo);
-    //this.PrintSimulacaoResultado("Fracao em que o servidor fica vazio", mediaTempoVazio);
-    //this.PrintSimulacaoResultado("Fracao de chegadas em que servidor se encontra vazio", mediaChegadaVazio);
-
-    //Questão 8 Parte 2
-    /*
-    console.log("Trabalho Pendente");
-    for(var lambda = inicio; lambda <= _final; lambda += incremento){
-        console.log(executarTrabalhoPendente(lambda));
-    }*/
-
-    //Questão 8 Parte 2
-    // console.log("Pessoas na Fila 1");
-    // for(lambda = inicio; lambda <= _final; lambda += incremento){
-    //     var medias = this.executarMediaPessoasFilas(lambda);
-    //     console.log("Classe 1: " + (medias[0]));
-    //     console.log("Classe 2: " + (medias[1]));
-    // }
-}
-
 //Questão 6
 Simulacao.prototype.executarTempoEntreChegadasDeCliente = function(filename) {
     var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
@@ -203,7 +159,6 @@ Simulacao.prototype.executarTempoEntreSaidasDeCliente = function(filename) {
   //textFile = window.URL.createObjectURL(data);
 }
 
-//Questão 8
 Simulacao.prototype.executarTrabalhoPendente = function(lambda) {
     this.classe1.setLambda(lambda);
     var mediasTrabalhoPendente = [];

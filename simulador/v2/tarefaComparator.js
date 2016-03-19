@@ -1,4 +1,3 @@
-// require tarefa.js
 function TarefaComparator (t1, t2) {
     this.diff = t1.getHorario() - t2.getHorario();
     if(t1.hashCode() == t2.hashCode()) return 0;

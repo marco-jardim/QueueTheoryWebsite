@@ -1,8 +1,5 @@
-// require classe.js
-
-
-function Fila( classes) {
-    this.filas = []; //List<List<Cliente>>
+function Fila(classes) {
+    this.filas = [];
     for (classe of classes) {
         this.filas.push([]);
     }
@@ -12,10 +9,10 @@ Fila.prototype.getFilas = function() {
     return this.filas;
 }
 
-Fila.prototype.adicionar = function( cliente,  preemptivo){
+Fila.prototype.adicionar = function(cliente, preemptivo){
     if(preemptivo){
         this.getFilas()[cliente.getClasse().getPrioridade()].unshift(cliente);
-    }else{
+    } else{
         this.getFilas()[cliente.getClasse().getPrioridade()].push(cliente);
     }
 }
@@ -32,11 +29,9 @@ Fila.prototype.remover = function(){
 }
 
 Fila.prototype.tamanho = function(){
-
     var contagem = 0;
     for (var i = 0; i < this.filas.length; i++) {
         contagem += this.filas[i].length;
     }
-
     return contagem;
 }

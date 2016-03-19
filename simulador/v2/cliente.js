@@ -1,5 +1,3 @@
-// require classe.js
-
 function Cliente (classe, tempoEntrada) {
     this.classe = classe;
     this.tempoEntrada = tempoEntrada;

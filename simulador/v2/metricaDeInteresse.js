@@ -1,26 +1,21 @@
-//require utils.js
-// require cliente.js
-
-function MetricaDeInteresse () {
+function MetricaDeInteresse() {
     this.clientesProcessados;
     this.mediaCalculada = null;
     this.fracaoDeTempoServidorVazio = 0.0;
     this.fracaoDeChegadasServidorVazio = 0.0;
-
-    this.clientesProcessados = []; //cliente.js
-
+    this.clientesProcessados = [];
 }
 
 
-MetricaDeInteresse.prototype.getClientesProcessados  = function() {
+MetricaDeInteresse.prototype.getClientesProcessados = function() {
     return this.clientesProcessados;
 }
 
-MetricaDeInteresse.prototype.setMediaCalculada  = function( mediaCalculada) {
+MetricaDeInteresse.prototype.setMediaCalculada = function( mediaCalculada) {
     this.mediaCalculada = mediaCalculada;
 }
 
-MetricaDeInteresse.prototype.getMediaTempoDeEspera  = function() {
+MetricaDeInteresse.prototype.getMediaTempoDeEspera = function() {
     if(this.mediaCalculada == null){
         var listaDeltaTempo = [];
         for (cliente of this.getClientesProcessados())
@@ -30,29 +25,29 @@ MetricaDeInteresse.prototype.getMediaTempoDeEspera  = function() {
     return this.mediaCalculada;
 }
 
-MetricaDeInteresse.prototype.adicionaClienteProcessado  = function(cliente){
+MetricaDeInteresse.prototype.adicionaClienteProcessado = function(cliente){
     if(cliente != null){
         this.getClientesProcessados().push(cliente);
     }
 }
 
-MetricaDeInteresse.prototype.getFracaoDeTempoServidorVazio  = function() {
+MetricaDeInteresse.prototype.getFracaoDeTempoServidorVazio = function() {
     return this.fracaoDeTempoServidorVazio;
 }
 
-MetricaDeInteresse.prototype.setFracaoDeTempoServidorVazio  = function( fracaoDeTempoServidorVazio) {
+MetricaDeInteresse.prototype.setFracaoDeTempoServidorVazio = function( fracaoDeTempoServidorVazio) {
     this.fracaoDeTempoServidorVazio = fracaoDeTempoServidorVazio;
 }
 
-MetricaDeInteresse.prototype.getFracaoDeChegadasServidorVazio  = function() {
+MetricaDeInteresse.prototype.getFracaoDeChegadasServidorVazio = function() {
     return this.fracaoDeChegadasServidorVazio;
 }
 
-MetricaDeInteresse.prototype.setFracaoDeChegadasServidorVazio  = function( fracaoDeChegadasServidorVazio) {
+MetricaDeInteresse.prototype.setFracaoDeChegadasServidorVazio = function( fracaoDeChegadasServidorVazio) {
     this.fracaoDeChegadasServidorVazio = fracaoDeChegadasServidorVazio;
 }
 
-MetricaDeInteresse.prototype.getTempoEntreSaidas  = function() {
+MetricaDeInteresse.prototype.getTempoEntreSaidas = function() {
     var tempoDeSaidas = [];
     var tempoEntreSaidas = [];
     for (cliente of this.clientesProcessados)
@@ -65,7 +60,7 @@ MetricaDeInteresse.prototype.getTempoEntreSaidas  = function() {
     return tempoEntreSaidas;
 }
 
-MetricaDeInteresse.prototype.getTempoEntreChegadas  = function() {
+MetricaDeInteresse.prototype.getTempoEntreChegadas = function() {
     var tempoDeChegadas = [];
     var tempoEntreChegadas = [];
     for (cliente of this.clientesProcessados)
@@ -78,7 +73,7 @@ MetricaDeInteresse.prototype.getTempoEntreChegadas  = function() {
     return tempoEntreChegadas;
 }
 
-MetricaDeInteresse.prototype.getTrabalhoPendente  = function() {
+MetricaDeInteresse.prototype.getTrabalhoPendente = function() {
     var listaTrabalhoPendente = [];
     for (cliente of this.clientesProcessados)
         listaTrabalhoPendente.push(cliente.getTrabalhoPendente());
@@ -86,7 +81,7 @@ MetricaDeInteresse.prototype.getTrabalhoPendente  = function() {
     return Metricas.Media(listaTrabalhoPendente);
 }
 
-MetricaDeInteresse.prototype.getPessoasFila  = function() {
+MetricaDeInteresse.prototype.getPessoasFila = function() {
     var pessoasNaFila = [];
     var classe1 = this.clientesProcessados[0].getClasse();
     var classe2 = null;

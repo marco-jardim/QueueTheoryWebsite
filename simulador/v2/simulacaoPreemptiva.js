@@ -1,7 +1,3 @@
-//require simulacao
-
-//falta resto q vem de Simulacao
-
 function SimulacaoPreemptiva(classe1, classe2) {
     this.nLoops = 30;
     this.tempoFinal = 10000;
@@ -17,7 +13,7 @@ SimulacaoPreemptiva.prototype.getSimulador = function(tempoFinal, classe1, class
 }
 
 
-SimulacaoPreemptiva.prototype.PrintSimulacaoResultado = function( titulo, resultado){
+SimulacaoPreemptiva.prototype.PrintSimulacaoResultado = function(titulo, resultado){
     var media = [];
     var intervaloDeConfiancaInferior = [];
     var intervaloDeConfiancaSuperior = [];
@@ -27,11 +23,11 @@ SimulacaoPreemptiva.prototype.PrintSimulacaoResultado = function( titulo, result
         intervaloDeConfiancaSuperior.push(r.intConfSuperior.toString());
     }
     console.log(titulo);
-    console.log("Media");
+    console.log("Média:");
     console.log(media);
-    console.log("Inferior");
+    console.log("Intervalo de confiança inferior:");
     console.log(intervaloDeConfiancaInferior);
-    console.log("Superior");
+    console.log("Intervalo de confiança superior:");
     console.log(intervaloDeConfiancaSuperior);
 }
 
