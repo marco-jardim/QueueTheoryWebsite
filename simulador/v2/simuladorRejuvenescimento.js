@@ -29,7 +29,8 @@ SimuladorRejuvenescimento.prototype.criaTarefas = function(){
 }
 
 SimuladorRejuvenescimento.prototype.Falhou = function(horario){
-    this.temporizador.cancelarTarefa(rejuvenescimentoTarefa);
+    console.log("falhou");
+    this.temporizador.cancelarTarefa(this.rejuvenescimentoTarefa);
     this.metricas.incrementaNFalhas();
     this.metricas.incrementaIteracoes();
     this.metricas.adicionaNRejuvenescimentosAteFalhar(this.nRejuvenescimentosAteFalhar+1); // +1 é a vez que falha!
@@ -40,7 +41,8 @@ SimuladorRejuvenescimento.prototype.Falhou = function(horario){
 }
 
 SimuladorRejuvenescimento.prototype.Rejuvenesceu = function(horario){
-    this.temporizador.cancelarTarefa(falhaTarefa);
+    console.log("rejuv");
+    this.temporizador.cancelarTarefa(this.falhaTarefa);
     this.metricas.incrementaIteracoes();
     this.nRejuvenescimentosAteFalhar++;
     this.horarioUltimoRejuvenescimento = horario;
