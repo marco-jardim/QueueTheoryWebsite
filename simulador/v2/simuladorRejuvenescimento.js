@@ -8,6 +8,8 @@ function SimuladorRejuvenescimento(tempoFinal, rho, lambda){
     this.horarioUltimaFalha = 0.0;
     this.horarioUltimoRejuvenescimento = 0.0;
     this.metricas = new MetricaRejuvenescimento();
+    this.rejuvenescimentoTarefa;
+    this.falhaTarefa;
 }
 
 SimuladorRejuvenescimento.prototype.preparaSimulador = function(){
@@ -18,12 +20,12 @@ SimuladorRejuvenescimento.prototype.criaTarefas = function(){
     var callback = function() {
         return function(tempo) { this.Rejuvenesceu(tempo); }
     }
-    rejuvenescimentoTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(rho), callback);
+    this.rejuvenescimentoTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(rho), callback);
 
     var callback2 = function() {
         return function(tempo) { this.Falhou(tempo); }
     }
-    falhaTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(lambda), callback2);
+    this.falhaTarefa = this.temporizador.registrarTarefaPorAtraso(Random.Exponencial(lambda), callback2);
 }
 
 SimuladorRejuvenescimento.prototype.Falhou = function(horario){
