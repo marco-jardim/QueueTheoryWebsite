@@ -1,14 +1,14 @@
 function Metricas () {}
 
-Metricas.prototype.Little  = function( lambda,  mediaTempo) {
+Metricas.prototype.Little  = function(lambda,  mediaTempo) {
 	return lambda * mediaTempo;
 }
 
-Metricas.prototype.Media  = function( lista) {
+Metricas.prototype.Media  = function(lista) {
 	return lista.average();
 }
 
-Metricas.prototype.DesvioPadrao  = function( lista) {
+Metricas.prototype.DesvioPadrao  = function(lista) {
 	var desvioPadrao = 0;
  	var media = this.Media(lista);
  	for (var item of lista) {
@@ -17,11 +17,11 @@ Metricas.prototype.DesvioPadrao  = function( lista) {
 	return desvioPadrao;
 }
 
-Metricas.prototype.IntervaloConfiancaInferior  = function( lista) {
+Metricas.prototype.IntervaloConfiancaInferior  = function(lista) {
 	return this.Media(lista) - 1.96 * Math.sqrt(this.DesvioPadrao(lista)) / Math.sqrt(lista.length);
 }
 
-Metricas.prototype.IntervaloConfiancaSuperior  = function( lista) {
+Metricas.prototype.IntervaloConfiancaSuperior  = function(lista) {
 	return this.Media(lista) + 1.96 * Math.sqrt(this.DesvioPadrao(lista))/Math.sqrt(lista.length);
 }
 

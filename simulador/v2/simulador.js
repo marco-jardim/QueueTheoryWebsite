@@ -23,7 +23,7 @@ Simulador.prototype.prepararSimulacao= function( classes){
         var callback = function(c) {
             return function(tempo) { self.InsereClienteNaFila(tempo,c); }
         }
-        this.temporizador.registrarTarefaPorAtraso(c.getRandomChegada(), callback(c)); ////////////////////// 
+        this.temporizador.registrarTarefaPorAtraso(c.getRandomChegada(), callback(c)); 
     }
 }
 

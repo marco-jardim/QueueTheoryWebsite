@@ -9,7 +9,7 @@ Simulacao.prototype.PrintSimulacaoResultado = function(titulo, resultado){
     var media = [];
     var intervaloDeConfiancaInferior = [];
     var intervaloDeConfiancaSuperior = [];
-    for( r of resultado){
+    for(r of resultado){
         media.push(r.media.toString());
         intervaloDeConfiancaInferior.push(r.intConfInferior.toString());
         intervaloDeConfiancaSuperior.push(r.intConfSuperior.toString());
@@ -24,10 +24,7 @@ Simulacao.prototype.PrintSimulacaoResultado = function(titulo, resultado){
 }
 
 Simulacao.prototype.getSimulador = function(tempoFinal, classe1, classe2) {
-    if (classe2)
-        return new Simulador(tempoFinal, classe1, classe2);
-
-    return new Simulador(tempoFinal, classe1);
+    return new Simulador(tempoFinal, classe1, classe2);
 }
 
 Simulacao.prototype.executarPessoasNaFila = function(lambda){
@@ -206,4 +203,10 @@ Simulacao.prototype.executarMediaPessoasFilas = function(lambda) {
     }while(( media1 < intervaloInferior1 || media1 > intervaloSuperior1 ) && ( media2 < intervaloInferior2 || media2 > intervaloSuperior2 ));
 
     return [media1, media2];
+}
+
+function SimulacaoResultado(media, intConfInferior, intConfSuperior) {
+    this.media = media;
+    this.intConfInferior = intConfInferior;
+    this.intConfSuperior = intConfSuperior;
 }
