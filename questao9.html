@@ -19,7 +19,7 @@
     <script src="simulador/v2/fila.js"></script>
     <script src="simulador/v2/intervalo.js"></script>
     <script src="simulador/v2/metricaDeInteresse.js"></script>
-    <script src="simulador/v2/metricaDeRejuvenecimento.js"></script>
+    <script src="simulador/v2/metricaDeRejuvenescimento.js"></script>
     <script src="simulador/v2/metricas.js"></script>
     <script src="simulador/v2/random.js"></script>
     <script src="simulador/v2/simulacao.js"></script>
@@ -27,7 +27,7 @@
     <script src="simulador/v2/simulacaoResultado.js"></script>
     <script src="simulador/v2/simulador.js"></script>
     <script src="simulador/v2/simuladorPreemptivo.js"></script>
-    <script src="simulador/v2/simuladorRejuvenecimento.js"></script>
+    <script src="simulador/v2/simuladorRejuvenescimento.js"></script>
     <script src="simulador/v2/SimulacaoRejuvenescimento.js"></script>
     <script src="simulador/v2/tarefa.js"></script>
     <script src="simulador/v2/tarefaComparator.js"></script>
@@ -49,7 +49,7 @@
             $('#pSimulacao').html(metricas.getProbabilidadeDeFalhar());
             $('#pSimulacao').html(simulacao.XEstrela(lambda, rho));
 
-            $('#nSimulacao').html(metricas.getnRejuvenecimentoAteFalhar());
+            $('#nSimulacao').html(metricas.getnRejuvenescimentoAteFalhar());
             $('#nAnalitico').html(1/simulacao.XEstrela(lambda, rho));
 
             $('#rSimulacao').html(metricas.getTempoUltimoRejuvenescimento());
