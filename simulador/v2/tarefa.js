@@ -6,15 +6,7 @@ function Tarefa (horario, funcao) {
     this.funcao = funcao;
 }
 
-Tarefa.prototype.getHorario = function() {
-    return this.horario;
-}
-
-Tarefa.prototype.setHorario = function( horario) {
-    this.horario = horario;
-}
-
-Tarefa.prototype.executar = function( hora){
+Tarefa.prototype.executar = function(hora){
     this.funcao(hora);
 }
 

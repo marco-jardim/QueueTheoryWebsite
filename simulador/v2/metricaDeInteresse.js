@@ -6,52 +6,27 @@ function MetricaDeInteresse() {
     this.clientesProcessados = [];
 }
 
-
-MetricaDeInteresse.prototype.getClientesProcessados = function() {
-    return this.clientesProcessados;
-}
-
-MetricaDeInteresse.prototype.setMediaCalculada = function( mediaCalculada) {
-    this.mediaCalculada = mediaCalculada;
-}
-
 MetricaDeInteresse.prototype.getMediaTempoDeEspera = function() {
     if(this.mediaCalculada == null){
         var listaDeltaTempo = [];
-        for (cliente of this.getClientesProcessados())
+        for (cliente of this.clientesProcessados)
             listaDeltaTempo.push(cliente.getDeltaTempo());
-        this.setMediaCalculada(Metricas.Media(listaDeltaTempo));
+        this.mediaCalculada = Metricas.Media(listaDeltaTempo);
     }
     return this.mediaCalculada;
 }
 
 MetricaDeInteresse.prototype.adicionaClienteProcessado = function(cliente){
     if(cliente != null){
-        this.getClientesProcessados().push(cliente);
+        this.clientesProcessados.push(cliente);
     }
-}
-
-MetricaDeInteresse.prototype.getFracaoDeTempoServidorVazio = function() {
-    return this.fracaoDeTempoServidorVazio;
-}
-
-MetricaDeInteresse.prototype.setFracaoDeTempoServidorVazio = function( fracaoDeTempoServidorVazio) {
-    this.fracaoDeTempoServidorVazio = fracaoDeTempoServidorVazio;
-}
-
-MetricaDeInteresse.prototype.getFracaoDeChegadasServidorVazio = function() {
-    return this.fracaoDeChegadasServidorVazio;
-}
-
-MetricaDeInteresse.prototype.setFracaoDeChegadasServidorVazio = function( fracaoDeChegadasServidorVazio) {
-    this.fracaoDeChegadasServidorVazio = fracaoDeChegadasServidorVazio;
 }
 
 MetricaDeInteresse.prototype.getTempoEntreSaidas = function() {
     var tempoDeSaidas = [];
     var tempoEntreSaidas = [];
     for (cliente of this.clientesProcessados)
-        tempoDeSaidas.push(cliente.getTempoSaida());
+        tempoDeSaidas.push(cliente.tempoSaida);
 
     tempoDeSaidas.sort(function(a, b){return a-b});
     for (var i = 0; i < tempoDeSaidas.length - 1; i++) {
@@ -63,8 +38,8 @@ MetricaDeInteresse.prototype.getTempoEntreSaidas = function() {
 MetricaDeInteresse.prototype.getTempoEntreChegadas = function() {
     var tempoDeChegadas = [];
     var tempoEntreChegadas = [];
-    for (cliente of this.clientesProcessados)
-        tempoDeChegadas.push(cliente.getTempoEntrada());
+    for (cliente of this.clientesProcessados) 
+        tempoDeChegadas.push(cliente.tempoEntrada);
 
     tempoDeChegadas.sort(function(a, b){return a-b});
     for (var i = 0; i < tempoDeChegadas.length - 1; i++) {
@@ -76,30 +51,30 @@ MetricaDeInteresse.prototype.getTempoEntreChegadas = function() {
 MetricaDeInteresse.prototype.getTrabalhoPendente = function() {
     var listaTrabalhoPendente = [];
     for (cliente of this.clientesProcessados)
-        listaTrabalhoPendente.push(cliente.getTrabalhoPendente());
+        listaTrabalhoPendente.push(cliente.trabalhoPendente);
 
     return Metricas.Media(listaTrabalhoPendente);
 }
 
 MetricaDeInteresse.prototype.getPessoasFila = function() {
     var pessoasNaFila = [];
-    var classe1 = this.clientesProcessados[0].getClasse();
+    var classe1 = this.clientesProcessados[0].classe;
     var classe2 = null;
     var listaDeltaTempo1 = [];
     var listaDeltaTempo2 = [];
     for (cliente of this.clientesProcessados) {
-        if (cliente.getClasse() == classe1)
+        if (cliente.classe == classe1)
             listaDeltaTempo1.push(cliente.getDeltaTempo());
         else {
             if (classe2 == null)
-                classe2 = cliente.getClasse();
+                classe2 = cliente.classe;
             listaDeltaTempo2.push(cliente.getDeltaTempo());
         }
     }
 
-    pessoasNaFila[0] = Metricas.Little(classe1.getLambda(), Metricas.Media(listaDeltaTempo1));
+    pessoasNaFila[0] = Metricas.Little(classe1.lambda, Metricas.Media(listaDeltaTempo1));
     if (classe2)
-        pessoasNaFila[1] = Metricas.Little(classe2.getLambda(), Metricas.Media(listaDeltaTempo2));
+        pessoasNaFila[1] = Metricas.Little(classe2.lambda, Metricas.Media(listaDeltaTempo2));
 
     return pessoasNaFila;
 }

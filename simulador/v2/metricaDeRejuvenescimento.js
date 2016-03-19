@@ -5,11 +5,11 @@ function MetricaRejuvenescimento () {
     this.tempoUltimoRejuvenescimento = [];
 }
 
-MetricaRejuvenescimento.prototype.incrementaIteracoes  = function() {
+MetricaRejuvenescimento.prototype.incrementaIteracoes = function() {
     this.iteracoes++;
 }
 
-MetricaRejuvenescimento.prototype.incrementaNFalhas  = function() {
+MetricaRejuvenescimento.prototype.incrementaNFalhas = function() {
     this.nFalhas++;
 }
 

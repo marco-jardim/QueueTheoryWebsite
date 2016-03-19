@@ -10,38 +10,6 @@ function ClientePreemptivo(classe, tempoEntrada) {
     this.tempoDeServico = classe.getRandom();
 }
 
-ClientePreemptivo.prototype.getClasse  = function() {
-    return this.classe;
-}
-
-ClientePreemptivo.prototype.getTempoEntrada  = function() {
-    return this.tempoEntrada;
-}
-
-ClientePreemptivo.prototype.getTempoSaida  = function() {
-    return this.tempoSaida;
-}
-
-ClientePreemptivo.prototype.setTempoSaida  = function( tempoSaida) {
-    this.tempoSaida = tempoSaida;
-}
-
-ClientePreemptivo.prototype.setTrabalhoPendente  = function( trabalhoPendente) {
-    this.trabalhoPendente = trabalhoPendente;
-}
-
-ClientePreemptivo.prototype.getTrabalhoPendente  = function() {
-    return this.trabalhoPendente;
-}
-
-ClientePreemptivo.prototype.getTempoDeServico  = function() {
-    return this.tempoDeServico;
-}
-
-ClientePreemptivo.prototype.getTempoPendente  = function() {
-    return this.tempoPendente;
-}
-
 ClientePreemptivo.prototype.marcaEntrada  = function( tempoEntrada) {
     var intervalo = new Intervalo();
     intervalo.entrada = tempoEntrada;

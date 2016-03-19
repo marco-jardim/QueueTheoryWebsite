@@ -1,28 +1,26 @@
 function AgendaTarefas  () {
-        this.tarefas = [];
-    }
+    this.tarefas = [];
+}
 
-AgendaTarefas.prototype.removerTarefa  = function(tarefa){
-
+AgendaTarefas.prototype.removerTarefa = function(tarefa){
     for(var i = 0; i < this.tarefas.length; i++) {
         if(this.tarefas[i].hashCode() == tarefa.hashCode()){
             this.tarefas.splice(i, 1);
         }
     }
-
 }
 
-AgendaTarefas.prototype.adicionarTarefa  = function(tarefa){
+AgendaTarefas.prototype.adicionarTarefa = function(tarefa){
     this.tarefas.push(tarefa);
 }
 
-AgendaTarefas.prototype.proximaTarefa  = function(){
+AgendaTarefas.prototype.proximaTarefa = function(){
     if(this.tarefas.length > 0){
         this.tarefas.sort(TarefaComparator);
         var tarefa = this.tarefas[0];
         this.tarefas.shift();
         return tarefa;
-    }else{
+    } else {
         return null;
     }
 }

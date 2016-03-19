@@ -5,20 +5,16 @@ function Fila(classes) {
     }
 }
 
-Fila.prototype.getFilas = function() {
-    return this.filas;
-}
-
 Fila.prototype.adicionar = function(cliente, preemptivo){
     if(preemptivo){
-        this.getFilas()[cliente.getClasse().getPrioridade()].unshift(cliente);
+        this.filas[cliente.classe.prioridade].unshift(cliente);
     } else{
-        this.getFilas()[cliente.getClasse().getPrioridade()].push(cliente);
+        this.filas[cliente.classe.prioridade].push(cliente);
     }
 }
 
 Fila.prototype.remover = function(){
-    for(lista of this.getFilas()){
+    for(lista of this.filas){
         if(lista.length > 0){
             var cliente = lista[0];
             lista.shift();

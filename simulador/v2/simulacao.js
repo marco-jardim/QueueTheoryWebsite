@@ -31,7 +31,7 @@ Simulacao.prototype.getSimulador = function(tempoFinal, classe1, classe2) {
 }
 
 Simulacao.prototype.executarPessoasNaFila = function(lambda){
-    this.classe1.setLambda(lambda);
+    this.classe1.lambda = lambda;
     var MediasPessoasNaFilaColetadas = [];
     var intervaloInferior;
     var intervaloSuperior;
@@ -40,7 +40,7 @@ Simulacao.prototype.executarPessoasNaFila = function(lambda){
         for(var i = 0; i < this.nLoops; i++){
             var simulador = this.getSimulador(this.tempoFinal,this.classe1,this.classe2);
             var metricaDeInteresse = simulador.iniciarSimulacao();
-            MediasPessoasNaFilaColetadas.push( Metricas.Little(this.classe1.getLambda() + this.classe2.getLambda(), metricaDeInteresse.getMediaTempoDeEspera()));
+            MediasPessoasNaFilaColetadas.push( Metricas.Little(this.classe1.lambda + this.classe2.lambda, metricaDeInteresse.getMediaTempoDeEspera()));
         }
 
         media = Metricas.Media(MediasPessoasNaFilaColetadas);
@@ -52,7 +52,7 @@ Simulacao.prototype.executarPessoasNaFila = function(lambda){
 }
 
 Simulacao.prototype.executarTempoPessoasNaFila = function(lambda){
-    this.classe1.setLambda(lambda);
+    this.classe1.lambda = lambda;
     var mediasTempoDePessoasNaFila = [];
     var intervaloInferior;
     var intervaloSuperior;
@@ -73,7 +73,7 @@ Simulacao.prototype.executarTempoPessoasNaFila = function(lambda){
 }
 
 Simulacao.prototype.executarFracaoTempoServidorVazio = function(lambda){
-    this.classe1.setLambda(lambda);
+    this.classe1.lambda = lambda;
     var mediasFracaoServidorVazio = [];
     var intervaloInferior;
     var intervaloSuperior;
@@ -82,7 +82,7 @@ Simulacao.prototype.executarFracaoTempoServidorVazio = function(lambda){
         for(var i = 0; i < this.nLoops; i++){
             var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
             var metricaDeInteresse = simulador.iniciarSimulacao();
-            mediasFracaoServidorVazio.push(metricaDeInteresse.getFracaoDeTempoServidorVazio());
+            mediasFracaoServidorVazio.push(metricaDeInteresse.fracaoDeTempoServidorVazio);
         }
 
         media = Metricas.Media(mediasFracaoServidorVazio);
@@ -95,7 +95,7 @@ Simulacao.prototype.executarFracaoTempoServidorVazio = function(lambda){
 }
 
 Simulacao.prototype.executarFracaoChegadasServidorVazio = function(lambda){
-    this.classe1.setLambda(lambda);
+    this.classe1.lambda = lambda;
     var mediasFracaoChegadasServidorVazio = [];
     var intervaloInferior;
     var intervaloSuperior;
@@ -104,7 +104,7 @@ Simulacao.prototype.executarFracaoChegadasServidorVazio = function(lambda){
         for(var i = 0; i < this.nLoops; i++){
             var simulador = this.getSimulador(this.tempoFinal, this.classe1, this.classe2);
             var metricaDeInteresse = simulador.iniciarSimulacao();
-            mediasFracaoChegadasServidorVazio.push(metricaDeInteresse.getFracaoDeChegadasServidorVazio());
+            mediasFracaoChegadasServidorVazio.push(metricaDeInteresse.fracaoDeChegadasServidorVazio);
         }
 
         media = Metricas.Media(mediasFracaoChegadasServidorVazio);
@@ -160,7 +160,7 @@ Simulacao.prototype.executarTempoEntreSaidasDeCliente = function(filename) {
 }
 
 Simulacao.prototype.executarTrabalhoPendente = function(lambda) {
-    this.classe1.setLambda(lambda);
+    this.classe1.lambda = lambda;
     var mediasTrabalhoPendente = [];
     var intervaloInferior;
     var intervaloSuperior;
@@ -182,7 +182,7 @@ Simulacao.prototype.executarTrabalhoPendente = function(lambda) {
 }
 
 Simulacao.prototype.executarMediaPessoasFilas = function(lambda) {
-    this.classe1.setLambda(lambda);
+    this.classe1.lambda = lambda;
     var mediasPessoasFila1 = [];
     var mediasPessoasFila2 = [];
     var intervaloInferior1, intervaloInferior2;
